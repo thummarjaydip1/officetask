@@ -22,7 +22,8 @@ print('this will also work')
 # print(this will cause an work)
 
 print("hello world", end="\n\n")
-print("hello world", end="     ")
+print("hello world", end="     " \
+"")
 print("i will print on the same line")
 
 # number

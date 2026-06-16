@@ -1,0 +1,10 @@
+<h1>Update Contact Record</h1>
+<form method="POST">
+    {% csrf_token %}
+    Name:<input type="text" name="name" value="{{data.name}}" placeholder="name"><br><br>
+    Age:<input type="number" name="age" value="{{data.age}}" placeholder="age"><br><br>
+    Email:<input type="email" name="email" value="{{data.email}}" placeholder="email"><br><br>
+    Mobile:<input type="number" name="mobile" value="{{data.mobile}}" placeholder="mobile"><br><br>
+    Address:<input type="text" name="address" value="{{data.address}}" placeholder="address"><br><br>
+    <button type="submit">Save</button>
+</form>

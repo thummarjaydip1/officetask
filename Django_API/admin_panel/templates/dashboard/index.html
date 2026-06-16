@@ -1,0 +1,506 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<html>
+  <head>
+  <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body>
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Layout container -->
+        <div class="layout-page">
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            {% comment %} marquee type {% endcomment %}
+            <div style="
+              background:black;
+              color:white;
+              padding:10px;
+              text-align:center;
+              font-size:14px;
+              font-weight:bold;
+              margin-top:-40px">
+              
+              <img src="{% static 'assets/img/off/off.jpg' %}" width="60" style="filter: invert(1);">
+              🔥 Flat 5% OFF on Every Order | Shop Now 🔥
+              <img src="{% static 'assets/img/off/off.jpg' %}" width="60" style="filter: invert(1);">
+              
+          </div>
+
+            <!-- Content -->
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="row gy-6">
+                <!-- Congratulations card -->
+                <div class="col-md-12 col-lg-4">
+                  <div class="card">
+                    <div class="card-body text-nowrap">
+                      <h5 class="card-title mb-0 flex-wrap text-nowrap">Congratulations Norris! 🎉</h5>
+                      <p class="mb-2">Best seller of the month</p>
+                      <h4 class="text-primary mb-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 24 24"><path fill="currentColor" d="M12.005 22.003c-5.523 0-10-4.477-10-10s4.477-10 10-10s10 4.477 10 10s-4.477 10-10 10m0-2a8 8 0 1 0 0-16a8 8 0 0 0 0 16m-3.5-6h5.5a.5.5 0 1 0 0-1h-4a2.5 2.5 0 1 1 0-5h1v-2h2v2h2.5v2h-5.5a.5.5 0 0 0 0 1h4a2.5 2.5 0 0 1 0 5h-1v2h-2v-2h-2.5z"/></svg>
+                        {{message}}
+                        {{revenue_month_profit | floatformat:2}}k
+                      </h4>
+                      <p class="mb-2">{{ grow_month | floatformat:2}}% of target 🚀</p>
+                      <a href="{% url 'tables' %}" class="btn btn-sm btn-primary">View Sales</a>
+                    </div>
+                    <img
+                      src="{% static 'assets/img/illustrations/trophy.png' %}"
+                      class="position-absolute bottom-0 end-0 me-5 mb-5"
+                      width="83"
+                      alt="view sales" />
+                  </div>
+                </div>
+                <!--/ Congratulations card -->
+
+                <!-- Transactions -->
+                <div class="col-lg-8">
+                  <div class="card h-100">
+                    <div class="card-header">
+                      <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="card-title m-0 me-2">Transactions</h5>
+                        <div class="dropdown">
+                          <button
+                            class="btn text-body-secondary p-0"
+                            type="button"
+                            id="transactionID"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                            <i class="icon-base ri ri-more-2-line icon-24px"></i>
+                          </button>
+                          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
+                            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Update</a>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="small mb-0"><span class="h6 mb-0">Total {{grow_month | floatformat:2}}% Growth</span> 😎 this month</p>
+                    </div>
+                    <div class="card-body pt-lg-10">
+                      <div class="row g-6">
+                        <div class="col-md-3 col-6">
+                          <div class="d-flex align-items-center">
+                            <div class="avatar">
+                              <div class="avatar-initial bg-primary rounded shadow-xs">
+                                <i class="icon-base ri ri-pie-chart-2-line icon-24px"></i>
+                              </div>
+                            </div>
+                            <div class="ms-3">
+                              <p class="mb-0">Sales</p>
+                              <h5 class="mb-0">{{total_order}}</h5>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                          <div class="d-flex align-items-center">
+                            <div class="avatar">
+                              <div class="avatar-initial bg-success rounded shadow-xs">
+                                <i class="icon-base ri ri-group-line icon-24px"></i>
+                              </div>
+                            </div>
+                            <div class="ms-3">
+                              <p class="mb-0">Customers</p>
+                              <h5 class="mb-0">{{total_user}}</h5>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                          <div class="d-flex align-items-center">
+                            <div class="avatar">
+                              <div class="avatar-initial bg-warning rounded shadow-xs">
+                                <i class="icon-base ri ri-macbook-line icon-24px"></i>
+                              </div>
+                            </div>
+                            <div class="ms-3">
+                              <p class="mb-0">Product</p>
+                              <h5 class="mb-0">{{total_product}}</h5>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                          <div class="d-flex align-items-center">
+                            <div class="avatar">
+                              <div class="avatar-initial bg-info rounded shadow-xs">
+                                <i class="icon-base ri ri-money-dollar-circle-line icon-24px"></i>
+                              </div>
+                            </div>
+                            <div class="ms-3">
+                              <p class="mb-0">Revenue</p>
+                              <h5 class="mb-0">{{revenue_month_profit | floatformat:2}}K</h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--/ Transactions -->
+
+                <!-- Weekly Overview Chart -->
+                <div class="col-xl-4 col-md-6">
+                  <div class="card">
+                    <div class="card-header">
+                      <div class="d-flex justify-content-between">
+                        <h5 class="mb-1">Weekly Overview</h5>
+                        <div class="dropdown">
+                          <button
+                            class="btn text-body-secondary p-0"
+                            type="button"
+                            id="weeklyOverviewDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                            <i class="icon-base ri ri-more-2-line icon-24px"></i>
+                          </button>
+                          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="weeklyOverviewDropdown">
+                            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Update</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body pt-lg-2">
+                      <div id="weeklyOverviewChart"></div>
+                      {% comment %} <img src="{% static "chart.png" %}" alt="image" width=255 height=170> {% endcomment %}
+                      <div class="mt-1 mt-md-3">
+                        <div class="d-flex align-items-center gap-4">
+                          <h5 class="mb-0">{{grow_month | floatformat:2}}%</h5>
+                          <p class="mb-0">Your sales performance is {{total_grow | floatformat:2}}% 😎 better compared to last month</p>
+                        </div>
+                        <div class="d-grid mt-3 mt-md-4">
+                          <a href="{% url 'maintenance_page' %}">
+                            <button class="btn btn-primary" style="width:100%" type="button">Details</button>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--/ Weekly Overview Chart -->
+
+                <!-- Total Earnings -->
+                <div class="col-xl-4 col-md-6">
+                  <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <h5 class="card-title m-0 me-2 ">Total Earning</h5>
+                      <div class="dropdown">
+                        <button
+                          class="btn text-body-secondary p-0"
+                          type="button"
+                          id="totalEarnings"
+                          data-bs-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false">
+                        </button>
+                      </div>
+                    </div>
+                    <div class="card-body pt-lg-8">
+                      
+                      <ul class="p-0 m-0">
+                        <li class="d-flex mb-6">
+                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                              <h6 class="mb-0">Today Earning</h6>
+                            </div>
+                            <div>
+                              <h6 class="mb-2">${{day_profit | floatformat:13}}K</h6>
+                              <div class="progress bg-label-warning" style="height: 4px">
+                                <div
+                                  class="progress-bar bg-warning"
+                                  style="width: 90%"
+                                  role="progressbar"
+                                  aria-valuenow="75"
+                                  aria-valuemin="0"
+                                  aria-valuemax="100"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="d-flex mb-6">
+                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                              <h6 class="mb-0">Week Earning</h6>
+                            </div>
+                            <div>
+                              <h6 class="mb-2">${{week_profit | floatformat:13}}K</h6>
+                              <div class="progress bg-label-danger" style="height: 4px">
+                                <div
+                                  class="progress-bar bg-danger"
+                                  style="width: 80%"
+                                  role="progressbar"
+                                  aria-valuenow="75"
+                                  aria-valuemin="0"
+                                  aria-valuemax="100"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="d-flex mb-6">
+                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                              <h6 class="mb-0">Month Earning</h6>
+                            </div>
+                            <div>
+                              <h6 class="mb-2">${{revenue_month_profit | floatformat:13}}K</h6>
+                              <div class="progress bg-label-info" style="height: 4px">
+                                <div
+                                  class="progress-bar bg-info"
+                                  style="width: 70%"
+                                  role="progressbar"
+                                  aria-valuenow="75"
+                                  aria-valuemin="0"
+                                  aria-valuemax="100"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="d-flex">
+                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                              <h6 class="mb-0">Year Earning</h6>
+                            </div>
+                            <div>
+                              <h6 class="mb-2">${{year_profit | floatformat:13}}K</h6>
+                              <div class="progress bg-label-dark" style="height: 4px">
+                                <div
+                                  class="progress-bar bg-dark"
+                                  style="width: 60%"
+                                  role="progressbar"
+                                  aria-valuenow="75"
+                                  aria-valuemin="0"
+                                  aria-valuemax="100"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <!--/ Total Earnings -->
+
+                <!-- Four Cards -->
+                <div class="col-xl-4 col-md-6">
+                  <div class="row gy-6">
+                    <!-- Total Profit line chart -->
+                    <div class="col-sm-6">
+                      <div class="card h-100">
+                        <div class="card-header pb-0">
+                          <h5 class="mb-0">${{total_profit| floatformat:2}}k</h5>
+                        </div>
+                        <div class="card-body">
+                          <div id="totalProfitLineChart" class="mb-3"></div>
+                          <h6 class="text-center mb-0">Total Profit</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <!--/ Total Profit line chart -->
+                    <!-- Total Profit Weekly Project -->
+                    <div class="col-sm-6">
+                      <div class="card h-100">
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                          <div class="avatar">
+                            <div class="avatar-initial bg-secondary rounded-circle shadow-xs">
+                              <i class="icon-base ri ri-pie-chart-2-line icon-24px"></i>
+                            </div>
+                          </div>
+                          <div class="dropdown">
+                            <button
+                              class="btn text-body-secondary p-0"
+                              type="button"
+                              id="totalProfitID"
+                              data-bs-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false">
+                              <i class="icon-base ri ri-more-2-line icon-24px"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalProfitID">
+                              <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                              <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                              <a class="dropdown-item" href="javascript:void(0);">Update</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                          <h6 class="mb-1">Total Profit</h6>
+                          <div class="d-flex flex-wrap mb-1 align-items-center">
+                            <h4 class="mb-0 me-2">${{week_profit| floatformat:2}}k</h4>
+                          </div>
+                          <small>Weekly Project</small>
+                        </div>
+                      </div>
+                    </div>
+                    <!--/ Total Profit Weekly Project -->
+                    <!-- New Yearly Project -->
+                    <div class="col-sm-6">
+                      <div class="card h-100">
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                          <div class="avatar">
+                            <div class="avatar-initial bg-primary rounded-circle shadow-xs">
+                              <i class="icon-base ri ri-file-word-2-line icon-24px"></i>
+                            </div>
+                          </div>
+                          <div class="dropdown">
+                            <button
+                              class="btn text-body-secondary p-0"
+                              type="button"
+                              id="newProjectID"
+                              data-bs-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false">
+                              <i class="icon-base ri ri-more-2-line icon-24px"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="newProjectID">
+                              <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                              <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                              <a class="dropdown-item" href="javascript:void(0);">Update</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                          <h6 class="mb-1">New Project</h6>
+                          <div class="d-flex flex-wrap mb-1 align-items-center">
+                            <h4 class="mb-0 me-2">{{new_pro_val}}</h4>
+                            <p class="text-danger mb-0">-{{new_pro_per}}%</p>
+                          </div>
+                          <small>Yearly Project</small>
+                        </div>
+                      </div>
+                    </div>
+                    <!--/ New Yearly Project -->
+                    <!-- Sessions chart -->
+                    <div class="col-sm-6">
+                      <div class="card h-100">
+                        <div class="card-header pb-0">
+                          <h4 class="mb-0">{{sessions}}</h4>
+                        </div>
+                        <div class="card-body">
+                          <div id="sessionsColumnChart" class="mb-3"></div>
+                          <h6 class="text-center mb-0">Sessions</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <!--/ Sessions chart -->
+                  </div>
+                </div>
+                <!--/ four cards -->
+
+                {% if request.user.is_authenticated %}
+                <!-- Data Tables -->
+                <div class="col-12">
+                  <div class="card overflow-hidden">
+                    <div class="table-responsive">
+                      <table class="table table-sm">
+                        <thead>
+                          <tr>
+                            <th class="text-truncate">User</th>
+                            <th class="text-truncate">Email</th>
+                            <th class="text-truncate">contact</th>
+                            <th class="text-truncate">Role</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for i in user %}
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="avatar avatar-sm me-4">
+                                  <img src="{% static "assets/img/avatars/1.png" %}" alt="Avatar" class="rounded-circle" />
+                                </div>
+                                <div>
+                                  <h6 class="mb-0 text-truncate">{{i.username}}</h6>
+                                </div>
+                              </div>
+                            </td>
+                            <td class="text-truncate">{{i.email}}</td>
+                            <td class="text-truncate">{{i.contact}}</td>
+                            <td class="text-truncate">
+                              <div class="d-flex align-items-center">
+                                <i class="icon-base ri ri-vip-crown-line icon-22px text-primary me-2"></i>
+                                <span>{{i.role}}</span>
+                              </div>
+                            </td>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <!--/ Data Tables -->
+
+                <!-- Top shell product-->
+                 <div class="card">
+                  <h5 class="card-header" style="margin-left:30px">Top Shell Products</h5>
+                  <div class="table-responsive text-nowrap" style="margin-left:30px">
+                    <table class="table">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Name</th>
+                          <th>Category</th>
+                          <th>Price</th>
+                          <th>Description</th>
+                          <th>Image</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody class="table-border-bottom-0">
+                        {% for k in top_shell %}
+                        <tr>
+                          <td>{{k.name}}</td>
+                          <td>{{k.category}}</td>
+                          <td>{{k.price}}</td>
+                          <td>{{k.description}}</td>
+                          <td><img src="{{k.image.url}}" width=100 height=110 alt="image"/></td>
+                          <td>
+                            <a href="{% url 'order_now' k.id %}">
+                              <button type="button" class="btn rounded-pill btn-warning" style="width:120px">Order now</button>
+                            </a>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!--/ Top shell product -->
+                {% endif %}
+              </div>
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <div class="buy-now">
+      <a
+        href="https://themeselection.com/item/materio-dashboard-pro-bootstrap/"
+        target="_blank"
+        class="btn btn-danger btn-buy-now"
+        >Upgrade to Pro</a
+      >
+    </div>
+  </body>
+</html>
+{% endblock %}

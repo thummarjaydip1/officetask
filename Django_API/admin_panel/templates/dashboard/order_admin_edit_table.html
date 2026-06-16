@@ -1,0 +1,130 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<style>
+  .order_form {
+    background-color: white;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    width: 40%;
+    border-radius: 15px;
+    transition: 0.3s;
+  }
+
+  .order_form:hover {
+    transform: translateY(-3px);
+  }
+
+  .order_heading {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #333;
+  }
+
+  .order_select {
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 12px;
+    outline: none;
+    transition: 0.3s;
+  }
+
+  .order_select:focus {
+    border: 1px solid blue;
+    box-shadow: 0px 0px 5px blue;
+  }
+
+  .order_update_btn {
+    color: white;
+    background: linear-gradient(to right, blue, #4b7bec);
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .order_update_btn:hover {
+    background: linear-gradient(to right, green, #20bf6b);
+    transform: scale(1.02);
+  }
+
+  .order_icon {
+    font-size: 45px;
+    margin-bottom: 15px;
+  }
+
+  @media (max-width: 768px) {
+    .order_form {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <div class="layout-page">
+      <center>
+        <form method="POST" class="order_form">
+          {% csrf_token %}
+
+          <div class="order_icon">📦</div>
+
+          <h3 class="order_heading">Update Order Status</h3>
+
+          <select name="status" class="order_select">
+            <option
+              value="Pending"
+              {%
+              if
+              order.status=""
+              ="Pending"
+              %}selected{%
+              endif
+              %}
+            >
+              Pending
+            </option>
+
+            <option
+              value="Shipped"
+              {%
+              if
+              order.status=""
+              ="Shipped"
+              %}selected{%
+              endif
+              %}
+            >
+              Shipped
+            </option>
+
+            <option
+              value="Delivered"
+              {%
+              if
+              order.status=""
+              ="Delivered"
+              %}selected{%
+              endif
+              %}
+            >
+              Delivered
+            </option>
+          </select>
+
+          <br /><br />
+
+          <button type="submit" class="order_update_btn">Update Status</button>
+        </form>
+      </center>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

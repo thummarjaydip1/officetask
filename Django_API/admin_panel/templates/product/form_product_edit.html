@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    body{
+        background-color: #f4f5fb;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .profile-container{
+        margin-left: 250px;
+    }
+
+    .profile-card{
+        width: 420px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.7);
+    }
+
+    .profile-heading{
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+    }
+
+    .profile-table{
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .profile-table tr{
+        border-bottom: 1px solid #eee;
+    }
+
+    .profile-table td{
+        padding: 14px 8px;
+        font-size: 15px;
+    }
+
+    .label{
+        font-weight: bold;
+        color: #555;
+        width: 230px;
+    }
+
+    .value{
+        color: #222;
+    }
+
+    .profile-table tr:last-child{
+        border-bottom: none;
+    }
+
+    .icon{
+        width: 35px;
+        height:35px;
+    }
+
+    .category_btn{
+      width:100%;
+      background-color:red;
+      padding:7px;
+      border-radius:10px;
+      border:none;
+      color:white;
+    }
+
+    .category_textbox{
+      width:100%;
+      padding:8px;
+      border-radius:7px;
+    }
+</style>
+
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+
+        <div class="layout-page">
+
+            <div class="profile-container">
+
+                <div class="profile-card">
+
+                    <div class="profile-heading">Add Product</div>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <table class="profile-table">
+
+                            <tr>
+                                <td class="label">Select Product Category</td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">
+                                    <select class="category_textbox" name="category">
+                                        {% for i in category_data %}
+                                            <option value="{{i.id}}" {% if product.category.id == i.id %}selected{% endif %}>
+                                                {{i.name}}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">Enter Product Name</td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">
+                                    <input type="text" value="{{product.name}}" name="name" class="category_textbox" placeholder="Enter Product Name">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">Enter Product Price</td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">
+                                    <input type="number" value="{{product.price}}" name="price" class="category_textbox" placeholder="Enter Product Price">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">Enter Product Description</td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">
+                                    <textarea name="description" class="category_textbox" placeholder="Enter Product Description">{{product.description}}</textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">Enter Product Image</td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">
+
+                                    {% if product.image %}
+                                        <img src="{{ product.image.url }}" width="100">
+                                        <br>
+                                    {% endif %}
+
+                                    <input type="file" name="image" class="category_textbox">
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">
+                                    <button type="submit" class="category_btn">
+                                        Update Product
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

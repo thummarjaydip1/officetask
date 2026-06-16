@@ -1,0 +1,31 @@
+<center>
+<h1>contact list display</h1>  
+<table border="1" cellpadding="10">
+    <tr>
+        <td>Id</td>
+        <td>Name</td>
+        <td>Age</td>
+        <td>Email</td>
+        <td>Mobile</td>
+        <td>Address</td>
+        <td>Date And Time</td>
+        <td>Action</td>
+    </tr>
+    {% for i in data %}
+    <tr>
+        <td>{{i.id}}</td>
+        <td>{{i.name}}</td>
+        <td>{{i.age}}</td>
+        <td>{{i.email}}</td>
+        <td>{{i.mobile}}</td>
+        <td>{{i.address}}</td>
+        <td>{{i.date_time}}</td>
+        <td>
+            <button><a href="{% url 'update' i.id %}">Update</a></button>
+            <button><a href="{% url 'delete' i.id %}" onclick="return confirm('Are you sure?')">Delete</a></button>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<h3><a href="{% url "index" %}">Record Added</a></h3>
+</center>

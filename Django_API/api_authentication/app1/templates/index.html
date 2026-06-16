@@ -1,0 +1,74 @@
+<div style="display: flex; gap: 5px">
+
+  {% if request.user.is_authenticated %}
+    
+    <div style="display:flex">
+      <a href="{% url "profile" %}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="2.5em" height="2.5em" viewBox="0 0 24 24">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path fill="currentColor" d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12S6.48 2 12 2M6.023 15.416C7.491 17.606 9.695 19 12.16 19s4.669-1.393 6.136-3.584A8.97 8.97 0 0 0 12.16 13a8.97 8.97 0 0 0-6.137 2.416M12 11a3 3 0 1 0 0-6a3 3 0 0 0 0 6" />
+        </svg>
+      </a>
+
+      <p style="font-size:20px;margin-top:9px">{{request.user}}<p>
+      </div>
+
+  {% endif %}
+
+  <br />
+
+  <button style="width:10%;height:30px">
+    <a href="{% url 'register' %}">
+      Register
+    </a>
+  </button>
+
+  {% if not request.user.is_authenticated %}
+
+    <button style="width:10%;height:30px">
+      <a href="{% url "login" %}">
+        login
+      </a>
+    </button>
+
+  {% else %}
+
+    <form method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" style="width:100%;height:30px">
+        Logout
+      </button>
+    </form>
+  {% endif %}
+</div>
+
+{% comment %} User table {% endcomment %}
+<table border="1" cellpadding="10" cellspacing="2">
+  <tr>
+    <td>Username</td>
+    <td>Password</td>
+    <td>Email</td>
+    <td>Action</td>
+  </tr>
+  {% for i in data %}
+  <tr>
+    <td>{{i.username}}</td>
+    <td>{{i.password}}</td>
+    <td>{{i.email}}</td>
+    <td>
+      <button>
+        <a href="{% url 'user_update' i.id %}">Update</a>
+      </button>
+      <button>
+        {% if not request.user.is_authenticated %}
+          <a href="{% url "login" %}" onclick="return confirm('Please Login First')">Delete</a>  
+        {% elif request.user.id == i.id %}
+          <a href="{% url "user_delete" i.id %}" onclick="return confirm('Are You Sure?')">Delete</a>
+        {% else %}
+          <a href="{% url "index" %}" onclick="return confirm('Login First This Record Username.....?')">Delete</a>
+        {% endif %}
+      </button>
+    </td>
+  </tr>
+  {% endfor %}
+</table>

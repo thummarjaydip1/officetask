@@ -1,0 +1,151 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<html>
+  <head></head>
+  <body>
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-page">
+        <div class="card">
+          <h5 class="card-header" style="margin-left: 30px">
+            Contact Data Display
+          </h5>
+          <div class="table-responsive text-nowrap" style="margin-left: 30px">
+            <table class="table">
+              <thead class="table-dark">
+                <tr>
+                  <th>Name</th>
+                  <th>Age</th>
+                  <th>Email</th>
+                  <th>Mobile No</th>
+                  <th>Address</th>
+                  <th>Map</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+                {% for i in data %}
+                <tr>
+                  <td>
+                    <span>{{i.name}}</span>
+                  </td>
+                  <td>{{i.age}}</td>
+                  <td>{{i.email}}</td>
+                  <td>{{i.mobile}}</td>
+                  <td>{{i.address}}</td>
+                  <td>
+                    <iframe
+                      width="200"
+                      height="125"
+                      src="https://www.google.com/maps?q={{ i.address }}&output=embed"
+                    >
+                    </iframe>
+                  </td>
+                  <td>
+                    <div class="dropdown">
+                      <button
+                        type="button"
+                        class="btn p-0 dropdown-toggle hide-arrow shadow-none"
+                        data-bs-toggle="dropdown"
+                      >
+                        <i class="icon-base ri ri-more-2-line icon-18px"></i>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a
+                          class="dropdown-item"
+                          href="{% url 'contact_update' i.id %}"
+                        >
+                          <i
+                            class="icon-base ri ri-pencil-line icon-18px me-1"
+                          ></i>
+                          Edit</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          href="{% url 'contact_delete' i.id %}"
+                          onclick="return confirm('Are you sure?');"
+                        >
+                          <i
+                            class="icon-base ri ri-delete-bin-6-line icon-18px me-1"
+                          ></i>
+                          Delete</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {% comment %} Feedback form {% endcomment %}
+
+        <div class="card mt-10">
+          <h5 class="card-header" style="margin-left: 30px">
+            Feedback Data Display
+          </h5>
+          <div class="table-responsive text-nowrap" style="margin-left: 30px">
+            <table class="table">
+              <thead class="table-dark">
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Rating</th>
+                  <th>Message</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+                {% for j in dataa %}
+                <tr>
+                  <td>
+                    <span>{{j.name}}</span>
+                  </td>
+                  <td>{{j.email}}</td>
+                  <td>{{j.rating}}</td>
+                  <td>{{j.message}}</td>
+                  <td>
+                    <div class="dropdown">
+                      <button
+                        type="button"
+                        class="btn p-0 dropdown-toggle hide-arrow shadow-none"
+                        data-bs-toggle="dropdown"
+                      >
+                        <i class="icon-base ri ri-more-2-line icon-18px"></i>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a
+                          class="dropdown-item"
+                          href="{% url 'feedback_update' j.id %}"
+                        >
+                          <i
+                            class="icon-base ri ri-pencil-line icon-18px me-1"
+                          ></i>
+                          Edit</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          href="{% url 'feedback_delete' j.id %}"
+                          onclick="return confirm('Are you sure?');"
+                        >
+                          <i
+                            class="icon-base ri ri-delete-bin-6-line icon-18px me-1"
+                          ></i>
+                          Delete</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+{% endblock %}

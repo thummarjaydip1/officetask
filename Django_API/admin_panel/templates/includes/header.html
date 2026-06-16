@@ -1,0 +1,242 @@
+{% load static %}
+<html
+  lang="en"
+  class="layout-menu-fixed layout-compact"
+  data-assets-path="../assets/"
+  data-template="vertical-menu-template-free">
+
+<head>
+  <meta charset="utf-8" />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="{% static 'assets/img/favicon/favicon.ico' %}" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="{% static 'assets/vendor/fonts/iconify-icons.css' %}">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="{% static 'assets/vendor/libs/node-waves/node-waves.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/vendor/css/core.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/demo.css' %}">
+
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" href="{% static 'assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/vendor/libs/apex-charts/apex-charts.css' %}">
+
+  <!-- JS -->
+  <script src="{% static 'assets/vendor/js/helpers.js' %}"></script>
+  <script src="{% static 'assets/js/config.js' %}"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+</head>
+
+  <body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+          <div class="app-brand demo">
+            <a href="{% url "index" %}" class="app-brand-link">
+              <img src="{% static "assets/img/logo/logo.png" %}" alt="logo" width="40" height="40" />
+              <span class="app-brand-text demo menu-text fw-semibold ms-2">ElectroHUB</span>
+            </a>
+
+            <div class="avatar avatar-online ps-3">
+              <a href="{% url 'auth_profile' %}">
+                <img src="{% static 'assets/img/avatars/1.png' %}" alt="alt" class="w-px-40 h-auto rounded-circle" />
+              </a>
+            </div>
+          </div>
+
+          {% if request.user.is_authenticated %}
+          <div class="d-flex align-items-center justify-content-between bg-white shadow-sm rounded p-2 w-70">
+              <div class="d-flex align-items-center gap-2">
+                  <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                      style="width:45px; height:45px; font-size:20px;">
+
+                      {{ request.user.username|first|upper }}
+
+                  </div>
+                <div>
+                    <h5 class="mb-0 semibold">
+                      Welcome 
+                    </h5>
+
+                    <small class="text-muted">
+                      {{ request.user.username }}
+                    </small>
+                </div>
+
+              </div>
+
+              <a href="{% url 'auth_logout' %}">
+                <button type="button" class="btn btn-danger btn-sm">
+                  Logout
+                </button>
+              </a>
+
+            </div>
+          {% endif %}
+
+          <div class="menu-inner-shadow"></div>
+
+          <ul class="menu-inner py-1">
+            <!-- Dashboards -->
+            <li class="menu-item active open">
+              <a href="{% url 'index' %}" class="menu-link">
+                <i class="menu-icon icon-base ri ri-home-smile-line"></i>
+                <div data-i18n="Dashboards">Dashboards</div>
+              </a>
+            </li>
+
+            <!-- Pages -->
+
+            <li class="menu-item">
+              <ul>
+                {% if not request.user.is_authenticated %}
+                <li class="menu-item">
+                  <a href="{% url 'auth_login' %}" class="menu-link">
+                    <div data-i18n="Basic">Login</div>
+                  </a>
+                </li>
+                {% endif %}
+                <li class="menu-item">
+                  <a href="{% url 'auth_register' %}" class="menu-link">
+                    <div data-i18n="Basic">Register</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            
+            <!-- Forms & Tables -->
+            <li class="menu-header mt-7"><span class="menu-header-text">Forms &amp; Tables</span></li>
+            <li class="menu-item">
+              <ul style="margin-right:-70px"  >
+                <li class="menu-item">
+                  <a href="{% url 'contact_add' %}" class="menu-link">
+                    <div data-i18n="Perfect Scrollbar">Contact Form</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{% url 'feedback_add' %}" class="menu-link">
+                    <div data-i18n="Text Divider">Feedback Form</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{% url 'display_data' %}" class="menu-link">
+                    <div data-i18n="Text Divider">Dispaly contact & feedback</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="menu-header mt-7"><span class="menu-header-text"></span></li>
+            <!-- Forms -->
+            <li class="menu-item">
+              <ul>
+                <li class="menu-item">
+                  <a href="{% url 'form_category' %}" class="menu-link">
+                    <div data-i18n="Basic Inputs">Category Form</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{% url 'form_product' %}" class="menu-link">
+                    <div data-i18n="Input groups">Add Product</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{% url 'product_display' %}" class="menu-link">
+                    <div data-i18n="Input groups">Product Display</div>
+                  </a>
+                </li>
+                {% if request.user.is_authenticated %}
+                  <li class="menu-item">
+                    <a href="{% url 'order_display' %}" class="menu-link">
+                      <div data-i18n="Input groups">Order Display</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href="{% url 'show_wishlist' %}" class="menu-link">
+                      <div data-i18n="Input groups">Wishlist</div>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </li>
+            
+
+            <!-- Tables -->
+            <li class="menu-item  ps-8">
+              <a href="{% url 'tables' %}" class="menu-link">
+                <div data-i18n="Tables">Tables</div>
+              </a>
+            </li>
+
+            <!-- Misc -->
+            <li class="menu-header mt-7"><span class="menu-header-text">Misc</span></li>
+            <li class="menu-item ps-8">
+              <a
+                href="{% url 'news' %}"
+                class="menu-link">
+                <div data-i18n="News">News</div>
+              </a>
+            </li>
+            <li class="menu-item ps-8">
+              <a
+                href="https://github.com/thummarjaydip1"
+                target="_blank"
+                class="menu-link">
+                <div data-i18n="Support">Support</div>
+              </a>
+            </li>
+            <li class="menu-item ps-8">
+              <a
+                href="{% url 'documentation' %}"
+                class="menu-link">
+                <div data-i18n="Documentation">Documentation</div>
+              </a>
+            </li>
+          </ul>
+        </aside>
+    </div>
+</div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="{% static 'assets/vendor/libs/jquery/jquery.js' %}"></script>
+
+    <script src="{% static 'assets/vendor/libs/popper/popper.js' %}"></script>
+    <script src="{% static 'assets/vendor/js/bootstrap.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/node-waves/node-waves.js' %}"></script>
+
+    <script src="{% static 'assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
+
+    <script src="{% static 'assets/vendor/js/menu.js' %}"></script>
+
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src="{% static 'assets/vendor/libs/apex-charts/apexcharts.js' %}"></script>
+
+    <!-- Main JS -->
+
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+    <!-- Page JS -->
+    <script src="{% static 'assets/js/dashboards-analytics.js' %}"></script>
+
+    <!-- Place this tag before closing body tag for github widget button. -->
+    <script async="async" defer="defer" src="https://buttons.github.io/buttons.js"></script>
+</body>
+</html>

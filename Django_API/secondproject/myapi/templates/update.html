@@ -1,0 +1,10 @@
+<center>
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="name" value="{{data.name}}" placeholder="name"/><br><br>
+    <input type="number" name="age" value="{{data.age}}" placeholder="age"/><br><br>
+    <input type="email" name="email" value="{{data.email}}" placeholder="email"/><br><br>
+    <input type="text" name="branch" value="{{data.branch}}" placeholder="branch"/><br><br>
+    <button type="submit">Submit</button>
+</form>
+</center>

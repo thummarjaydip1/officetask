@@ -1,0 +1,142 @@
+# main.py
+from fastapi import FastAPI
+from database import engine,Base
+from routers import router
+
+app = FastAPI()
+Base.metadata.create_all(bind=engine)
+app.include_router(router)
+
+# database.py
+from sqlalchemy.orm import declarative_base,sessionmaker
+from sqlalchemy import create_engine
+
+DATABASE_URL = "aqlite:///.stu.db"
+
+engine = create_engine(
+    DATABASE_URL,
+    connect_args= {"check_same_thread":False}
+)
+SessionLocal = sessionmaker(
+    autoflush=False,
+    autocommit=False,
+    bind=engine
+)
+Base = declarative_base()
+
+# models.py
+from sqlalchemy import Column,String,Integer
+from database import Base
+
+class Student(Base):
+    __tablename__ = "students"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    email = Column(String)
+    city =  Column(String)
+
+# ***************** Add Student *****************
+# schemas.py
+from pydantic import BaseModel
+
+class CreateStudent(BaseModel):
+    name : str
+    email : str
+    city : str
+
+# routers.py
+from fastapi import APIRouter,Depends
+from sqlalchemy.orm import Session
+from database import SessionLocal
+from models import Student
+from schemas import CreateStudent
+
+router = APIRouter(
+    prefix="/students",
+    tags=["Student"]
+)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    except:
+        db.close()
+
+@router.post("/add")
+def add_student(student: CreateStudent, db: Session = Depends(get_db)):
+    new_student = Student(
+        name = student.name,
+        email = student.email,
+        city = Student.city
+    )
+    db.add(new_student)
+    db.commit()
+    db.refresh(new_student)
+    return {"message":"Student Added"}
+
+# ***************** Display Student *****************
+# schemas.py
+from pydantic import BaseModel
+
+class DispStudent(BaseModel):
+    id : int
+    name : str
+    email : str
+    city : str
+
+# routers.py
+@router.get("/display",response_model=DispStudent)
+def display_student(db: Session = Depends(get_db)):
+    data = db.query(Student).all()
+    return data
+
+# ***************** Update Student *****************
+# schemas.py
+class UpdateStudent(BaseModel):
+    name: str
+    email: str
+    city : str
+
+# routers.py
+@router.put("/update/{id}")
+def update_student(id: int, student: UpdateStudent, db: Session = Depends(get_db)):
+    data = db.query(Student).get(id)       # data = db.query(Student.id == id).first()
+    if not data:
+        return {"message" : "Student not found"}
+    
+    data.name = student.name
+    data.email = student.email
+    data.city = student.city
+    db.commit()
+    return {
+        "message":  "Student Data Updated Successfully",
+        "Updated Student Id" : data.id
+    }
+
+# ***************** Delete Student *****************
+# routers.py 
+@router.delete("/delete/{id}")
+def delete_student(id: int, db: Session = Depends(get_db)):
+    data = db.query(Student).get(id)
+    if not data:
+        return {"message":"Student dtaa not found"}
+    
+    db.delete(data)
+    db.commit()
+    return {'message':'Student Data Deleted Successfully'}
+
+@router.get("/search", response_model = list[DispStudent])
+def search_student(name:str=None,city:str=None,db: Session=Depends(get_db)):
+    data = db.query(Student)
+    if name:
+        data = data.filter(Student.name.contains(name))
+    if city:
+        data = data.filter(Student.name.contains(city))
+    return data.all()
+
+@router.get("/count")
+def count_student(db: Session = Depends(get_db)):
+    data = db.query(Student).count()
+    return {"total student":data}

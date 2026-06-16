@@ -1,0 +1,26 @@
+{
+    "name": "rohit",
+    "age": 33,
+    "car": [
+        {
+            "model": "zen",
+            "year": 2022
+        },
+        {
+            "model": "aulto",
+            "year": 2020
+        },
+        {
+            "model": "honda",
+            "year": 2018
+        }
+    ],
+    "contact": [
+        {
+            "email": "rohit@example.com"
+        },
+        {
+            "phone": "9354678201"
+        }
+    ]
+}

@@ -1,0 +1,55 @@
+<a href="{% url "contact" %}">Contact</a>
+<a href="{% url "feedback" %}">Feedback</a>
+
+<h1>Contact</h1>
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Action</th>
+    </tr>
+
+    {% for i in data %}
+    <tr>
+        <td>{{ i.id }}</td>
+        <td>{{ i.name }}</td>
+        <td>{{ i.age }}</td>
+        <td>{{ i.email }}</td>
+        <td>{{ i.mobile }}</td>
+        <td>
+            <a href="{% url 'contact_update' i.id %}">Update</a>
+            <a href="{% url 'contact_delete' i.id %}" onclick="return confirm('are you sure?')">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<h1>Feedback</h1>
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Rating</th>
+        <th>Message</th>
+        <th>Action</th>
+    </tr>
+
+    {% for j in data1 %}
+    <tr>
+        <td>{{ j.id }}</td>
+        <td>{{ j.name }}</td>
+        <td>{{ j.age }}</td>
+        <td>{{ j.rating }}</td>
+        <td>{{ j.message }}</td>
+        <td>
+            <a href="{% url 'feedback_update' j.id %}">Update</a>
+            <a href="{% url 'feedback_delete' j.id %}" onclick="return confirm('are you sure?')">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

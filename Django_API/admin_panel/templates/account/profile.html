@@ -1,0 +1,151 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<style>
+  body {
+    background-color: #f4f5fb;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .profile-container {
+    margin-left: 500px;
+    margin-top: 0px;
+  }
+
+  .profile-card {
+    width: 420px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.7);
+  }
+
+  .profile-heading {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+  }
+
+  .profile-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .profile-table tr {
+    border-bottom: 1px solid #eee;
+  }
+
+  .profile-table td {
+    padding: 14px 8px;
+    font-size: 15px;
+  }
+
+  .label {
+    font-weight: bold;
+    color: #555;
+    width: 130px;
+  }
+
+  .value {
+    color: #222;
+  }
+
+  .profile-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .icon {
+    width: 35px;
+    height: 35px;
+  }
+</style>
+
+<div class="profile-container">
+  <div class="profile-card">
+    <div class="profile-heading">
+      <img
+        src="{% static 'assets/img/avatars/pro.avif' %}"
+        alt="avatar"
+        class="icon"
+      />
+      My Profile
+    </div>
+
+    <div
+      style="
+        background: #f8f9ff;
+        border: 1px solid #e4e6f1;
+        border-radius: 10px;
+        padding: 12px 18px;
+        margin-bottom: 18px;
+      "
+    >
+      <div style="display: flex; gap: 40px; font-size: 14px; color: #555">
+        <div><b>Date :</b> {{data.date}}</div>
+
+        <div><b>Time :</b> {{data.time | slice:":8"}}</div>
+      </div>
+    </div>
+
+    <table class="profile-table">
+      <tr>
+        <td class="label">Name</td>
+        <td class="value">{{ profile.user.username }}</td>
+      </tr>
+
+      <tr>
+        <td class="label">Email</td>
+        <td class="value">{{ profile.user.email }}</td>
+      </tr>
+
+      <tr>
+        <td class="label">Contact</td>
+        <td class="value">{{ profile.user.contact }}</td>
+      </tr>
+
+      <tr>
+        <td class="label">Role</td>
+        <td class="value">{{ profile.user.role }}</td>
+      </tr>
+
+      <tr>
+        <td class="label">Edit Profile</td>
+        <td class="value">
+          <a href="{% url 'auth_profile_edit' %}">Edit</a>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">Forget Password</td>
+        <td class="value">
+          <a href="{% url 'auth_forget_password' %}">Forget Password</a>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">Logout</td>
+        <td class="value">
+          <a href="{% url 'auth_logout' %}">
+            Logout
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 24 24"
+            >
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path
+                fill="currentColor"
+                d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10M7 11V8l-5 4l5 4v-3h8v-2z"
+              />
+            </svg>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

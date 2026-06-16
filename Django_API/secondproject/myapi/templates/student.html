@@ -1,0 +1,11 @@
+<center>
+<h1>Student Form <a href="{% url "student_display_data" %}">Display Data</a></h1>
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="name"/><br><br>
+    <input type="number" name="age" placeholder="age"/><br><br>
+    <input type="email" name="email" placeholder="email"/><br><br>
+    <input type="text" name="branch" placeholder="branch"/><br><br>
+    <button type="submit">Submit</button>
+</form>
+</center>

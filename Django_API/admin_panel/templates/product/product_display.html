@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <div class="layout-page">
+      <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <div class="row mb-4 g-4">
+            <form method="GET">
+              <h3>
+                <img src="{% static "assets/img/off/off2.avif" %}" width="110" />
+                Products
+              </h3>
+                  <input 
+                    type="text" 
+                    name="search"
+                    placeholder="Search Product Name or Category Name"
+                    style="margin-top:-90px;margin-left:260px; width:450px; padding:7px "
+                    value="{{ request.GET.search }}"
+                  >
+                </form>
+                <form method="GET">
+                  <select name="category" onchange="this.form.submit()"
+                      style="margin-top:-118px;margin-left:750px;width:130px; padding:6px">
+
+                      <option value="" selected>All</option>
+
+                      {% for j in categories %}
+                      <option value="{{ j.id }}"
+                        {% if request.GET.category == j.id|stringformat:"s" %}
+                            selected
+                        {% endif %}
+                      >
+                        {{ j.name }}
+                      </option>
+                      {% endfor %}
+
+                  </select>
+                </form>
+            {% for i in product %}
+            <div class="col-md-6 col-lg-4">
+              <div class="card h-100 shadow" data-aos="fade-up" data-aos-delay="10">
+                <div class="d-flex justify-content-between align-items-center mt-3">
+
+                  <!-- Logo -->
+                  <div class="d-flex align-items-center">
+
+                      <img
+                          src="{% static 'assets/img/off/off.jpg' %}"
+                          alt="logo"
+                          width="55"
+                          height="55"
+                          class="rounded-circle shadow-sm border p-1 bg-white"
+                      >
+
+                  </div>
+
+                  <!-- Wishlist Button -->
+                  <a
+                      href="{% url 'add_wishlist' i.id %}"
+                      class="btn btn-danger px-4 py-2 rounded-pill shadow-sm fw-semibold"
+                  >
+                      ❤️ Add To Wishlist
+                  </a>
+
+              </div>
+              
+                <img class="img-fluid d-flex mx-auto my-4 rounded"
+                  src="{{ i.image.url }}" alt="Card image cap" />
+                <div class="card-body">
+                  <h5 class="card-title">Name: {{ i.name }}</h5>
+
+                  <h5 class="card-title">Price: ₹{{ i.price }}</h5>
+
+                  <p class="card-text">{{ i.category }}</p>
+
+                  <p class="card-text">{{ i.description }}</p>
+
+                  {% if request.user.is_authenticated %}
+                    <a href="{% url 'order_now' i.id %}" class="btn btn-primary">
+                      Order Now
+                    </a>
+                  {% else %}
+                    <a href="{% url 'auth_login' %}" class="btn btn-danger  ">Login Now</a>
+                  {% endif %}
+                    <a href="{% url 'product_display_id' i.id %}" target="_blank" class="btn btn-dark">
+                      Details
+                    </a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  AOS.init();
+</script>
+{% endblock %}

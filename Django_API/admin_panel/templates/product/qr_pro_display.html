@@ -1,0 +1,135 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <div class="layout-page">
+      <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <div class="row justify-content-center">
+            <div class="col-lg-10">
+              <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="row g-0 align-items-center">
+
+                  <!-- Product Image -->
+                  <div class="col-md-5 bg-light d-flex justify-content-center align-items-center p-4">
+                    <img
+                      src="{{ product.image.url }}"
+                      class="img-fluid"
+                      alt="{{ product.name }}"
+                      style="max-height: 320px; object-fit: contain"
+                    />
+                  </div>
+
+                  <!-- Product Details -->
+                  <div class="col-md-7">
+                    <div class="card-body p-4 p-lg-5">
+
+                      <!-- Top Section -->
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        
+                        <span class="badge bg-info fs-6 px-3 py-2">
+                          {{ product.category }}
+                        </span>
+
+                        <img
+                          src="{% static 'assets/img/off/off.jpg' %}"
+                          alt="logo"
+                          width="55"
+                          class="rounded-circle shadow-sm"
+                        />
+                      </div>
+
+                      <!-- Product Name -->
+                      <h2 class="fw-bold text-dark mb-3">
+                        {{ product.name }}
+                      </h2>
+
+                      <!-- Price -->
+                      <h3 class="text-success fw-bold mb-4">
+                        ₹{{ product.price }}
+                      </h3>
+
+                      <!-- Description -->
+                      <p class="text-secondary lh-lg mb-4">
+                        {{ product.description }}
+                      </p>
+
+                      <hr class="my-4" />
+
+                      <!-- Buttons -->
+                      <div class="d-flex gap-3 flex-wrap">
+
+                        {% if request.user.is_authenticated %}
+
+                        <a
+                          href="{% url 'order_now' product.id %}"
+                          class="btn btn-primary px-4 py-2 shadow-sm"
+                        >
+                          Order Now
+                        </a>
+
+                        {% else %}
+
+                        <a
+                          href="{% url 'auth_login' %}"
+                          class="btn btn-danger px-4 py-2 shadow-sm"
+                        >
+                          Login Now
+                        </a>
+
+                        {% endif %}
+
+                        <button
+                          class="btn btn-dark px-4 py-2 shadow-sm"
+                          onclick="showQR()"
+                        >
+                          QR Code
+                        </button>
+
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              {% comment %} QR Display {% endcomment %}
+              <div
+                class="card shadow border-0 rounded-4 mt-4 d-none"
+                id="qrSection"
+              >
+                <div class="card-body text-center p-4">
+                  <h4 class="fw-bold mb-4">{{ product.name }} QR Code</h4>
+
+                  <img
+                    src="{% url 'product_qr' product.id %}"
+                    class="img-fluid border rounded p-2"
+                    width="220"
+                  />
+                  <br /><br />
+                  {% if request.user.is_authenticated %}
+                  <a
+                    href="{% url 'product_qr' product.id %}"
+                    class="btn btn-info"
+                    download
+                    >QR Download</a
+                  >
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showQR() {
+    document.getElementById("qrSection").classList.toggle("d-none");
+  }
+</script>
+
+{% endblock %}

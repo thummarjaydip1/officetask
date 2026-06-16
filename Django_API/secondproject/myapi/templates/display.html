@@ -1,0 +1,24 @@
+<center>
+<h1>Student Details <a href="{% url "student_add_data" %}">Add Data</a></h1>
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Branch</th>
+        <th>Action</th>
+    </tr>
+    {% for i in data %}
+        <tr>
+            <td>{{i.name}}</td>
+            <td>{{i.age}}</td>
+            <td>{{i.email}}</td>
+            <td>{{i.branch}}</td>
+            <td>
+                <a href="{% url 'student_update_data' i.id %}">Update</a>
+                <a href="{% url 'student_delete_data' i.id %}" onclick="return confirm('are you sure?')">Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+</center>

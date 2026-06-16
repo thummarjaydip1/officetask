@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Advanced Admin System Documentation</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(to right, #eef2ff, #f8fbff);
+        font-family: Arial, Helvetica, sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* ================= Banner ================= */
+
+      .top-banner {
+        background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+        padding: 100px 20px;
+        border-radius: 0 0 45px 45px;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .top-banner::before,
+      .top-banner::after {
+        content: "";
+        position: absolute;
+        width: 350px;
+        height: 350px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+      }
+
+      .top-banner::before {
+        top: -120px;
+        left: -100px;
+      }
+
+      .top-banner::after {
+        bottom: -100px;
+        right: -80px;
+      }
+
+      .top-banner h1 {
+        font-size: 60px;
+        font-weight: bold;
+      }
+
+      .top-banner p {
+        margin-top: 18px;
+        font-size: 20px;
+      }
+
+      .tech-stack span {
+        background: rgba(255, 255, 255, 0.12);
+        padding: 12px 20px;
+        border-radius: 40px;
+        margin: 6px;
+        display: inline-block;
+        backdrop-filter: blur(10px);
+        font-size: 15px;
+      }
+
+      /* ================= Section ================= */
+
+      .section-title {
+        text-align: center;
+        margin-top: 80px;
+        margin-bottom: 55px;
+      }
+
+      .section-title h2 {
+        font-size: 44px;
+        font-weight: bold;
+        color: #0d6efd;
+      }
+
+      .section-title p {
+        color: #6c757d;
+        margin-top: 12px;
+        font-size: 18px;
+      }
+
+      /* ================= Cards ================= */
+
+      .doc-card {
+        background: rgba(255, 255, 255, 0.75);
+        border-radius: 30px;
+        padding: 32px;
+        height: 100%;
+        position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      .doc-card::before {
+        content: "";
+        position: absolute;
+        width: 130px;
+        height: 130px;
+        background: rgba(13, 110, 253, 0.08);
+        border-radius: 50%;
+        top: -40px;
+        right: -40px;
+      }
+
+      .blue-card {
+        border-top: 6px solid #0d6efd;
+      }
+      .green-card {
+        border-top: 6px solid #198754;
+      }
+      .red-card {
+        border-top: 6px solid #dc3545;
+      }
+      .purple-card {
+        border-top: 6px solid #6f42c1;
+      }
+      .orange-card {
+        border-top: 6px solid #fd7e14;
+      }
+      .dark-card {
+        border-top: 6px solid #212529;
+      }
+
+      .doc-icon {
+        width: 82px;
+        height: 82px;
+        line-height: 82px;
+        text-align: center;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0d6efd, #6610f2);
+        color: white;
+        font-size: 34px;
+        margin-bottom: 24px;
+      }
+
+      .doc-card h3 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #212529;
+      }
+
+      .small-text {
+        color: #0d6efd;
+        font-size: 14px;
+        font-weight: bold;
+        display: inline-block;
+        margin-bottom: 15px;
+      }
+
+      .doc-card p {
+        color: #555;
+        line-height: 30px;
+        margin-bottom: 20px;
+      }
+
+      .doc-card ul {
+        padding-left: 18px;
+      }
+
+      .doc-card ul li {
+        margin-bottom: 12px;
+        color: #444;
+      }
+
+      /* ================= Description ================= */
+
+      .description-box {
+        margin-top: 90px;
+        background: linear-gradient(135deg, #ffffff, #f8fbff);
+        padding: 55px;
+        border-radius: 35px;
+        border-left: 8px solid #0d6efd;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+      }
+
+      .description-box h2 {
+        color: #0d6efd;
+        font-weight: bold;
+        margin-bottom: 25px;
+        font-size: 40px;
+      }
+
+      .description-box p {
+        color: #555;
+        line-height: 36px;
+        font-size: 17px;
+      }
+
+      /* ================= Footer ================= */
+
+      footer {
+        margin-top: 90px;
+        background: #141e30;
+        padding: 35px;
+        text-align: center;
+        color: white;
+        border-radius: 35px 35px 0 0;
+      }
+
+      footer h4 {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      footer p {
+        margin: 0;
+        color: #d6d6d6;
+      }
+
+      /* ================= Responsive ================= */
+
+      @media (max-width: 768px) {
+        .top-banner h1 {
+          font-size: 38px;
+        }
+        .section-title h2 {
+          font-size: 34px;
+        }
+        .description-box {
+          padding: 30px;
+        }
+        .description-box h2 {
+          font-size: 30px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ================= Banner ================= -->
+    <div class="top-banner">
+      <h1>Admin Management System</h1>
+
+      <p>
+        Complete admin dashboard and REST API based management system
+        documentation.
+      </p>
+
+      <div class="tech-stack">
+        <span>Django</span>
+        <span>Django REST Framework</span>
+        <span>Bootstrap 5</span>
+        <span>API Integration</span>
+        <span>Authentication System</span>
+        <span>CRUD Operations</span>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- ================= Title ================= -->
+      <div class="section-title">
+        <h2>System Modules</h2>
+        <p>
+          Explore all major modules and features integrated into the system.
+        </p>
+      </div>
+
+      <!-- ================= Cards ================= -->
+      <div class="row g-4">
+        <!-- Dashboard -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card blue-card">
+            <div class="doc-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <h3>Dashboard Overview</h3>
+            <span class="small-text">Analytics & Business Insights</span>
+            <p>
+              Main analytics dashboard for viewing complete business performance
+              and quick statistics.
+            </p>
+            <ul>
+              <li>Total Users Count</li>
+              <li>Total Orders Count</li>
+              <li>Revenue Analytics</li>
+              <li>Quick Reports</li>
+              <li>Business Insights</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- User -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card green-card">
+            <div class="doc-icon"><i class="fa-solid fa-users"></i></div>
+            <h3>User Management</h3>
+            <span class="small-text">Authentication & Role Access</span>
+            <p>
+              Manage all registered users with authentication and role based
+              access control.
+            </p>
+            <ul>
+              <li>Add New Users</li>
+              <li>Update User Data</li>
+              <li>Role Management</li>
+              <li>Activate / Deactivate</li>
+              <li>User Authentication</li>
+              <li>Forget Password</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Product -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card red-card">
+            <div class="doc-icon"><i class="fa-solid fa-box-open"></i></div>
+            <h3>Product Management</h3>
+            <span class="small-text">Product & Category Control</span>
+            <p>
+              Complete product handling system integrated with category and
+              image management.
+            </p>
+            <ul>
+              <li>Add Products</li>
+              <li>Update Products</li>
+              <li>Delete Products</li>
+              <li>Manage Categories</li>
+              <li>Upload Images</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Order -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card purple-card">
+            <div class="doc-icon">
+              <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+            <h3>Order Management</h3>
+            <span class="small-text">Order Tracking Workflow</span>
+            <p>
+              Track customer orders and manage order processing workflow
+              efficiently.
+            </p>
+            <ul>
+              <li>View Orders</li>
+              <li>Update Status</li>
+              <li>Track Orders</li>
+              <li>Customer Information</li>
+              <li>Order History</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Reports -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card orange-card">
+            <div class="doc-icon"><i class="fa-solid fa-chart-pie"></i></div>
+            <h3>Reports & Analytics</h3>
+            <span class="small-text">Sales & Revenue Reports</span>
+            <p>
+              Generate business reports and monitor sales performance using
+              analytics.
+            </p>
+            <ul>
+              <li>Monthly Reports</li>
+              <li>Yearly Reports</li>
+              <li>Revenue Tracking</li>
+              <li>Top Products</li>
+              <li>Growth Analytics</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card dark-card">
+            <div class="doc-icon">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <h3>Search & Filtering</h3>
+            <span class="small-text">Fast Data Navigation</span>
+            <p>
+              Powerful search and filtering system for better and faster data
+              management.
+            </p>
+            <ul>
+              <li>Search Products</li>
+              <li>Search Orders</li>
+              <li>Date Filtering</li>
+              <li>Status Filtering</li>
+              <li>Quick Navigation</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card blue-card">
+            <div class="doc-icon"><i class="fa-solid fa-address-book"></i></div>
+            <h3>Contact API System</h3>
+            <span class="small-text">Communication Integrations</span>
+            <p>
+              API integrated contact system with communication and social media
+              connectivity.
+            </p>
+            <ul>
+              <li>Contact Form CRUD</li>
+              <li>Feedback Form API</li>
+              <li>WhatsApp Chat Integration</li>
+              <li>Instagram Integration</li>
+              <li>Direct Gmail Sending</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Profile -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card green-card">
+            <div class="doc-icon"><i class="fa-solid fa-user"></i></div>
+            <h3>Profile & Time API</h3>
+            <span class="small-text">Dynamic User Profile</span>
+            <p>
+              User profile management system with API based real-time time
+              functionality.
+            </p>
+            <ul>
+              <li>User Profile Page</li>
+              <li>Real-Time Time API</li>
+              <li>Date & Time Display</li>
+              <li>User Information</li>
+              <li>Edit Profile</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- API -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card red-card">
+            <div class="doc-icon"><i class="fa-solid fa-code"></i></div>
+            <h3>REST API System</h3>
+            <span class="small-text">CRUD API Operations</span>
+            <p>
+              Complete REST API system developed using Django REST Framework.
+            </p>
+            <ul>
+              <li>CRUD API Operations</li>
+              <li>Function Based APIs</li>
+              <li>JSON Responses</li>
+              <li>API Communication</li>
+              <li>Database CRUD Handling</li>
+              <li>Live News API Integration Project</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Billing System -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card purple-card">
+            <div class="doc-icon"><i class="fa-solid fa-file-invoice"></i></div>
+            <h3>Billing Management</h3>
+            <span class="small-text">PDF Bill Generation System</span>
+            <p>
+              Advanced billing system integrated with dynamic PDF generation and
+              customer order invoice management.
+            </p>
+
+            <ul>
+              <li>Generate Order Bills</li>
+              <li>Download PDF Bills</li>
+              <li>Billing Details Display</li>
+              <li>Professional Bill Design</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card blue-card">
+            <div class="doc-icon"><i class="fa-solid fa-circle-info"></i></div>
+            <h3>Product Details System</h3>
+            <span class="small-text">Detailed Product Information</span>
+            <p>
+              Product detail view system with dedicated pages for viewing
+              complete product information.
+            </p>
+
+            <ul>
+              <li>View Product Details</li>
+              <li>Image Display System</li>
+              <li>Quick Navigation</li>
+              <li>Interactive UI Design</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- QR Code -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card green-card">
+            <div class="doc-icon"><i class="fa-solid fa-qrcode"></i></div>
+            <h3>QR Code Integration</h3>
+            <span class="small-text">Dynamic QR Code System</span>
+            <p>
+              QR code generation system integrated with product detail pages for
+              smart product access and sharing.
+            </p>
+
+            <ul>
+              <li>Generate QR Codes</li>
+              <li>QR View Button</li>
+              <li>Product QR Access</li>
+              <li>Dynamic QR Generation</li>
+            </ul>
+          </div>
+        </div>
+      
+
+        <!-- Discount System -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card orange-card">
+            <div class="doc-icon">
+              <i class="fa-solid fa-percent"></i>
+            </div>
+
+            <h3>Discount Management</h3>
+
+            <span class="small-text">
+              Automatic Order Discount System
+            </span>
+
+            <p>
+              Smart discount calculation system integrated with order processing for
+              automatic customer savings.
+            </p>
+
+            <ul>
+              <li>5% Order Discount</li>
+              <li>Automatic Discount Calculation</li>
+              <li>Total Price Management</li>
+              <li>Order Amount Handling</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Django Signals -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card purple-card">
+            <div class="doc-icon">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+
+            <h3>Django Signals System</h3>
+
+            <span class="small-text">
+              Automatic Background Operations
+            </span>
+
+            <p>
+              Django signal based automation system for handling automatic profile and
+              image management tasks.
+            </p>
+
+            <ul>
+              <li>Auto Profile Creation</li>
+              <li>User Register Signal</li>
+              <li>Auto Image Delete</li>
+              <li>Database Cleanup</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Wishlist -->
+        <div class="col-lg-4 col-md-6">
+          <div class="doc-card red-card">
+            <div class="doc-icon">
+              <i class="fa-solid fa-heart"></i>
+            </div>
+
+            <h3>Wishlist System</h3>
+
+            <span class="small-text">
+              Favorite Product Management
+            </span>
+
+            <p>
+              Wishlist management system for saving and removing favorite products
+              dynamically.
+            </p>
+
+            <ul>
+              <li>Add To Wishlist</li>
+              <li>Remove Wishlist Product</li>
+              <li>Wishlist Product View</li>
+              <li>User Favorite Collection</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <!-- ================= Footer ================= -->
+    <footer>
+      <h4>Admin Management System</h4>
+      <p>© 2026 | Developed By : Thummar Jaydip</p>
+    </footer>
+  </body>
+</html>

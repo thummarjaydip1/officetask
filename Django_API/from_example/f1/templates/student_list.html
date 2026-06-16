@@ -1,0 +1,15 @@
+<h2>All Contacts</h2>
+
+<table border="1">
+{% for i in data2 %}
+<tr>
+    <td>{{ i.name }}</td>
+    <td>{{ i.age }}</td>
+    <td>{{ i.email }}</td>
+    <td>
+        <a href="{% url 'student_update' i.id %}">Update</a>
+        <a href="{% url 'student_delete' i.id %}">Delete</a>
+    </td>
+</tr>
+{% endfor %}
+</table>

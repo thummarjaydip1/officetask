@@ -1,0 +1,215 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <div class="layout-page">
+      <div class="card">
+        <h5 class="card-header" style="margin-left: 30px">All Orders</h5>
+
+        <div class="table-responsive text-nowrap" style="margin-left: 30px">
+          <form method="GET">
+            <input
+              type="text"
+              name="search"
+              placeholder="Enter Product Name"
+              value="{{request.GET.search}}"
+              style="padding: 7px; width: 25%"
+            />
+          </form>
+
+          <form method="GET">
+            <select
+              name="status"
+              onchange="this.form.submit()"
+              style="margin-top: -52px; margin-left: 280px; padding: 7px"
+            >
+              <option value=""
+                {% if request.GET.status == "" %}
+                  selected
+                {%endif%}>
+                All
+              </option>
+
+              {% for key,value in status_fields %}
+
+              <option value="{{ key }}"
+                {% if request.GET.status == key %}
+                  selected
+                {% endif %}>
+                {{ value }}
+              </option>
+
+              {% endfor %}
+            </select>
+          </form>
+
+          <form method="GET" style="margin-top: -70px; margin-left: 410px">
+            <p
+              style="
+                margin-bottom: -10px;
+                font-weight: bold;
+                text-align: center;
+              "
+            >
+              Enter Start and End Date Filter Record
+            </p>
+
+            <br />
+
+            <label>Enter Start Date: </label>
+
+            <input type="date" name="startdate" required />
+
+            <label>Enter End Date:</label>
+
+            <input type="date" name="enddate" required />
+
+            <br />
+
+            <center>
+              <button
+                type="submit"
+                class="btn btn-info"
+                style="border-radius: 10px; margin-top: 10px"
+              >
+                Search Record
+              </button>
+            </center>
+          </form>
+
+          <div class="container-fluid mt-4">
+            <div class="row">
+              {% for l in data %}
+
+              <div class="col-md-6 mb-4">
+                <div
+                  class="card shadow-sm"
+                  style="border-radius: 12px; padding: 15px; position: relative"
+                >
+                  <div
+                    class="dropdown"
+                    style="position: absolute; top: 15px; right: 15px"
+                  >
+                    <button
+                      type="button"
+                      class="btn p-0 border-0 shadow-none"
+                      data-bs-toggle="dropdown"
+                    >
+                      <i class="icon-base ri ri-more-2-line icon-20px"></i>
+                    </button>
+
+                    <div class="dropdown-menu">
+                      <a
+                        class="dropdown-item"
+                        href="{% url 'order_user_edit' l.id %}"
+                      >
+                        <i
+                          class="icon-base ri ri-pencil-line icon-18px me-1"
+                        ></i>
+
+                        Edit
+                      </a>
+
+                      <a
+                        class="dropdown-item"
+                        href="{% url 'order_user_delete_table' l.id %}"
+                        onclick="return confirm('Are you sure?');"
+                      >
+                        <i
+                          class="icon-base ri ri-delete-bin-6-line icon-18px me-1"
+                        ></i>
+
+                        Delete
+                      </a>
+
+                      <a
+                        class="dropdown-item"
+                        href="{% url 'order_history' l.id %}"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.96 9.96 0 0 1-4.708-1.175L2 22l1.176-5.29A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2m1 5h-2v7h6v-2h-4z"
+                          />
+                        </svg>
+
+                        Order History
+                      </a>
+
+                      <a
+                        class="dropdown-item"
+                        href="{% url 'bill_system' l.id %}"
+                        target="_blank"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="1.35em"
+                          height="1.35em"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M0 0h24v24H0z" fill="none" />
+
+                          <path
+                            fill="currentColor"
+                            d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1M8 9v2h8V9zm0 4v2h8v-2z"
+                          />
+                        </svg>
+
+                        Bill
+                      </a>
+                    </div>
+                  </div>
+
+                  <center>
+                    <img
+                      src="{{l.product.image.url}}"
+                      alt="order image"
+                      width="140"
+                      height="140"
+                      style="border-radius: 10px; object-fit: cover"
+                    />
+                  </center>
+
+                  <div class="mt-3">
+                    <h5 style="font-weight: bold">{{l.product_name}}</h5>
+
+                    <p style="margin-bottom: 6px"><b>Price :</b> {{l.price}}</p>
+
+                    <p style="margin-bottom: 6px">
+                      <b>Quantity :</b> {{l.quantity}}
+                    </p>
+
+                    <p style="margin-bottom: 6px">
+                      <b>Total Price :</b> {{l.total_price}}
+                    </p>
+
+                    <p style="margin-bottom: 6px">
+                      <b>Contact :</b> {{l.contact}}
+                    </p>
+
+                    <p style="margin-bottom: 6px">
+                      <b>Address :</b> {{l.address}}
+                    </p>
+
+                    <span class="badge rounded-pill bg-label-primary">
+                      {{l.status}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

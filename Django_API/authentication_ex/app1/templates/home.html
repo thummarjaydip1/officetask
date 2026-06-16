@@ -1,0 +1,7 @@
+<h1>{{request.user.username}}</h1>
+<a href="{% url "register" %}">register</a>
+{% if request.user.username  %}
+    <a href="{% url "logout" %}">logout</a>
+{% else %}
+    <a href="{% url "login" %}">login</a>
+{% endif %}

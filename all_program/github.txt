@@ -1,0 +1,37 @@
+-git init
+-git add . or git add <file_name>
+-git commit -m "message"
+-git remote add origin <respo_path>
+-git push -u origin main
+
+file update karva mate:
+-git add .
+-git commit -m "message"
+-git push -u origin main
+
+branch banava mate:
+-git checkout -b 'devA'
+-git checkout -b 'devB'
+
+branch delete karva mate:
+-git branch -d 'devA'
+
+branch sitch karva mate:
+-git switch  'devA'   
+-git checkout main
+
+all branch show:
+-git branch
+
+branch  ne merge karva mate:
+-git merge main(branch name)
+
+log badhi deteail rakhe commit and user ni
+
+pull server ma change karu hoy te ne file ma lay aav 
+va mate command:
+-git pull origin main
+
+one brach mathi biji branch ma no java detu hoy to
+commit karva nu baki rahi gyu hoy:
+-git stash

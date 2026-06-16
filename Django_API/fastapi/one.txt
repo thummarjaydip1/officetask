@@ -1,0 +1,434 @@
+# database.py
+from sqlalchemy import create_engine, event
+from sqlalchemy.orm import sessionmaker,declarative_base
+from sqlalchemy.engine import Engine
+
+DATABASE_URL = "sqlite:///user.db"
+
+engine = create_engine(
+    DATABASE_URL,
+    connect_args = {"check_same_thread"}
+)
+
+@event.listen(Engine, "connect")
+def set_sqlite_pragma(db_connection, connection_record):
+    cursor = db_connection.cursor()
+    cursor.execute("PRAGMA foreign_key=ON")
+    cursor.close()
+
+SessionLocal = sessionmaker(
+    autoflush=False,
+    autocommit=False,
+    bind=engine
+)
+
+Base = declarative_base()
+
+# main.py
+from fastapi import FastAPI, Request
+from sqlalchemy.orm import Session
+from database.database import Base,engine
+from fastapi.staticfiles import StaticFiles
+
+from routers.user_router import router as user_router
+from routers.product_router import router as product_router
+from routers.order_router import router as order_router
+from routers.template_router import router as template_router
+
+app = FastAPI()
+
+@app.get("/")
+def home():
+    return "message"
+
+app.mount(
+    "/media",
+    StaticFiles(directory="media"),
+    name="media"
+)
+
+app.include_router(user_router)
+app.include_router(product_router)
+app.include_router(order_router)
+app.include_router(template_router)
+
+
+# models.py
+from sqlalchemy import Column, DateTime, String, Integer, ForeignKey
+from database.database import Base
+from datetime import datetime
+import pytz
+
+def india_time():
+    return datetime.now(pytz.timezone("Asia/Kolkata"))
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String, nullable=True)
+    password = Column(String)
+    email = Column(String)
+    address = Column(String)
+    image = Column(String)
+    create_at = Column(DateTime, default=india_time)
+
+class Product(Base):
+    __tablename__ = "products"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    price = Column(Integer)
+    image = Column(String)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+
+class Order(Base):
+    __tablenmae__ = "orders"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"))
+
+
+# user_router.py
+from fastapi import APIRouter, HTTPException, Depends, Form, File, UploadFile, Request
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
+
+from database.database import SessionLocal
+from models.model import User, Product, Order
+from auth import verify_password, create_access_token
+from jose import jwt
+import os
+import shutil
+
+router = APIRouter(
+    prefix="/all",
+    tags=["API"]
+)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+oauth2_schemas = OAuth2PasswordBearer(tokenUrl="users/login")
+SECREATE_KEY = "my_screate_key_with_jwt_with_fast_api"
+ALGORITHM = "HS256"
+
+@router.post("/register")
+def register(
+    request: Request,
+    username: str = Form(...),
+    password: str = Form(...),
+    email: str = Form(...),
+    address: str = Form(...),
+    image: UploadFile = File(...),
+    db : Session = Depends(get_db)
+):
+
+    os.makedirs("media/user", exist_ok=True)
+    filename = image.filename
+    filepath = f"media/user/{filename}"
+    with open(filepath, "wb") as buffer:
+        shutil.copyfileobj(image.file, buffer)
+
+    new_user = User(
+        username=username,
+        password=password,
+        email=email,
+        address=address,
+        image=filename
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return "Register success"
+
+@router.post("/login")
+def login(
+    username: str = Form(...),
+    password: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    user = db.query(User).filter(User.username == username).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="Invalid Username")
+    
+    if not verify_password(password, user.password):
+        raise HTTPException(status_code=404, detail="Invalid Password")
+    
+    token = create_access_token({"user_id": user.id})
+    return {
+        "msg" : "Login success",
+        "token" : token
+    }
+
+@router.get("/users/disp")
+def user_disp(
+    request : Request,
+    db: Session = Depends(get_db)
+):
+    users = db.query(User).all()
+    data = []
+    for user in users:
+        data.append({
+            "id":user.id,
+            "username":user.username,
+            "password":user.password,
+            "email":user.email,
+            "address":user.address,
+            "image": str(request.base_url) + f"media/user/{user.image}",
+            "craate_at":user.create_at
+        })
+    return data
+
+
+@router.put("/user/update/{id}")
+def user_update(
+    id : int,
+    username: str = Form(None),
+    password: str = Form(None),
+    email: str = Form(None),
+    address: str = Form(None),
+    image: UploadFile = File(None),
+    db : Session = Depends(get_db)
+):
+    data = db.query(User).get(id)
+
+    os.makedirs("/media/user", exist_ok=True)
+    filename = image.filename
+    filepath = f"media/user/{filename}"
+    with open(filename, "wb") as buffer:
+        shutil.copyfileobj(image.file, buffer)
+
+    data.username = username
+    data.password = password
+    data.email = email
+    data.address = address
+
+    if filename:
+        data.image = filename
+
+    db.commit()
+    return "update success"
+
+@router.delete("/user/delete/{id}")
+def user_delete(id:int, db:Session = Depends(get_db)):
+    user = db.query(User).get(id)
+    db.delete(user)
+    db.commit()
+    return "delete success"
+
+@router.get("/user/profile")
+def user_profile(
+    request: Request,
+    token: str = Depends(oauth2_schemas),
+    db: Session = Depends(get_db)
+):
+    try:
+        payload = jwt.decode(token, SECREATE_KEY, algorithms=[ALGORITHM])
+        user_id = payload.get("user_id")
+    except:
+        raise HTTPException(status_code=404, detail="Login again")
+    user = db.query(User).filter(User.id == user_id).first()
+    return user
+
+@router.get("/user/search")
+def user_search(username: str = None, db: Session = Depends(get_db)):
+    user = db.query(User).filter(
+        User.username.contains(username)
+    ).all()
+    return user
+
+@router.post("/product/add")
+def product_add(
+    name: str = Form(...),
+    price: str = Form(...),
+    image: UploadFile = File(...),
+    token: str = Depends(oauth2_schemas),
+    db: Session = Depends(get_db)
+):
+    try:
+        payload = jwt.decode(token, SECREATE_KEY, algorithms=[ALGORITHM])
+        user_id = payload.get("user_id")
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Invalid User")
+        
+        os.makedirs("media/product", exist_ok=True)
+        filename = image.filename
+        filepath = f"media/product/{filename}"
+
+        with open(filepath, 'wb') as buffer:
+            shutil.copyfileobj(image.file, buffer)
+
+        new_product = Product(
+            name = name,
+            price = price,
+            image = filename,
+            user_id = user_id
+        )
+        db.add(new_product)
+        db.commit()
+        db.refresh(new_product)
+        return "added product"
+
+    except:
+        raise HTTPException(status_code=404,detail="Login Again")
+    
+@router.get("product/disp")
+def product_disp(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    product = db.query(Product).all()
+    return product
+
+@router.put("product/update/{id}")
+def product_update(
+    id: int,
+    name: str = Form(None),
+    price: str = Form(None),
+    image: UploadFile = File(None),
+    token: str = Depends(oauth2_schemas),
+    db: Session = Depends(get_db)
+):
+    try:
+        payload = jwt.decode(token, SECREATE_KEY, algorithms=[ALGORITHM])
+        user_id = payload.get("user_id")
+        if not user_id:
+            raise HTTPException(status_code=404,detail="Invalid User")
+        data = db.query(Product).get(id)
+        
+        filename = image.filename
+        filepath = f"media/product/{filename}"
+        with open(filename, "wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
+        data.name =name
+        data.price =price
+        if filename:
+            data.image = filename
+        db.commit()
+        return "update successfully"
+
+    except:
+        raise HTTPException(status_code=404, detail="Login again")
+    
+@router.delete('/product/delete/{id}')
+def product_delete(
+    id:int,
+    token: str = Depends(oauth2_schemas),
+    db: Session = Depends(get_db)
+):
+    try:
+        payload = jwt.decode(token,SECREATE_KEY,algorithms=[ALGORITHM])
+        user_id = payload.get("user_id")
+        if not user_id:
+            raise HTTPException(status_code=404,detail="Invalid user")
+        data = db.query(Product).filter(Product.id == id).first()
+        db.delete(data)
+        db.commit()
+        return "Deleted successfully"
+    except:
+
+        raise HTTPException(status_code=404, detail="login Again")
+    
+@router.post("/order/add")
+def order_add(
+    name: str,
+    token : str = Depends(oauth2_schemas),
+    db: Session =Depends(get_db)
+):
+    try:
+        payload = jwt.decode(token, SECREATE_KEY, algorithms=[ALGORITHM])
+        user_id = payload.get("user_id")
+        if user_id:
+            raise HTTPException(status_code=404,detail="invalid user")
+        
+        product = db.query(Product).filter(Product.name == name).first()
+        if not product:
+            raise HTTPException(status_code=404,detail="not found product")
+        
+        new_order = Order(
+            user_id = user_id,
+            product_id = product.id
+        )
+        db.add(new_order)
+        db.commit()
+        db.refresh()
+        return "added order"
+    except:
+        raise HTTPException(status_code=404, detail="login again")
+    
+@router.get("/order/disp")
+def order_disp(
+    db: Session = Depends(get_db)
+):
+    orders = db.query(Order).all()
+    data = []
+    for order in orders:
+        user = db.query(User).filter(User.id == order.id).first()
+        product = db.query(Product).filter(Product.id == order.id).first()
+        data.append({
+            "id": order.id,
+            "username": user.username,
+            "product_name": product.name,
+            "price": product.price,
+            "image": str(Request.base_url) + f"media/product/{product.image}",
+            "address": user.address
+        })
+    return data
+
+@router.put("/order/update/{id}")
+def order_update(
+    id: int,
+    name : str,
+    token: str =Depends(oauth2_schemas),
+    db : Session = Depends(get_db)
+):
+    try:
+        payload = jwt.decode(token, SECREATE_KEY, algorithms=[ALGORITHM])
+        user_id = payload.get("user_id")
+        if not user_id:
+            raise HTTPException(status_code=404, detail="invalid user")
+        product = db.query(Product).filter(Product.name == name).first()
+        if not product:
+            raise HTTPException(status_code=404, detail="product not found")
+        
+        data = db.query(Order).get(id)
+        if not data:
+            raise HTTPException(status_code=404, detail="Order not found")
+
+        data.user_id = user_id
+        data.product_id = product.id
+        db.commit()
+        return "Update order successfully"
+
+    except:
+        raise HTTPException(status_code=404, detail="login again")
+    
+@router.delete("/oder/delete/{id}")
+def order_delete(
+    id:int,
+    token :str = Depends(oauth2_schemas),
+    db: Session = Depends(get_db)
+):
+    try: 
+        payload = jwt.decode(token, SECREATE_KEY, algorithms=[ALGORITHM])
+        user_id = payload.get("user_id")
+        if not user_id:
+            raise HTTPException(status_code=404, detail="invalid user")
+        
+        data = db.query(Order).get(id)
+        if not data:
+            raise HTTPException(status_code=404, detail="Order not found")
+
+        db.delete(data)
+        db.commit()
+        return "order delete successfully"
+
+    except:
+        raise HTTPException(status_code=404, detail="login again")

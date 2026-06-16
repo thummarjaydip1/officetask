@@ -1,0 +1,7 @@
+<h3>Add Data</h3>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Save</button>
+</form>
+<h3><a href="{% url "display" %}">display</a></h3>

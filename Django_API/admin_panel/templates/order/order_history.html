@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+
+    body{
+        background-color: #f4f5fb;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .profile-container{
+        margin-left: 500px;
+    }
+
+    .profile-card{
+        width: 420px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.7);
+    }
+
+    .profile-heading{
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+    }
+
+    .profile-table{
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .profile-table tr{
+        border-bottom: 1px solid #eee;
+    }
+
+    .profile-table td{
+        padding: 14px 8px;
+        font-size: 15px;
+    }
+
+    .label{
+        font-weight: bold;
+        color: #555;
+        width: 130px;
+    }
+
+    .value{
+        color: #222;
+    }
+
+    .profile-table tr:last-child{
+        border-bottom: none;
+    }
+
+    .icon{
+        width: 100px;
+        height: 100px;
+    }
+</style>
+
+<div class="profile-container">
+
+    <div class="profile-card">
+
+        <div class="profile-heading">
+            Order History
+        </div>
+
+        <table class="profile-table">
+            
+            <tr>
+                <td class="label">Product Name</td>
+                <td class="value">{{ order.product_name }}</td>
+            </tr>
+
+             <tr>
+                <td class="label">Image</td>
+                <td class="value">    
+                    <img src="{{ order.product.image.url }}" alt="avatar" class="icon"/>
+                </td>
+            </tr>
+            {% for i in history %}
+            <tr>
+                <td class="label">Status</td>
+                <td class="value">{{ i.status }}</td>
+            </tr>
+
+            <tr>
+                <td class="label">Message</td>
+                <td class="value">{{ i.message }}</td>
+            </tr>
+
+            <tr>
+                <td class="label">Date & Time</td>
+                <td class="value">{{ i.create_at|date:"d-m-Y H:i:s" }}</td>
+            </tr>
+
+            {% endfor %}
+            <tr>
+                <td class="label">Go To Home</td>
+                <td class="value">
+                    <a href="{% url 'index' %}">
+                        <button type="button" class="btn btn-primary">
+                            Go To Home
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        </table>
+        
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,239 @@
+{% load static %}
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Order Bill</title>
+
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #eef2f7;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .bill-box {
+        width: 800px;
+        margin: auto;
+        background: white;
+        border: 1px solid #dbe2ea;
+      }
+
+      .bill-header {
+        background: #567dbb;
+        color: white;
+        padding: 20px;
+      }
+
+      .bill-header h1 {
+        margin: 0;
+        font-size: 30px;
+        color: white;
+      }
+
+      .invoice-id {
+        text-align: right;
+      }
+
+      .invoice-id h5 {
+        margin-top: 10px;
+        color: white;
+      }
+
+      .bill-body {
+        padding: 25px;
+      }
+
+      .customer-box {
+        background: #f8fafc;
+        border: 1px solid #dbe2ea;
+        padding: 10px;
+        margin-bottom: 15px;
+      }
+
+      .customer-box h5 {
+        color: #64748b;
+        margin-bottom: 10px;
+      }
+
+      .customer-box p {
+        font-size: 12px;
+        margin: 8px 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+
+      table th {
+        background: #334155;
+        color: white;
+        border: 1px solid #dbe2ea;
+        padding: 12px;
+        text-align: center;
+      }
+
+      table td {
+        border: 1px solid #dbe2ea;
+        padding: 12px;
+        text-align: center;
+      }
+
+      .status {
+        background: #dcfce7;
+        color: #15803d;
+        padding: 4px 8px;
+      }
+
+      .total-box {
+        margin-top: 15px;
+        background: #f1f5f9;
+        border: 1px solid #dbe2ea;
+        padding: 20px;
+      }
+
+      .signature {
+        margin-top: 20px;
+        text-align: right;
+      }
+
+      .signature img {
+        width: 180px;
+        height: 70px;
+      }
+
+      .total-sign {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .footer {
+        margin-top: 15px;
+        background: #f8fafc;
+        border-top: 1px solid #dbe2ea;
+        text-align: center;
+        padding: 10px;
+        color: #64748b;
+        font-size: 14px;
+      }
+
+      a {
+        color: white;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="bill-box">
+      <div class="bill-header">
+        <div class="total-sign">
+          <h1>Order Bill</h1>
+          <div>
+            <div class="invoice-id">
+              <div style="margin-top: 10px">
+                <a
+                  href="{% url 'pdf_download' data.id %}"
+                  onclick="return confirm('Are you sure Download PDF');"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    style="color: white"
+                    width="2.5em"
+                    height="2.5em"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      fill="currentColor"
+                      d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2zM14 9h5l-7 7l-7-7h5V3h4z"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <h5>Payment : Cash On Delivery</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="bill-body">
+        <div class="customer-box">
+          <h5>Customer Details</h5>
+
+          <p>
+            <b>Username :</b>
+            {{data.user}}
+          </p>
+
+          <p>
+            <b>Address :</b>
+            {{data.address}}
+          </p>
+
+          <p>
+            <b>Contact No :</b>
+            {{data.contact}}
+          </p>
+
+          <p>
+            <b>Order Date & Time :</b>
+            {{data.order_date}}
+          </p>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>{{data.product_name}}</td>
+
+              <td>{{data.product.category}}</td>
+
+              <td>{{data.quantity}}</td>
+
+              <td>Rupees: {{data.price}}</td>
+
+              <td>Rupees: {{data.total_price}}</td>
+
+              <td>
+                <span class="status"> {{data.status}} </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="total-sign">
+          <div class="total-box">
+            <h4>Total :</h4>
+
+            <h2>Rupees: {{data.total_price}}</h2>
+          </div>
+
+          <div class="signature">
+            <img
+              src="http://127.0.0.1:8000/static/assets/img/bill/sign.png"
+              alt="signature"
+            />
+            <h5>Authorized Signature</h5>
+          </div>
+        </div>
+
+        <div class="footer">© 2026 ElectroHUB | Thank You For Shopping</div>
+      </div>
+    </div>
+  </body>
+</html>

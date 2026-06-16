@@ -1,0 +1,11 @@
+<h1>Contact Form</h1>
+<form method="POST">
+    {% csrf_token %}
+    Name:<input type="text" name="name" placeholder="name"><br><br>
+    Age:<input type="number" name="age" placeholder="age"><br><br>
+    Email:<input type="email" name="email" placeholder="email"><br><br>
+    Mobile:<input type="number" name="mobile" placeholder="mobile"><br><br>
+    Address:<input type="text" name="address" placeholder="address"><br><br>
+    <button type="submit">Save</button>
+</form>
+<h3><a href="{% url "display" %}">Display Data</a></h3>

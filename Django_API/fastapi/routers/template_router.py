@@ -1,17 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
 
-from database.database import SessionLocal
+from database.database import get_db
 from models.model import User, Product, Order
 import requests
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 router = APIRouter(
     prefix = "/templates",
@@ -20,6 +13,7 @@ router = APIRouter(
 
 template = Jinja2Templates(directory="templates")
 
+# http://127.0.0.1:8000/templates/display
 @router.get("/display")
 def display(
     request: Request,
@@ -64,7 +58,6 @@ def display(
             "price" : product_data.price
         }
     
-
     return template.TemplateResponse(
         request = request,
         name = "index.html",
@@ -77,6 +70,8 @@ def display(
         }
     )
 
+
+# http://127.0.0.1:8000/templates/pagination 
 @router.get("/pagination")
 def pagination_order(
     request: Request,

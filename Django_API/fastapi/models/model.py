@@ -27,9 +27,37 @@ class Product(Base):
     image = Column(String, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id', ondelete="CASCADE"))
 
+
 class Order(Base):
     __tablename__ = "orders"
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id', ondelete="CASCADE"))
     product_id = Column(Integer, ForeignKey('products.id', ondelete="CASCADE")) 
+    quantity = Column(Integer, default=1, nullable=False)
+    total = Column(Integer, nullable=False)
+
+
+class Wishlist(Base):
+    __tablename__ = "wishlists"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"))
+
+class Cart(Base):
+    __tablename__ = "carts"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"))
+    quantity = Column(Integer, default=1, nullable=False)
+    total = Column(Integer, nullable=False)
+
+class Review(Base):
+    __tablename__ = "reviews"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id', ondelete="CASCADE"))
+    product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"))
+    message = Column(Integer, nullable=False)

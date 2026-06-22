@@ -1,10 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends, File, Form, UploadFile, Request
-from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
-from database.database import SessionLocal
+from database.database import get_db
 from models.model import Product, User
-from jose import jwt
+from auth import get_current_user
 
 import os
 import shutil
@@ -14,65 +13,45 @@ router = APIRouter(
     tags = ["Products"]
 )
 
-oauth2_schemas = OAuth2PasswordBearer(tokenUrl="users/login")
 
-SECREATE_KEY = "my_screate_key_with_jwt_project_with_fast_api"
-ALGORITHM = "HS256"
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
+# http://127.0.0.1:8000/products/add
 @router.post("/add")
 def product_add(
     request: Request,
     name: str = Form(...),
     price: int = Form(...),
     image: UploadFile = File(...),
-    token: str = Depends(oauth2_schemas),
+    user_id : int = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    try:
-        payload = jwt.decode(token, SECREATE_KEY, algorithms=[ALGORITHM])
-        user_id = payload.get("user_id")
+    os.makedirs("media/product", exist_ok=True)
+    filename = image.filename
+    filepath = f"media/product/{filename}"
+
+    with open(filepath, 'wb') as buffer:
+        shutil.copyfileobj(image.file, buffer)
         
-        if not user_id:
-            raise HTTPException(status_code=401, detail="Invalid User")
-        
-        os.makedirs("media/product", exist_ok=True)
-        filename = image.filename
-        filepath = f"media/product/{filename}"
+    new_product = Product(
+        name = name,
+        price = price,
+        image = filename,
+        user_id = user_id            
+    )
 
-        with open(filepath, 'wb') as buffer:
-            shutil.copyfileobj(image.file, buffer)
-        
-        new_product = Product(
-            name = name,
-            price = price,
-            image = filename,
-            user_id = user_id            
-        )
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
 
-        db.add(new_product)
-        db.commit()
-        db.refresh(new_product)
-
-        return {
-            "message" : "Product Added Successfully",
-            "product_id" : new_product.id,
-            "product_name" : new_product.name,
-            "product_price" : new_product.price,
-            "product_image" : str(request.base_url) + f"media/product/{new_product.image}"
-        }
-
-    except:
-        raise HTTPException(status_code=400, detail="Please Login Again...")
+    return {
+        "message" : "Product Added Successfully",
+        "product_id" : new_product.id,
+        "product_name" : new_product.name,
+        "product_price" : new_product.price,
+        "product_image" : str(request.base_url) + f"media/product/{new_product.image}"
+    }
     
 
+# http://127.0.0.1:8000/products/display
 @router.get("/display")
 def product_display(
     request: Request,
@@ -96,6 +75,7 @@ def product_display(
     return data
 
 
+# http://127.0.0.1:8000/products/filter/display
 @router.get("/filter/display")
 def product_filter_display(
     request : Request,
@@ -128,84 +108,99 @@ def product_filter_display(
     return data
 
 
+# http://127.0.0.1:8000/products/my-products
+@router.get("/my-products")
+def display_my_product(
+    request : Request,
+    user_id : int = Depends(get_current_user),
+    db : Session = Depends(get_db)
+):
+    products = db.query(Product).filter(Product.user_id == user_id).all()
+        
+    data = []
+
+    for product in products:
+            
+        user = db.query(User).filter(User.id == product.user_id).first()
+
+        data.append({
+            "id" : product.id,
+            "name" : product.name,
+            "price" : product.price,
+            "image"  : str(request.base_url) + f"media/product/{product.image}",
+            "username" : user.username
+        })
+
+    return data
+
+
+# http://127.0.0.1:8000/products/update/{id}
 @router.put("/update/{id}")
 def product_update(
-    id: int,
-    name: str = Form(None),
-    price: str = Form(None),
-    image: UploadFile = File(None),
-    token: str = Depends(oauth2_schemas),
-    db: Session = Depends(get_db)
+    id : int,
+    name : str = Form(None),
+    price : str = Form(None),
+    image : UploadFile = File(None),
+    user_id : int = Depends(get_current_user),
+    db : Session = Depends(get_db)
 ):
-    try:
-        payload = jwt.decode(token, SECREATE_KEY, algorithms=[ALGORITHM])
-        user_id = payload.get("user_id")
-        
-        if not user_id:
-            raise HTTPException(status_code=401, detail="Invalid User")
-        
-        product = db.query(Product).get(id)
-        if not product:
-            raise HTTPException(status_code=404, detail="Product not Found")
-        
-        os.makedirs("media/product/", exist_ok=True)
-        filename = image.filename
-        filepath = f"media/product/{filename}"
+    product = db.query(Product).get(id)
 
-        with open(filepath, "wb") as buffer:
-            shutil.copyfileobj(image.file, buffer)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not Found")
+    
+    if product.user_id != user_id:
+        raise HTTPException(status_code=400, detail="you can update only own added product")
+    
+    os.makedirs("media/product/", exist_ok=True)
+    filename = image.filename
+    filepath = f"media/product/{filename}"
+
+    with open(filepath, "wb") as buffer:
+        shutil.copyfileobj(image.file, buffer)
         
-        product.name = name
-        product.price = price
+    product.name = name
+    product.price = price
 
-        if filename:
-            product.image = filename
-        
-        db.commit()
-        db.refresh(product)
+    if image:
+        product.image = filename
 
-        return {
-            "message" : "Product Update Successfully",
-            "id" : product.id
-        }
+    db.commit()
+    db.refresh(product)
 
-    except:
-        raise HTTPException(status_code=400, detail="Please Login Again...")
+    return {
+        "message" : "Product Update Successfully",
+        "id" : product.id
+    }
     
     
+# http://127.0.0.1:8000/products/delete/{id}
 @router.delete("/delete/{id}")
 def product_delete(
     id: int,
-    token: str = Depends(oauth2_schemas),
+    user_id: int = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    try:
-        payload = jwt.decode(token, SECREATE_KEY, algorithms=[ALGORITHM])
-        user_id = payload.get("user_id")
+    product = db.query(Product).filter(Product.id == id).first()
 
-        if not user_id:
-            raise HTTPException(status_code=401, detail="Invalid User")
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
 
-        product = db.query(Product).filter(Product.id == id).first()
+    if product.user_id != user_id:
+        raise HTTPException(status_code=401, detail="You can delete only own added product")
 
-        if not product:
-            raise HTTPException(status_code=404, detail="Product not found")
+    # product image automatically delete from product record delete
+    image_path = f"media/product/{product.image}"
+    if os.path.exists(image_path):
+        os.remove(image_path)
 
-        # product image automatically delete from product record delete
-        image_path = f"media/product/{product.image}"
-        if os.path.exists(image_path):
-            os.remove(image_path)
+    db.delete(product)
+    db.commit()
 
+    return {"message": "Product Delete Successfully"}
 
-        db.delete(product)
-        db.commit()
-
-        return {"message": "Product Delete Successfully"}
-
-    except:
-        raise HTTPException(status_code=400, detail="Please Login Agains...")
     
-
+# http://127.0.0.1:8000/products/search
 @router.get("/search")
 def search_product(
     request: Request,
@@ -234,3 +229,15 @@ def search_product(
         })
 
     return data
+
+
+# http://127.0.0.1:8000/products/count
+@router.get("/count")
+def count_product(
+    db : Session = Depends(get_db)
+):
+    total_products = db.query(Product).count()
+
+    return {
+        "total_products" : total_products
+    }

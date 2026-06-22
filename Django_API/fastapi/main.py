@@ -5,13 +5,16 @@ from fastapi.staticfiles import StaticFiles
 from routers.user_router import router as user_router
 from routers.product_router import router as product_router
 from routers.order_router import router as order_router
+from routers.wishlist_router import router as wishlist_router
+from routers.cart_router import router as cart_router
+from routers.review_router import router as review_router
 from routers.template_router import router as template_router
 
 import time
 
 app = FastAPI(
     title = "FASTAPI",
-    description = "<b> FASTAPI IN JWT AUTHENTICATION AND E-COMMERCE API, <br /> <br /> Like a User, Product, Order Management System. </b>"
+    description = "<b> FASTAPI IN JWT AUTHENTICATION AND E-COMMERCE API, <br /> <br /> Like a User, Product, Wishlist, Cart, Order Management System. </b>"
 )
 
 @app.middleware("http")
@@ -26,7 +29,7 @@ async def process(request: Request, call_next):
 
 @app.get("/")
 def home():
-    return "FASTAPI FULL EXAMPLE"
+    return "FASTAPI FULL EXAMPLE..."
 
 
 Base.metadata.create_all(bind = engine)
@@ -42,5 +45,11 @@ app.include_router(user_router)
 app.include_router(product_router)
 
 app.include_router(order_router)
+
+app.include_router(wishlist_router)
+
+app.include_router(cart_router)
+
+app.include_router(review_router)
 
 app.include_router(template_router)

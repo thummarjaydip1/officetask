@@ -1,12 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, File, Form, UploadFile, Request
-from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
-from database.database import SessionLocal
-from models.model import User, Product, Order
+from database.database import get_db
+from models.model import User, Product, Order, Wishlist, Cart
 from schemas.user_schema import DisplayUser   #RegisterUser, LoginUser, UpdateUser
-from auth import verify_password, create_access_token
-from jose import jwt
+from auth import verify_password, create_access_token, get_current_user
 
 import os
 import shutil
@@ -14,22 +12,10 @@ import shutil
 router = APIRouter(
     prefix = "/users",
     tags = ["User"]
-) 
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-# profile in use code
-oauth2_schemas = OAuth2PasswordBearer(tokenUrl="/user/login")
-
-SECREAT_KEY = "my_screate_key_with_jwt_project_with_fast_api"
-ALGORITHM = "HS256"
+)
 
 
+# http://127.0.0.1:8000/users/register
 @router.post("/register")
 def user_register(
     request : Request,
@@ -81,6 +67,7 @@ def user_register(
     }
 
 
+# http://127.0.0.1:8000/users/login
 @router.post("/login")
 def user_login(
     username : str = Form(...),
@@ -104,6 +91,7 @@ def user_login(
     }
 
 
+# http://127.0.0.1:8000/users/display
 @router.get("/display")
 def user_display(request: Request, db : Session = Depends(get_db)):
     users = db.query(User).all()
@@ -124,27 +112,56 @@ def user_display(request: Request, db : Session = Depends(get_db)):
     return data
 
 
+# http://127.0.0.1:8000/users/details/{id}
 @router.get("/details/{id}")
 def user_details(
     request : Request,
     id : int,
     db : Session = Depends(get_db)
 ):
-    user = db.query(User).get(id)
+    user = db.query(User).filter(User.id == id).first()
 
     if not user:
         raise HTTPException(status_code = 404, detail = "User does not exists")
 
     products = db.query(Product).filter(Product.user_id == user.id).all()
 
-    product_details =[]
+    product_details = []
     
     for product in products:
         product_details.append({
-            "Product_id" : product.id,
+            "product_id" : product.id,
             "product_name" : product.name,
             "product_price" : product.price,
             "product_image" : str(request.base_url) + f"media/product/{product.image}"
+        })
+
+    wishlists = db.query(Wishlist).filter(Wishlist.user_id == user.id).all()
+
+    wishlist_detail = []
+
+    for wishlist in wishlists:
+        wishlist_product = db.query(Product).filter(Product.id == wishlist.product_id).first()
+        wishlist_detail.append({
+            "wishlist_id" : wishlist.id,
+            "product_name"  : wishlist_product.name,
+            "product_price"  :wishlist_product.price,
+            "product_image" : str(request.base_url) + f"media/product/{wishlist_product.image}"
+        })
+
+    carts = db.query(Cart).filter(Cart.user_id == user.id).all()
+
+    cart_details = []
+
+    for cart in carts:
+        cart_product = db.query(Product).filter(Product.id == cart.product_id).first()
+        cart_details.append({
+            "cart_id" : cart.id,
+            "product_name" : cart_product.name,
+            "product_price" : cart_product.price,
+            "product_image" : str(request.base_url) + f"media/product/{cart_product.image}",
+            "quantity" : cart.quantity,
+            "total_price" : cart.total
         })
 
     orders = db.query(Order).filter(Order.user_id == user.id).all()
@@ -152,35 +169,58 @@ def user_details(
     order_details = []
 
     for order in orders:
-        pro = db.query(Product).filter(Product.id == order.product_id).first()
+        order_product = db.query(Product).filter(Product.id == order.product_id).first()
         order_details.append({
             "order_id" : order.id, 
-            "product_name" : pro.name,
-            "product_price" : pro.price,
-            "product_image" : str(request.base_url) + f"media/product/{pro.image}"
+            "product_name" : order_product.name,
+            "product_price" : order_product.price,
+            "product_image" : str(request.base_url) + f"media/product/{order_product.image}",
+            "quantity" : order.quantity,
+            "total_price"  :order.total
         })
 
-    data = []
-
-    if user:
-        data.append({
-            "user_id" : user.id,
-            "image" :  str(request.base_url) + f"media/user/{user.image}",
-            "username" : user.username,
-            "password" : user.password,
-            "email" : user.email,
-            "address" : user.address,
-            "user_added_product" : product_details,
-            "user_place_order" : order_details
-        })
-    return data
+    return {
+        "user_id" : user.id,
+        "image" :  str(request.base_url) + f"media/user/{user.image}",
+        "username" : user.username,
+        "email" : user.email,
+        "address" : user.address,
+        "user_added_product" : product_details,
+        "user_wishlist" : wishlist_detail,
+        "user_cart" : cart_details,
+        "user_place_order" : order_details,
+    }
 
 
+# http://127.0.0.1:8000/users/update/password
+@router.post("/update/password")
+def user_update_password(
+    username : str = Form(...), 
+    password : str = Form(...),
+    db : Session = Depends(get_db) 
+):
+    user = db.query(User).filter(User.username == username).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="Username Not Found Please Enter Correct Username")
+    
+    if password:
+        user.password = password
+
+    db.commit()
+
+    return {
+        "message" : "Password Updated Successfully",
+        "username" : user.username,
+        "password" : user.password
+    }
+
+
+# http://127.0.0.1:8000/users/update/{id}
 @router.put("/update/{id}")
 def user_update(
     id: int,
     username: str = Form(None),
-    password : str = Form(None),
     email : str = Form(None),
     address : str = Form(None),
     image : UploadFile = File(None),
@@ -199,11 +239,10 @@ def user_update(
         shutil.copyfileobj(image.file, buffer)
 
     data.username = username
-    data.password = password
     data.email = email
     data.address = address
 
-    if data.image:
+    if image:
         data.image = filename
 
     db.commit()
@@ -214,6 +253,7 @@ def user_update(
     }
 
 
+# http://127.0.0.1:8000/users/delete/{id}
 @router.delete("/delete/{id}")
 def user_delete(id: int, db: Session = Depends(get_db)):
     user = db.query(User).get(id)
@@ -232,22 +272,13 @@ def user_delete(id: int, db: Session = Depends(get_db)):
     return {"message" : "User Deleted Successfully"}
 
 
+# http://127.0.0.1:8000/users/profile
 @router.get("/profile")
 def profile(
     request: Request,
-    token: str = Depends(oauth2_schemas),
+    user_id : int = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    try:
-        payload = jwt.decode(token, SECREAT_KEY, algorithms=[ALGORITHM])
-        user_id = payload.get("user_id")
- 
-        if not user_id:
-            raise HTTPException(status_code=404,detail="Invalid Token")
-        
-    except:
-        raise HTTPException(status_code=404, detail="Login Again")
-    
     user = db.query(User).filter(User.id == user_id).first()
     data =[]
     
@@ -265,6 +296,7 @@ def profile(
         return data
 
 
+# http://127.0.0.1:8000/users/search
 @router.get("/search")
 def search_user(
     request: Request,
@@ -292,3 +324,15 @@ def search_user(
         })
 
     return data
+
+
+# http://127.0.0.1:8000/users/count
+@router.get("/count")
+def count_user(
+    db : Session = Depends(get_db)
+):
+    total_users = db.query(User).count()
+
+    return {
+        "total_users" : total_users
+    }

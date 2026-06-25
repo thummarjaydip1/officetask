@@ -1,0 +1,31 @@
+{% load static %}
+<nav id="mainNav" class="navbar navbar-expand-lg navbar-dark sticky-top py-3 shadow-sm">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <i class="bi bi-basket3-fill fs-3 me-2"></i>
+      <span class="fw-bold">Fruit Store</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about/">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/products/">Products</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact/">Contact</a></li>
+        
+        {% if user.is_authenticated %}
+          <li class="nav-item ms-3"><a class="btn btn-sm btn-outline-light rounded-pill" href="{% url 'fruit_app:cart' %}">
+            <i class="bi bi-cart-fill"></i> Cart <span class="badge bg-light text-dark">{{ cart_item_count }}</span>
+          </a></li>
+          <li class="nav-item ms-3"><a class="btn btn-sm btn-outline-light rounded-pill" href="{% url 'fruit_app:profile' %}">Profile</a></li>
+          <li class="nav-item ms-2"><a class="btn btn-sm btn-warning rounded-pill text-dark" href="{% url 'fruit_app:logout' %}">Logout</a></li>
+        {% else %}
+          <li class="nav-item ms-3"><a class="btn btn-sm btn-outline-light rounded-pill" href="{% url 'fruit_app:login' %}">Login</a></li>
+          <li class="nav-item ms-2"><a class="btn btn-sm btn-warning rounded-pill text-dark" href="{% url 'fruit_app:register' %}">Register</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

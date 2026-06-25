@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-primary text-white py-3">
+        <h5 class="mb-0">User Profile</h5>
+      </div>
+      <div class="card-body p-4">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+        
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <p class="mb-2"><strong>Full Name:</strong></p>
+            <p class="text-muted">{{ user.first_name }} {{ user.last_name }}</p>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-2"><strong>Username:</strong></p>
+            <p class="text-muted">{{ user.username }}</p>
+          </div>
+        </div>
+        
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <p class="mb-2"><strong>Email:</strong></p>
+            <p class="text-muted">{{ user.email }}</p>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-2"><strong>Account Status:</strong></p>
+            <p><span class="badge bg-success">Active</span></p>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <p class="mb-2"><strong>Member Since:</strong></p>
+            <p class="text-muted">{{ user.date_joined|date:'F j, Y' }}</p>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-2"><strong>Last Login:</strong></p>
+            <p class="text-muted">{{ user.last_login|date:'F j, Y \a\t H:i'|default:'Never' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="d-flex justify-content-center gap-2">
+      <a href="{% url 'fruit_app:home' %}" class="btn btn-outline-primary">Back to Home</a>
+      <a href="{% url 'fruit_app:logout' %}" class="btn btn-danger">Logout</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

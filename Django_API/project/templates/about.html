@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <h2>Our Story</h2>
+    <p>Fruit Store began with a passion for fresh, quality produce. We partner with local farms to bring you the best seasonal fruit.</p>
+    <h4>Mission</h4>
+    <p>Deliver fresh, healthy fruit to every doorstep.</p>
+    <h4>Vision</h4>
+    <p>Become the most trusted online fruit marketplace.</p>
+  </div>
+  <div class="col-md-6">
+    <img src="{% static "images/fruit_farm.jpg" %}" class="img-fluid rounded shadow ms-5" width="500" height="200" alt="Our Farm">
+  </div>
+</div>
+
+<section class="py-5">
+  <h3>Our Team</h3>
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="text-center">
+        <img src="{% static "images/mayur.jpg" %}" class="rounded-circle mb-2" width="300" alt="Team">
+        <h6>Alex</h6>
+        <small class="text-muted">Founder</small>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="text-center">
+        <img src="{% static "images/kishu.avif" %}" class="rounded-circle mb-2" width="300" alt="Team">
+        <h6>Sara</h6>
+        <small class="text-muted">Head of Operations</small>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="text-center">
+        <img src="{% static "images/jaydip.avif" %}" class="rounded-circle mb-2" width="300" alt="Team">
+        <h6>Ravi</h6>
+        <small class="text-muted">Logistics</small>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="text-center">
+        <img src="{% static "images/krishna.webp" %}" class="rounded-circle mb-2" width="300" alt="Team">
+        <h6>Maria</h6>
+        <small class="text-muted">Customer Care</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <h3>Company Statistics</h3>
+  <div class="row text-center g-4">
+    <div class="col-md-3"><div class="p-4 bg-white rounded shadow-sm"> <h4>120+</h4><p>Farms</p></div></div>
+    <div class="col-md-3"><div class="p-4 bg-white rounded shadow-sm"> <h4>50k+</h4><p>Customers</p></div></div>
+    <div class="col-md-3"><div class="p-4 bg-white rounded shadow-sm"> <h4>10k+</h4><p>Orders</p></div></div>
+    <div class="col-md-3"><div class="p-4 bg-white rounded shadow-sm"> <h4>4.9</h4><p>Average Rating</p></div></div>
+  </div>
+</section>
+{% endblock %}

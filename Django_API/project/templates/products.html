@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Products</h2>
+  <form method="get" action="" class="row g-2 gx-3 align-items-center" role="search">
+    <div class="col-auto flex-grow-1">
+      <input name="q" value="{{ search_query|default:'' }}" class="form-control" type="search" placeholder="Search products or categories" aria-label="Search">
+    </div>
+    {% if selected_category %}
+    <input type="hidden" name="category" value="{{ selected_category }}">
+    {% endif %}
+    <div class="col-auto">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </div>
+  </form>
+</div>
+
+<div class="row g-4">
+  <aside class="col-md-3">
+    <div class="card p-3">
+      <h6 class="mb-3">Categories</h6>
+      <div class="list-group">
+        <a href="?{% if search_query %}q={{ search_query|urlencode }}&{% endif %}" class="list-group-item list-group-item-action {% if not selected_category %}active{% endif %}">All</a>
+        {% for category in data %}
+          <a href="?category={{ category.id }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}" class="list-group-item list-group-item-action {% if selected_category == category.id|stringformat:'s' %}active{% endif %}">{{ category.category_name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </aside>
+
+  <div class="col-md-9">
+    <div class="row g-4">
+      {% if products.exists %}
+        {% for product in products %}
+        <div class="col-6 col-md-4">
+          <div class="card h-100 shadow-sm">
+            {% if product.product_image %}
+            <img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.product_name }}">
+            {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:200px;">No image</div>
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ product.product_name }}</h5>
+              <p class="text-muted small mb-1">{{ product.category.category_name }}</p>
+              <p class="card-text text-success fw-bold">${{ product.price }}</p>
+              <p class="text-muted">Stock: {{ product.stock }}</p>
+              <div class="d-flex flex-column gap-2">
+                <a href="{% url 'fruit_app:product_detail' product.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                <form method="post" action="{% url 'fruit_app:add_to_cart' product.id %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" class="btn btn-outline-success btn-sm w-100" {% if product.stock <= 0 %} disabled{% endif %}>
+                    {% if product.stock <= 0 %}Out of Stock{% else %}Add to Cart{% endif %}
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="col-12 alert alert-warning">No products found.</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

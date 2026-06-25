@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="hero py-5 text-light rounded" style="background: linear-gradient(120deg,#2ecc71, #ff9f1c);">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="display-5 fw-bold">Fresh Fruits, Delivered Daily</h1>
+                <p class="lead">Discover seasonal fruit, curated boxes, and fast delivery.</p>
+                <a href="/products/" class="btn btn-dark btn-lg rounded-pill me-2">Shop Now</a>
+                <a href="/about/" class="btn btn-outline-light btn-lg rounded-pill">Learn More</a>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="{% static 'images/fruits.webp' %}" class="img-fluid rounded shadow-lg" width="400" alt="Fruits" onerror="this.src='{% static 'images/placeholder.svg' %}'">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="mb-4">Featured Products</h2>
+        <div class="row g-4">
+            {% if products %}
+                {% for product in products %}
+                <div class="col-6 col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        {% if product.product_image %}
+                        <img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.product_name }}">
+                        {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:200px;">No image</div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title text-center">{{ product.product_name }}</h5>
+                            <p class="text-center text-muted small mb-1">{{ product.category.category_name }}</p>
+                            <p class="card-text text-success fw-bold text-center">${{ product.price }}</p>
+                            <div class="d-flex flex-column gap-2 align-items-center">
+                                <a href="{% url 'fruit_app:product_detail' product.pk %}" class="btn btn-primary btn-sm w-100">View</a>
+                                <form method="post" action="{% url 'fruit_app:add_to_cart' product.pk %}" class="w-100 d-flex justify-content-center">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="quantity" value="1">
+                                  <button type="submit" class="btn btn-success btn-sm w-100"{% if product.stock <= 0 %} disabled{% endif %}>
+                                    {% if product.stock <= 0 %}Out of Stock{% else %}Add to Cart{% endif %}
+                                  </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12"><p>No products available.</p></div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="mb-4">Why Choose Us</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded shadow-sm">
+                    <h5>Organic Quality</h5>
+                    <p>Our fruits are sourced from trusted farms.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded shadow-sm">
+                    <h5>Fast Delivery</h5>
+                    <p>Same-day delivery for local orders.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded shadow-sm">
+                    <h5>Customer Care</h5>
+                    <p>24/7 support for all orders.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="mb-4">What Our Customers Say</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="p-4 border rounded">
+                    <p>"Amazing quality and fast delivery!"</p>
+                    <small class="text-muted">— Jane D.</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 border rounded">
+                    <p>"Great selection and friendly service."</p>
+                    <small class="text-muted">— Mark R.</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 border rounded">
+                    <p>"High-quality fruit every time."</p>
+                    <small class="text-muted">— Aisha K.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 text-center" style="background: linear-gradient(120deg,#ff9f1c, #2ecc71);">
+    <div class="container text-light">
+        <h3>Ready to order?</h3>
+        <p>Browse our seasonal selection and get fresh fruit delivered.</p>
+        <a href="/products/" class="btn btn-dark rounded-pill">Shop Now</a>
+    </div>
+</section>
+{% endblock %}

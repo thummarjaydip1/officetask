@@ -1,0 +1,16 @@
+:root{
+  --accent-green:#2ecc71;
+  --accent-orange:#ff9f1c;
+  --dark:#0f1723;
+}
+body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;}
+.navbar{background: linear-gradient(90deg,var(--accent-green),var(--accent-orange));}
+.navbar .nav-link{transition: all .15s ease-in-out;}
+.navbar .nav-link:hover{transform: translateY(-2px);}
+.sticky-top.scrolled{box-shadow: 0 6px 18px rgba(15,23,35,.12);}
+.btn-rounded{border-radius:50px}
+.hero{background-size:cover; background-position:center}
+.footer-dark{background:#071021;color:#cbd5e1}
+.map-placeholder{display:flex;align-items:center;justify-content:center;color:#6b7280}
+.card img{object-fit:cover}
+@media(max-width:576px){.navbar-brand span{font-size:1rem}}

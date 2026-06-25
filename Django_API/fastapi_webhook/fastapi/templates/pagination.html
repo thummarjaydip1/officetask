@@ -1,0 +1,43 @@
+<center>
+    <h1>Orders List</h1>
+
+    <table border="1" cellpadding="10" cellspacing="10">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Product Name</th>
+            <th>Product Price</th>
+            <th>Product Image</th>
+            <th>Addess</th>
+        </tr>
+
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.order_id }}</td>
+            <td>{{ order.username }}</td>
+            <td>{{ order.product_name }}</td>
+            <td>{{ order.product_price }}</td>
+            <td>
+                <img src="{{ order.product_image }}" alt="order image" width="150" />
+            </td>
+            <td>{{ order.address }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+
+    {% if page > 1 %}
+    
+    <a href="/templates/pagination?page={{ page - 1 }}">
+        <button>Previous</button>
+    </a>
+
+    {% endif %}
+
+    &nbsp;&nbsp;
+
+    <a href="/templates/pagination?page={{ page + 1 }}">
+        <button>Next</button>
+    </a>
+</center>

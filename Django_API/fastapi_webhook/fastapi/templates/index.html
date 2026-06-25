@@ -1,0 +1,85 @@
+<center>
+
+    <!-- User Table All Details -->
+    <h2>User Table</h2>
+    <table border="1" cellpadding="10" cellspacing="7">
+        <tr>
+            <th>Id</th>
+            <th>Image</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Email</th>
+            <th>Address</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{user.id}}</td>
+                <td>
+                    <img src="/media/user/{{user.image}}" width="150" height="150" alt="user image" />
+                </td>
+                <td>{{user.username}}</td>
+                <td>{{user.password}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.address}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <br /> <br />
+
+    <!-- Product Table All Details -->
+    <h2>Product Table</h2>
+    <table border="1" cellpadding="10" cellspacing="7">
+        <tr>
+            <th>Id</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Username</th>
+        </tr>
+        {% for product in products %}
+            <tr>
+                <td>{{product.id}}</td>
+                <td>
+                    <img src="/media/product/{{product.image}}" width="150" alt="product image" />
+                </td>
+                <td>{{product.name}}</td>
+                <td>{{product.price}}</td>
+                <td>{{pro_data[product.id]}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Product Table All Details -->
+    <h2>Order Table</h2>
+    <table border="1" cellpadding="10" cellspacing="7">
+        <tr>
+            <th>Order Id</th>
+            <th>Username</th>
+            <th>Image</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Address</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+
+            <td>{{ order_details[order.id].username }}</td>
+
+            <td>
+                <img src="/media/product/{{ order_details[order.id].image }}"
+                    width="150"
+                    alt="product image">
+            </td>
+
+            <td>{{ order_details[order.id].product_name }}</td>
+
+            <td>{{ order_details[order.id].price }}</td>
+
+            <td>{{ order_details[order.id].address }}</td>
+        </tr>
+        {% endfor %}        
+    </table>
+
+</center>

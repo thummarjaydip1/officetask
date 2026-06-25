@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row gy-4">
+  <div class="col-12 mb-3">
+    <a href="{% url 'fruit_app:products' %}" class="btn btn-outline-secondary btn-sm">&larr; Back to Products</a>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0">
+      {% if product.product_image %}
+      <img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.product_name }}">
+      {% else %}
+      <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="min-height: 320px;">
+        No image available
+      </div>
+      {% endif %}
+      <div class="card-body">
+        <p class="text-muted mb-1">Category: {{ product.category.category_name }}</p>
+        <h2 class="card-title">{{ product.product_name }}</h2>
+        <p class="h4 text-success mb-3">${{ product.price }}</p>
+        <p class="card-text mb-4">{{ product.product_description|default:'No description available.' }}</p>
+        <p class="mb-2"><strong>Stock:</strong> {{ product.stock }}</p>
+        <p class="mb-0"><strong>Status:</strong> {% if product.status %}Available{% else %}Unavailable{% endif %}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 p-4">
+      <h5 class="mb-3">Product details</h5>
+      <ul class="list-unstyled mb-4">
+        <li><strong>Product name:</strong> {{ product.product_name }}</li>
+        <li><strong>Category:</strong> {{ product.category.category_name }}</li>
+        <li><strong>Price:</strong> ${{ product.price }}</li>
+        <li><strong>Stock:</strong> {{ product.stock }}</li>
+        <li><strong>Created:</strong> {{ product.created_at|date:'F j, Y' }}</li>
+      </ul>
+      <a href="{% url 'fruit_app:products' %}" class="btn btn-outline-primary me-2">Back to Products</a>
+      <form method="post" action="{% url 'fruit_app:add_to_cart' product.pk %}" class="d-flex gap-2 align-items-center">
+        {% csrf_token %}
+        <div class="input-group" style="max-width: 140px;">
+          <button type="button" class="btn btn-outline-secondary" id="decreaseQty">-</button>
+          <input id="productQuantity" type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
+          <button type="button" class="btn btn-outline-secondary" id="increaseQty">+</button>
+        </div>
+        <button type="submit" class="btn btn-primary"{% if product.stock <= 0 %} disabled{% endif %}>
+          {% if product.stock <= 0 %}Out of Stock{% else %}Add to Cart{% endif %}
+        </button>
+      </form>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const input = document.getElementById('productQuantity');
+          const decrease = document.getElementById('decreaseQty');
+          const increase = document.getElementById('increaseQty');
+          decrease.addEventListener('click', function () {
+            input.value = Math.max(1, Number(input.value) - 1);
+          });
+          increase.addEventListener('click', function () {
+            input.value = Math.min({{ product.stock }}, Number(input.value) + 1);
+          });
+        });
+      </script>
+    </div>
+  </div>
+</div>
+{% endblock %}

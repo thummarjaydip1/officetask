@@ -140,6 +140,8 @@ def pagination_display_order(
             "product_image" : str(request.base_url) + f"media/product/{product.image}",
             "product_name" : product.name,
             "product_price" : product.price,
+            "quantity" : order.quantity,
+            "total_price" : order.total,
             "username" : user.username,
             "address" : user.address
         })
@@ -173,6 +175,8 @@ def display_my_order(
             "product_name" : product.name,
             "product_price" : product.price,
             "product.image" : str(request.base_url) + f"media/product/{product.image}",
+            "quantity" : order.quantity,
+            "total_price" : order.total,
             "address" : user.address
         })
     return data
@@ -359,7 +363,9 @@ def search_order(
             "product_name" : product.name,
             "product_price" : product.price,
             "image" : str(request.base_url) + f"media/product/{product.image}",
-            "delivary_address" : user.address
+            "quantity" : order.quantity,
+            "total_price" : order.total,
+            "delivery_address" : user.address
         })
     
     return data
@@ -370,8 +376,8 @@ def search_order(
 def count_order(
     db : Session = Depends(get_db)
 ):
-    total_orders = db.query(Order).count()
+    total_order = db.query(Order).count()
 
     return {
-        "total_orders" : total_orders
+        "total_order" : total_order
     }

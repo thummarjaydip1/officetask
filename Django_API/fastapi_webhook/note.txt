@@ -5,6 +5,7 @@
 +-------------+----------------+--------------+--------------+-------------+
 | Jaydip(1)   | Apple(1)       | Kiwi         | Kiwi         | Kiwi        |
 |             | Banana(2)      | Pineapple    | Pineapple    | Pineapple   |
+|             |                | mango        | mango        | mango       |
 +-------------+----------------+--------------+--------------+-------------+
 | Parth(2)    | Mango(3)       | Chickoo      | Chickoo      | Chickoo     |
 |             | Chickoo(4)     | Orange       | Orange       | Orange      |

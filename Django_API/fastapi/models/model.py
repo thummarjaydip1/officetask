@@ -61,3 +61,23 @@ class Review(Base):
     user_id = Column(Integer, ForeignKey('users.id', ondelete="CASCADE"))
     product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"))
     message = Column(Integer, nullable=False)
+
+class Payment(Base):
+    __tablename__ = "payments"
+
+    id = Column(Integer, primary_key=True)
+    order_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"))
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    amount = Column(Integer)
+    payment_method = Column(String)
+    payment_status = Column(String, default="pending")
+    transaction_id = Column(String, unique=True)
+
+class ReturnOrder(Base):
+    __tablename__ = "return_orders"
+
+    id = Column(Integer, primary_key=True)
+    order_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"))
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    reason = Column(String, nullable=False)
+    status = Column(String, default="pending")

@@ -41,7 +41,7 @@ def add_review(
     db.add(new_review)
     db.commit()
     db.refresh(new_review)
-
+ 
     return {
         "msg": "Review send successfully",
         "id" : new_review.id,
@@ -147,16 +147,4 @@ def delete_review(
 
     return {
         "message" : "Review Delete Successfully"
-    }
-
-
-# http://127.0.0.1:8000/reviews/count
-@router.get("/count")
-def count_review(
-    db : Session = Depends(get_db)
-):
-    total_reviews = db.query(Review).count()
-    
-    return {
-        "total_reviews" : total_reviews
     }

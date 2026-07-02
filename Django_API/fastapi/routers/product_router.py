@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, File, Form, UploadFile, Request
 from sqlalchemy.orm import Session
+from fastapi.responses import StreamingResponse 
 
 from database.database import get_db
 from models.model import Product, User
@@ -7,6 +8,10 @@ from auth import get_current_user
 
 import os
 import shutil
+import io
+import qrcode
+
+
 
 router = APIRouter(
     prefix = "/products",
@@ -49,7 +54,7 @@ def product_add(
         "product_price" : new_product.price,
         "product_image" : str(request.base_url) + f"media/product/{new_product.image}"
     }
-    
+
 
 # http://127.0.0.1:8000/products/display
 @router.get("/display")
@@ -199,7 +204,54 @@ def product_delete(
 
     return {"message": "Product Delete Successfully"}
 
+
+# http://127.0.0.1:8000/products/details/{id}
+@router.get("/details/{id}")
+def product_detail(
+    request : Request,
+    id : int,
+    db : Session = Depends(get_db)
+):
+    product = db.query(Product).filter(Product.id == id).first()
     
+    if not product:
+        raise HTTPException(status_code=404, detail="product not found")
+    
+    return {
+        "id" : product.id,
+        "name" : product.name,
+        "price" : product.price,
+        "image" : str(request.base_url) + f"media/product/{product.image}"
+    }
+
+
+# http://127.0.0.1:8000/products/qrcode/{id}
+@router.get("/qrcode/{id}")
+def generate_product_qrcode(
+    id : int,
+    db : Session = Depends(get_db)
+):
+    product = db.query(Product).filter(Product.id == id).first()
+
+    if not product:
+        raise HTTPException(status_code=404, detail="product not found")
+    
+    product_url = f"http://127.0.0.1:8000/products/details/{product.id}"
+
+    qr = qrcode.make(product_url)
+
+    buffer = io.BytesIO()
+
+    qr.save(buffer)
+
+    buffer.seek(0)
+
+    return StreamingResponse(
+        buffer,
+        media_type = "image/png"
+    )
+
+
 # http://127.0.0.1:8000/products/search
 @router.get("/search")
 def search_product(
@@ -218,7 +270,7 @@ def search_product(
 
     for product in products:
 
-        user = db.query(User).filter().first()
+        user = db.query(User).filter(User.id == product.user_id).first()
 
         data.append({
             "id" : product.id,
@@ -230,14 +282,3 @@ def search_product(
 
     return data
 
-
-# http://127.0.0.1:8000/products/count
-@router.get("/count")
-def count_product(
-    db : Session = Depends(get_db)
-):
-    total_products = db.query(Product).count()
-
-    return {
-        "total_products" : total_products
-    }

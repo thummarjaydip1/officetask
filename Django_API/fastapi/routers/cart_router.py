@@ -185,15 +185,3 @@ def search_cart(
         })
     
     return data
-
-
-# http://127.0.0.1:8000/carts/count
-@router.get("/count")
-def count_cart(
-    db : Session = Depends(get_db)
-):
-    total_cart = db.query(Cart).count()
-
-    return {
-        "total_carts" : total_cart
-    }

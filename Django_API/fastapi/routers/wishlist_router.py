@@ -135,14 +135,3 @@ def search_wishlist(
 
     return data
 
-
-# http://127.0.0.1:8000/wishlists/count
-@router.get("/count")
-def count_wishlist(
-    db : Session = Depends(get_db)
-):
-    total_wishlist = db.query(Wishlist).count()
-    
-    return {
-        "total_wishlists" : total_wishlist
-    }

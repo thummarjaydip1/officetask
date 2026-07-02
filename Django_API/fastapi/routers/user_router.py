@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, File, Form, UploadFile, Request
 from sqlalchemy.orm import Session
+from email_service import register_send_email, login_send_email, logout_send_email
 
 from database.database import get_db
 from models.model import User, Product, Order, Wishlist, Cart
-from schemas.user_schema import DisplayUser   #RegisterUser, LoginUser, UpdateUser
+# from schemas.user_schema import DisplayUser, RegisterUser, LoginUser, UpdateUser
 from auth import verify_password, create_access_token, create_refresh_token, get_current_user
 from jose import jwt
 
@@ -20,7 +21,7 @@ ALGORITHM = "HS256"
 
 # http://127.0.0.1:8000/users/register
 @router.post("/register")
-def user_register(
+async def user_register(
     request : Request,
     username : str = Form(...),
     password : str = Form(...),
@@ -59,6 +60,12 @@ def user_register(
     db.commit()
     db.refresh(new_user)
 
+    await register_send_email(
+        email = email,
+        username = username,
+        address = address,
+    )
+
     return {
         "message" : "User Registration Successfully",
         "id" : new_user.id,
@@ -72,7 +79,7 @@ def user_register(
 
 # http://127.0.0.1:8000/users/login
 @router.post("/login")
-def user_login(
+async def user_login(
     username : str = Form(...),
     password : str = Form(...),
     db: Session = Depends(get_db)
@@ -89,11 +96,36 @@ def user_login(
 
     refresh_token = create_refresh_token({"user_id" : user.id})
 
+    await login_send_email(
+        username = user.username,
+        email = user.email
+    )
+
     return {
         "message" : "Login Successfully",
         "username" : user.username,
         "access_token" : access_token,
         "refresh_token" : refresh_token
+    }
+
+
+@router.post("/logout")
+async def user_logout(
+    user_id : int = Depends(get_current_user),
+    db : Session = Depends(get_db)
+):
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    await logout_send_email(
+        username = user.username,
+        email = user.email
+    )
+
+    return {
+        "message" : "Logout Successfully"
     }
 
 
@@ -285,12 +317,19 @@ def user_update(
 
 # http://127.0.0.1:8000/users/delete/{id}
 @router.delete("/delete/{id}")
-def user_delete(id: int, db: Session = Depends(get_db)):
+def user_delete(
+    id: int, 
+    user_id : int = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
     user = db.query(User).get(id)
 
     if not user:
         raise HTTPException(status_code=404, detail="User does not exists")
     
+    if user.id != user_id:
+        raise HTTPException(status_code=400, detail="You can not delete your own account")
+
     # user image automatically delete from delete user record
     image_path = f"media/user/{user.image}"
     if os.path.exists(image_path):
@@ -354,15 +393,3 @@ def search_user(
         })
 
     return data
-
-
-# http://127.0.0.1:8000/users/count
-@router.get("/count")
-def count_user(
-    db : Session = Depends(get_db)
-):
-    total_users = db.query(User).count()
-
-    return {
-        "total_users" : total_users
-    }

@@ -199,7 +199,3 @@ def cancel_return_order(
     }
 
 
-
-def one():
-    print("hello")
-

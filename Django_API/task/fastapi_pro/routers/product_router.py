@@ -209,3 +209,17 @@ def filter_product_by_category(
         })
 
     return data
+
+@router.options("/option")
+def option_product(
+    db : Session = Depends(get_db)
+):
+    products = db.query(Product).all()
+
+    data = []
+
+    for product in products:
+        
+        data.append(product.name)
+
+    return data

@@ -16,6 +16,11 @@ def add_category(
     category : CategoryCreate,
     db : Session = Depends(get_db)
 ):
+    existing_category = db.query(Category).filter(Category.name == category.name).first()
+
+    if existing_category:
+        raise HTTPException(status_code=406, detail="categories already exists")
+    
     new_category = Category(
         name = category.name
     )
@@ -86,3 +91,18 @@ def search_catogory(
 
 
     return data
+
+
+@router.options("/option")
+def get_category_option(
+    db : Session = Depends(get_db)
+):
+    categories = db.query(Category).all()
+
+    data = []
+
+    for category in categories:
+
+        data.append(category.name)
+
+    return {"category" : data}

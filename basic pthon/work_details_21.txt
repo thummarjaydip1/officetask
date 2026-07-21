@@ -1,0 +1,354 @@
+**** Python Array ****
+- python does not have built in support for Arrays, but Python list can be used instead.
+- this page show you how  to use lists as array, however, to work with array in python you will have to import a library, like the numpy library
+- array are used to store multiple value in single variable
+- ex: fruit = ["apple", "banana", "mango", "kiwi"]
+      print(fruit)
+
+* Access the element of array
+- you refer to an array element by refering to the index number
+- ex:   fruit = ["apple", "banana", "mango", "kiwi"]
+        print(fruit[2])
+
+
+* Length of an array
+- use len() method to return the length of array
+- ex:   fruit = ["apple","banana","mango","kiwi"]
+        print(len(fruit))
+
+
+* Lopping array element
+- you can use the for in loop the loop through all the element of an array
+- ex:   fruit = ["apple", "banana", "mango", "kiwi", "lemon", "pineapple"]
+        for i in fruit:
+            print(i)
+
+* Adding Array element
+=> (i) append() method
+- you can use the append() method to add an element to an array
+- ex:   fruit = ["apple", "banana", "mango", "kiwi"]
+        fruit.append("lemon")
+        print(fruit)
+    
+=> (ii) extend() method
+- you can use the extend() method to add an multiple element to an array
+- ex:   boy = ["jay", "dip", "raj", "ram"]
+        girl = ["krishna", "kavya", "kishu"]
+        both = boy.extend(girl)
+        print(boy)
+
+=> (iii) insert() method
+- insert() method are use to add element in specific position
+- ex:   boy = ["jay", "dip", "raj", "ram"]
+        boy.insert(2,"jaydip")
+        print(boy) 
+
+
+* Removing Array element
+=> (i) pop() method
+- you can use the pop() method to an remove element an array
+- ex:   boy = ["jay", "dip", "raj", "ram"]
+        boy.pop(2)
+        print(boy)
+
+=> (ii) remove() method
+- you can use the remove() method to an remove element from an array
+- ex:   boy = ["jay", "dip", "raj", "ram"]
+        boy.remove("ram")
+        print(boy)
+
+=> (iii) clear() method
+- you can use the clear() method to an remove all element from an array
+- ex:   boy = ["jay", "dip", "raj", "ram"]
+        boy.clear()
+        print(boy)
+
+
+* Sorting array element
+=> (i) sort() method
+- sort() method are use to Sorting of array element.
+- The sort() method sort the list ascending order
+- reverse key word are use to sort list descending order(reverse=True)
+- ex:   boy = ["jay", "dip", "raj", "ram"]
+        boy.sort()
+        print(boy)
+        boy.sort(reverse=True)
+        print(boy)
+
+=> (ii) reverse() method 
+- reverse() method are use to sort list in descending order
+- ex:   boy = ["jay", "dip", "raj", "ram"]
+        boy.reverse()
+        print(boy)
+    
+* create array in python
+- to create an array in python, import array module and use array() function
+- we can create an array of three basic type namely integer, float and unicode character using this function.
+- typecode : the typicode character used to specify thetype of element in the array
+- initializer : It is an optional value from which array is initialized. It must be a list, a byte-like object, or iterable element of the approprite type.
+- list all method are work in array. (insert(), append(), extend(), remove(), pop(), clear(), sorted(), reverse(), copy->deepcopy(), index(), count())
+- ex:   import array as arr                           # 'b' -> int(1 byte), 'i' -> int(4 byte), 'f' -> float(1 byte), 'd' -> double(8 byte), 'u' -> unicode character(2 byte)
+        a = arr.array('d', [10,20,30])
+        print(type(a))
+        print(a)
+
+        for i in range(len(a)):
+            print(a[i])
+
+
+
+
+
+**** Python Iterator ****
+- An iterator is an that contains a countable number of value
+- Technically, in python an iterator is an object which implements the iterator protocol, which contains of the methods __iter__() and __next__()
+
+* Iterator vs Iterable
+- Iterable : an object capable of returning its member one at time 
+- Iterator : an object representing a stream data, returned one element at one time
+- List, tuple, dictionary and set are all iterable object. they are iterable container which you can get an iterator from.
+- All these object have a iter() method which is used to get an iterator
+- raise StopIteration exception when no more element are available
+- ex:   a = ("apple", "banana", "mango", "kiwi")
+        b = iter(a)
+        print(next(b))
+        print(next(b))
+        print(next(b))
+
+* loop through iterator
+- we can also use for loop to iterate through an iterable object
+- ex;   a = ("apple", "banana", "mango", "kiwi")
+        for i in a:
+            print(i)
+
+* create and iterator
+- To create an object/class as an iterator you have to implement the methods __iter__() and __next__() to your object
+- __iter__() method acts similar, you can operation(initializing etc), but must always return the itertor object itself
+- __next__() method allow you to do operation and must return the next item in sequence
+- ex:   class Myclass:
+            def __iter__(self):
+                self.a = 1
+                return self
+            def __next__(self):
+                x = self.a
+                self.a += 1
+                return x
+        my = Myclass()
+        myit = iter(my)
+        print(next(myit))
+        print(next(myit))
+        print(next(myit))
+
+
+
+
+
+**** Python Module ****
+- Module is file containing defination and statements.
+- A module can define function, classes and variable.
+- modules help organize code into seperate file so that program become easire to maintain and reuse.
+
+* Type of Module
+(1) User define Module
+    - there are module you create yourself
+
+    * create module
+    - To create a module, write the desired code and save that in a file with .py extension
+    - ex :  => (i) python_module.py
+                class Calculator:
+
+                    def addtion(a, b):
+                        return a + b
+                
+                    def substraction(a, b):
+                        return a - b
+
+                    def multiplication(a, b):
+                        return a * b
+                
+                    def division(a, b):
+                        return a / b
+
+            => (ii) module.ipynb
+                    from python_module import Calculator
+
+                    add = Calculator.addtion(112, 434)
+                    print("addition:", add)
+
+                    sub = Calculator.substraction(242, 121)
+                    print("substraction:", sub)
+
+                    mul = Calculator.multiplication(12,10)
+                    print("multiplication:", mul)
+
+                    div = Calculator.division(1255,100)
+                    print("division:", div)
+
+                    # import importlib                      ] --- module change to 
+                    # importlib.reload(python_module)       ]     reload module file
+
+
+    * Type of import statements
+    => (i) import from module
+        - This allow importing specific function, classes, variable rather than the whole module
+        - ex : from python_module import nornal_fun
+
+    => (ii) import all names(*)
+        - import everything from a module into the current name space
+        - ex : from python_module import *
+
+    => (iii) import with alias
+        - you can shorted module name using as
+        - ex: import python_module as pm
+
+(2) Built-in Module
+- these come bundled with python and require installation., ex: math, random
+- ex:   import random 
+        print(random.randint(1,5))
+
+(3) External (Third party) module
+- This module are installed using pip., ex: numpy, pandas, requests
+- ex:   import requests
+
+        r = requests.get("htts://example.com")
+        print(r.status_code)
+
+(4) Package Module
+- A Package is directory containing of multiple module, usually with an __init__.py file
+
+
+
+
+**** Python pip ****
+- pip is package manager for python package, or module if you like
+- A package contains all the file you need for module
+- module are python code library you can include in project
+
+* check if pip is installed 
+- navigation your command line to the locatoin of python script directory, and type following command:
+- ex: pip --version
+
+* Dowload package
+- navigate your command line to the location of python script directory and type following command:
+- ex: pip install camelcase
+
+* Using package
+- import the "camelcase" package into the project
+
+* Removing package
+- Use the uninstall command to remove package
+- ex: pip uninstall camelcase
+
+* List Package
+- use the list command to list all the package installed in your system
+
+
+
+
+
+**** Python Math ****
+- python has set built in function, including an expensive math module, that allow you to perform mathematical task of number
+
+* Built-in math function
+- the min() and max() function can be used find the lowest and highest value
+
+=> (i) min() function
+    - min function are use to find lowest value 
+    - return the name with the lowest value, ordered alphabetically
+    - ex:   x = min(12,453,54,23,11,45,656)
+            print(x)
+
+            y = ("pineapple", "banana", "mango", "apple", "kiwi")
+            print(min(y))
+
+=> (ii) max() function
+    - max function are use to find highest value
+    - return the name with the highest value, ordered alphabetically
+    -ex:    x = max(354,45,132,65,223,765,32,546,24)
+            print(x)
+
+            y = ("pineapple", "apple", "kiwi", "mango")
+            print(max(y))
+
+=> (iii) abs() function
+    - abs() function return the absolute(positive) value of specific number
+    - ex:   x = abs(-24.54)
+            y = abs(-543)
+            print(x)
+            print(y)
+
+=> (iv) pow() function
+    - The pow() function return the value of x to the power of y.
+    - ex:   a = pow(3,4)    # 3*3*3*3 = 81
+            b = pow(5,5)    # 5*5*5*5*5 = 3125
+            print(a)
+            print(b)
+
+* The math module 
+- python has also a built in module called math, which extends the list of mathematical function
+- To use it, you must import the math module.
+- ex: import math
+
+=> (i) sqrt() method 
+    - The math.sqrt() method for example return the square root of number
+    - ex:   import math
+            x = math.sqrt(64)
+            print(x)
+
+=> (ii) ceil() method
+    - The math.ceil() method round a number upward to nearest integer
+    - ex:   import math 
+            x = math.ceil(12.11)        # upward val => 13
+            y = math.ceil(15.99)        # upward val => 16
+            print(x)
+            print(y)
+
+=> (iii) floor() method
+    - The math.floor() method round a number downword nearest integer
+    - ex:   import math
+            x = math.floor(23.25)       # downward nearest val => 23
+            y = math.floor(45.97)       # downward nearest val => 45
+            print(x)
+            print(y)
+
+=> (iv) pi value
+    - The math.pi constant, return the value of pi(3.14)
+    - ex:   import math
+            x = math.pi
+            print(x)
+
+=> (v) remainder() method
+    - The math.remainder() used to calculate the remainder of dividing of one number by another
+    - ex:   import math
+            x = math.remainder(10,3)
+            print(x)
+
+
+
+
+
+****  Python Date ****
+- Date in python are not a datatype od its own, but we can important module named datetime to work with date as date object
+- The date contains year, month, day, hour, minute, second and microsecond
+- the datetime module has many method informatoin about the date object
+- ex:   import datetime 
+        a = datetime.datetime.now()
+        print(a)
+        print(a.year)
+        print(a.day)
+
+* Creating date object
+- To create a date, we can use datetime() class(constructor) of the datetime module
+- The datetime() class three parameters to create a year, month, day
+- ex:   from datetime import datetime
+        a = datetime(2006, 2, 26)
+        print(a)
+
+* strftime() method
+- The datetime objects has a method for formatting date objects into readable string
+- The method is called strftime(), and takes one parameter, format, to specify the format of the return string
+- ex:   from datetime import datetime
+        a = datetime.now()
+        print(a.strftime("%a"))
+        print(a.strftime("%A"))
+

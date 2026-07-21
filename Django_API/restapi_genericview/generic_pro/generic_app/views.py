@@ -59,13 +59,6 @@ class DeleteContactView(DestroyModelMixin, GenericAPIView):
         return self.destroy(request, *args, **kwargs)
     
 
-class SearchContactView(generics.ListAPIView):
-    queryset = Contact.objects.all()
-    serializer_class = ContactSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ["name","email"]
-    # filter_backends = [filters.OrderingFilter]
-    # ordering = ["name"]
 
 
 # http://127.0.0.1:8000/feedback-list/

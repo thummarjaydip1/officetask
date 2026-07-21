@@ -1,6 +1,6 @@
 from django.urls import path
 from generic_app import views
-from .views import CreateContactView, DisplayContactView, RetrieveContactView, UpdateContactView, DeleteContactView, SearchContactView, FeedbackListView, FeedbackDetailView
+from .views import CreateContactView, DisplayContactView, RetrieveContactView, UpdateContactView, DeleteContactView, FeedbackListView, FeedbackDetailView
 
 urlpatterns = [
     # CONTACT API
@@ -9,7 +9,6 @@ urlpatterns = [
     path("detail-contact/<int:pk>/", RetrieveContactView.as_view()),
     path("update-contact/<int:pk>", UpdateContactView.as_view()),
     path("delete-contact/<int:pk>/", DeleteContactView.as_view()),
-    path("search-contact/", SearchContactView.as_view()),
 
     # FEEDBACK API
     path("feedback-list/", FeedbackListView.as_view()),

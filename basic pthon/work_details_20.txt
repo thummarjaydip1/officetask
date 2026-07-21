@@ -1,0 +1,353 @@
+**** Python Fuction ****
+
+- A function is a block of code which only run when it is called.
+- Function is help avioding code repetition.
+- function defined def keyword
+- the code block within every fuction start with a semicolon indented
+-ex: def home():
+	print("hello fun")
+
+- calling function
+-ex:def home():
+		print("hello fun")
+    home()
+
+- multiple time calling
+-ex:def home():
+		print("hello fun")
+    home()
+	home()
+	home()
+
+
+* function name
+- python function follow the same rule as variable name
+- function started with letter and uderscore
+- function name is case sensitive
+
+
+* return value
+- function can send data back to the code that called them using the return keyword
+- when a function reaches a return statement , it stop executing and send the result back
+-ex:def home():
+		return "hello fun"
+	msg = home()
+	print(msg)
+
+
+* pass keyword
+- function defioned cannot be empty. if you need create function placeholder without any code using pass keyword
+- ex:def myfun():
+    	pass
+		myfun()
+		print(myfun())
+
+
+* Pass Function as Argument
+- function are first class object, which mean you can pass function can Argument to another function, allowing you to call inside function
+-ex:def fun(func, arg):
+	    return func(arg)
+
+		def square(x):
+    		# return x*x
+    		return x**2
+
+	sq = fun(square, 10)
+	print(sq)
+
+
+*Local Vaible in Function
+- local variable are inside define function and exists only during exist only during its execution. they accessed from outside function
+-ex:def myfun():
+	    name = "jay"
+    	print("name is:", name)
+
+	myfun()
+	# print("function in declare name is:", name)     Error..........
+
+
+*Global variable
+- Global variable are declare outside function and can access anywhere in the program, include inside function
+-ex:name = "jay"
+	def myfun():
+    	print("function inside call name:",name)
+
+	myfun()
+	print("funnction outside call name:", name)
+
+
+* Use local and Global variable
+- if variable defined both globally and locally with the same name, local variable shadow the global variable inside the function.
+-ex:def myfun():
+	    name = "jay"
+    	print("inside function:", name)
+
+	name = "dip"
+	myfun()
+	print("outside function:", name)
+
+
+*Argument in Python
+- Argument are specified after the function name, inside the parenthesis. you can add as many argument as tou want, just seperate them with comma
+- The following exapmle has a function with once argument(fname). when the function is called, we pass along firstname, which is used inside function to print the full name.
+-ex:def myfun(fname):
+    	print("hello", fname)
+
+	myfun("jay")
+	myfun("dip")
+	myfun("manan")
+
+
+* number of argument
+- By, default function must be called with number of argument
+-ex:def myfun(name, age):
+    	print("my name is:", name, "and age is:", age)
+
+	myfun("jay", 21)
+	# myfun("dip")        Error.............. 
+
+
+* default argument
+- you assign default value to parameter. if the function is called without an argument, it use the default value
+-ex:def myfun(name='jay'):
+    	print(name)
+
+	myfun()
+	myfun(name="dip")
+
+
+* keyword argument 
+- you can send argument with key = value syntax
+-ex:def myfun(fname,lname):
+    	print("first name is:", fname, "last name is:", lname)
+
+	myfun(fname="jay", lname="desai")
+	myfun(fname="dip", lname="patel")
+
+
+* positional argument
+- when you call function with argument without using keyword, they are called positional argument
+- positional argument must be currect order
+-ex:def myfun(fname,lname):
+    	print(f"first name is: {fname}, last name is: {lname}")
+    
+	myfun("jay", "desai")
+	myfun("dip", "desai")
+
+
+* mixing positional and keyword argument
+- you have mix positional and keyword argument in a function call
+-ex:def myfun(name, age):
+    	print(f"name is:{name} and age is:{age}")
+	myfun("jay",age=23)
+
+
+* positional-only argument(/)
+- you can specify that a function can have only positional anrument
+- to specify positional-only argument add , / with the argument
+-ex:def myfun(name, age, /):
+  		print("Hello name is", name, "age is", age)
+	myfun("jay",21)
+	# myfun(nam="jay",age=21)               Error...........
+
+
+* keyword-only argument(*)
+- To specify that a function can only keyword argument, add *, before the argument
+-ex: def myfun(*,name, age):
+  		print("Hello name is", name, "age is", age)
+	myfun(name="jay",age=21)
+	# myfun("jay",21)                        Error.............
+
+
+* *args (non-keyword argument) (Arbitrary Arguments)
+- *args syntax allow a function to accept any number of positional argument. all passed value are collected into tuple which can be accessed iterated inside function
+- This is useful when the number of argument of argument is not known beforehand
+-ex:def myfun(*name):
+    	for i in name:
+        	print(i)
+
+	record = ("jay",'dip',"ram","raj","man")
+	myfun(record)
+
+* **kwargs (keyword argument) (Arbitrary Keyword Arguments)
+- **kwargs syntax allow a function to accept any number of keyword argument.
+- All argument collected into a dictionary, where the argument key and their corresponding value become dictionary value
+-ex:def myfun(**kwargs):
+    	for key,value in kwargs.items():
+        	print(key, ":", value)
+	myfun(name="jay",age=21,city="surat",email="jay@gmail.com")
+
+
+* Python Recursion
+- recursion is when a function call itself
+- recursion is common mathematical and programing concept. it means the function call itself. this is benefit of meaning that you can loop through data to reach result.
+=> Base and Recursive Case:
+- Base Case: A condition is stop the recursion
+- Recursive Case: The function calling itself with modify argument
+-ex:def coutdown(n):
+	    if n <= 0:
+    	    print("Done")
+	    else:
+    	    print(n)
+        	coutdown(n-1)
+	coutdown(5)
+
+* first class function in python
+- function are treated as first class object.
+- this means they can be used just number, string and any other variable
+- assign function to variable
+- pass argument to function
+- return from function
+- store them in data structure such as list, dictionary
+- (i) assign function
+-ex:def myfun():
+		return "hello"
+	a = myfun()
+	print(a)
+
+- (ii) pass argument in function
+-ex:def myfun(name):
+		print(f"name is:{name}")
+	myfun()
+
+- (iii) return from function 
+-ex:def fun1(name):
+		def fun2():
+			return f"Hello, {name}"
+		return fun2
+	fun = fun1("jay")
+	print(fun())
+
+- (iv) storing function in data structure
+-ex:def add(x, y):
+	    return x + y
+	def sub(x, y):
+    	return x - y
+	d = {
+	    "add" : add,
+	    "sub" : sub
+	}
+	print(d["add"](22,11))
+	print(d["sub"](22,11))
+
+
+* lambda function
+- lambda function are small anonymous function, meaning they do not have define name.
+- These are small, sorted live function used to pass simple logic to another function
+- contain only one expression
+- result of that expression is returned automatically (no return keyword needed)
+-ex: a = "hello world"
+	 string = lambda x : x.upper()
+     print(string(a))
+
+- (i) Condition checking
+    	- lambda function  can use conditional expression (if-else) to return different result base on condition
+	    -ex:check = lambda x : "positive" if x > 0 else "negative" if x < 0 else "zero"
+		    print(check(5))
+		    print(check(-5))
+			print(check(0))
+	
+- (ii) List comprehension
+		- lambda can be combined with list comprehension to apply with same operation to multiple value in a compact way
+		-ex:fun = [lambda arg = i: arg*10 for i in range(5)]
+			for x in fun:
+    			print(x())
+
+- (iii) Return Multiple Result
+		- Although a lambda can contain only one expression, it can still return multiple result by combining them tuple
+		-ex:calc = lambda x, y: (x + y, x * y)
+			print(calc(10,11))
+			print(calc(10,7))
+	
+- (iv) lambda with map() function
+		- map() function applies a function to every item in an iterable
+		-ex:l1 = [10,20,30,40, 50]
+			l2 = list(map(lambda x: x*2, l1))
+			l3 = tuple(map(lambda x: x*x, l1))
+			print(l1)
+			print(l2)
+			print(l3)
+ 
+- (v) lambda with filter() function
+		- filter() function creates a list of items for which a function return True
+		-ex:l1 = [23,45,54,78,21,98,67,42,97]
+			odd = list(filter(lambda x : x%2!=0, l1))
+			even = list(filter(lambda a : a%2==0, l1))
+			print("Odd number:", odd)
+			print("Even number:", even)
+
+- (vi) lambda with reduce() function
+		- reduce() function(from the functools module) applies a function cummulatively to the element of an iterable and return single final value.
+		- It process element step by steo combining two element at time until only one runtime remains.
+		-ex:from functools import reduce
+			a = ["Hello", ",", " How", " are", " you"]
+			r = reduce(lambda x,y : x  + y, a)
+			print(r)
+		
+		-ex:from functools import reduce 
+			l1 = [10,20,30,40,50,60,70,80,90,100]
+			addition = reduce(lambda x, y: x + y, l1)
+			print(addition)
+
+
+* Inner Function Python(Inside Function, Nested Fuction)
+- In python, an inner function (also called nested function) is a function defined inside another function. They are mainly used for:
+   - Encapsulation : Hiding helper logic from external access.
+   - Code Organization : grouping related functionality for clear code.
+   - access outer variable : inner function can use variables of the enclosing(outer) function.
+   - Clouure and Decorator : supporting advanced features like closures (function that remember value) and function decorator
+   - ex:def fun1(msg):
+    		def fun2():
+	        	print(msg)
+    		fun2()
+		fun1("Hello, Welcome my profile")
+	
+	=> nonlocal Keyword
+	- The nonlocal keyword is used to work with variable inside nested function
+	- nonlocal keyword makes the variable belong to the outer function
+	-ex:def fun1():
+    		x = "jay"
+    		def fun2():
+        		nonlocal x
+        		x = "man"     
+    		fun2()
+    		return x
+		print(fun1())
+
+
+* Decorator function
+- decorator let you add extra behaviour to a function, without changing the function call
+- A decorator is a function that take another function as input and return new functoin
+- (i) Basic decorator
+  - define the Decorator first, then apply 	it with @decorator_name function 
+  - ex: def changecase(fun):
+    		def inner():
+        		return fun().upper()
+       		return inner
+
+		@changecase
+		def myfun():
+    		return "hello world"
+		print(myfun())
+
+- (ii) Multiple decorator
+  - A decorator can be called multiple time. just place the decorator above the function you want to decorate
+  - ex : def changecase(fun):
+    		def inner():
+        		return fun().upper()
+    		return inner
+
+		@changecase
+		def fun1():
+    		return "Hello world"
+
+		@changecase
+		def fun2():
+    		return "How are you"
+
+		print(fun1())
+		print(fun2())
+
+- (iii) argument with decorator
+  -  Function that require argument can also be decorated just make sure you pass the argument to the wrapper function
+  

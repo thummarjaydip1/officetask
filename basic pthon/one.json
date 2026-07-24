@@ -1,0 +1,18 @@
+{
+    "name": "jay",
+    "age": 21,
+    "email": "jay@gmail.com",
+    "married": true,
+    "children": [
+        "mayur",
+        "mayuri"
+    ],
+    "address": [
+        {
+            "city": "bagasara"
+        },
+        {
+            "pincode": 365440
+        }
+    ]
+}

@@ -1,0 +1,424 @@
+**** Python Json ****
+- Json is a syntax is storing and exchanging data.
+- Json is text, written with javascript object notation.
+- python has a built in package called json which can be used work with json data
+- ex: import json
+
+* Parse jon - Convert from json to Python
+- if you have json string, you can parse it by using the json.loads() method
+- The result will be python dictionary
+- ex:   import json
+        x = '{"name":"jay","age":21,"city":"surat"}'
+        print(x)
+        print(type(x))
+
+        print()
+
+        y = json.loads(x)
+        print(type(y))
+        print(y)
+
+
+* Convert from Python to Json
+- If you have python object, you can convert into a json string by using the json.dumps() method.
+- ex :  import json
+    a = {
+        "name" : "jaydip",
+        "age" : 21,
+        "city" : "surat"
+    }
+    print(a)
+    print(type(a))
+
+    print()
+
+    b = json.dumps(a)
+    print(b)
+    print(type(b))
+
+- If you can convert python objects of the following type, into type json.
+- list, tuple, dict, string, int, float, True, flase, None
+
+
+* Format and ordered result
+- the example above pritn a json string but a not a easy to read with no indentation and line breaks.
+- the json.dumps() method has parameter to make it easier to read a result
+- you can define the seperator, default value is ("," , ":") which means using a comma and a space to seperate each object, and a colon and space to seperate key from value
+- use sort_keys parameter to specify if the result shoud be sorted value
+- ex:   import json
+        x = {
+            "name" : "jay",
+            "age" : 21,
+            "email" : "jay@gmail.com",
+            "married" : True,
+            "children" : ("mayur", "mayuri"),
+            "address" : [
+                    {"city" : "bagasara"},
+                    {"pincode" : 365440}
+                ]
+        }
+
+        y = json.dumps(x, indent=4, separators=("." , " = "), sort_keys=True)
+        print(type(y))
+        print(y)
+
+* Json file write
+- Use json.dump() to write a python dictionary to a json file. 
+- write file in use more functionally like a indent and sort_keys
+- ex:   import json
+        data = {
+            "name" : "jay",
+            "age" : 21,
+            "city" : "surat"
+        }
+        with open("one.json", "w") as file:
+            json.dump(data, file, indent=4, sort_keys=True)
+
+        print("json file written successfully")
+
+
+* Json file read
+- If you have json data stored in a .json file, python json module makes it is to read and convert into python dictionary using the json.load() function
+
+
+
+
+
+**** Python RegEx ****
+- A RegEx, or Regular expression, is sequence character that format serach string.
+- RegEx can be used to check if a string contains the specific search contains.
+- python has built-in package called re, which can has work with regular expression
+- ex : import re
+
+* Meta character
+    - [] set character
+    - \ signal a special sequence       # \d find digit
+    - . any character
+    - ^ start with
+    - $ end with
+    - * zero or more occurrences
+    - * one or more occurrences
+    - ? zero or one occurrences
+    - {} exactly the special number of occurrences
+    - | Either or
+    - () capture and group
+
+
+* RegEx Methods 
+=> (i) findall()
+    - The findall() function return a list containing all match
+    - the list contains the match in the order they are a found, if no match are not found an empty list return
+    - ex:   import re
+            txt = "Hello World"
+            x = re.findall("l", txt)
+            print(x)
+
+=> (ii) search()
+    - The search() function search the string for a match, and return search object if there is a match 
+    - if there is more than one match, only the first occurrence the match will be returned
+    - ex :  import re 
+            txt = "hello user how are you?"
+            x = re.search("\s", txt)
+            print(x)
+        
+=> (iii) split()
+    - The split() function return a list where the string has been split at the match
+    - ex:   import re
+            txt = "hello user how are you?"
+            x = re.split("\s", txt)
+            print(x)
+
+    -ex:    import re
+            txt = "hello user welcome to my profile"
+            x = re.split("\s", txt, 3)
+            print(x)
+
+=> (iv) sub()
+    - The sub() function replaces the matches with the text of your choice
+    - ex:   import re
+            txt = "hello user welcome to my profile"
+            x = re.sub("\s", "-", txt)
+            print(x)
+
+* RegEx Special Sequence
+- A special sequence is a \ followed by character in the list bellow 
+    - \A return match specified character are at the begining of the string
+    - \d return match where are string contains digit (number from 0-9)
+    - \D return match where the string does not contain digits
+    - \s return match where the string contain a white space character
+    - \S return match where string does not contain a white space character
+    - \w return match where string contain any where (a to z and 0 to 9)
+    - \W return match where does not any string character
+
+
+
+
+
+**** Exception Handling ****
+- Exception handling allow a program to handle unexpected error duration execution in controlled way, instead of crashing abruptly.
+- It enable program to detect error, manage them properly and countinue execution wherever possible
+- Hanle a runtime error such as invalid input, file not found, divide by zero and type mismatch that occur during program execution.
+
+=> try : The try block let you test block of code for error
+=> except: The except block handle the error
+=> else: The else block let you execute code when there is no error
+=> finally: The finally block let you execute code, regardless of the result of the try-except block
+- ex:   try:
+            a = int(input("enter first value:"))
+            b = int(input("enter second value:"))
+            print("first value:", a)
+            print("second value:", b)
+            ans = a / b
+        except ValueError:
+            print("value error generated")
+        except ZeroDivisionError:
+            print("divide by zero exception generate")
+        else:
+            print("division is:", ans)
+        finally:
+            print("this is finally block")
+
+
+* Catching Exception
+- we can handle error more efficintly by specifying the type of exception we except.
+
+=> (i) specific exception
+    - catching specific exception make code to respond to different exception type differently. 
+    - It precisely make your code safer and easier debug.
+    - It avoid masking bugs by only react to the exact problem your except.
+    - ex:-  try:
+                x = int("string")
+                ans = 15 / x
+            except ValueError:
+                print("Not valid generated value error")
+            except ZeroDivisionError:
+                print("zero divide by error")
+
+=> (ii) multiple exception
+    - we can catch multiple exception a single block if we need to handle them in same way or we can seperate them if different type of exception require different Handling
+    -ex :   list1 = ["10", "hello", True, 12.32]
+            try:
+                total = int(list1[0]) + int(list1[1])
+                print(total)
+            except (ValueError, TypeError) as e:
+                print("Error", e)
+
+            except IndexError:
+                print("Index error generated")
+
+=> (iii) catch all handlers and their risk
+    - catch all handler is used to catch any exception. 
+    - use only except keyword to define it.
+    - ex:    try:
+                a = "hello" / 23
+                print(a)
+            except ArithmeticError:
+                print("Arithmetic error")
+            except:
+                print("somthing went wrong")
+
+* raise keyword
+- as a python developer you can choose to throw an exception if a condition occurs.
+- To throw an exception, use raise keyword
+- ex :  x = -1
+        if x < 0:
+            raise Exception("number is nagative")
+- error:---------------------------------------------------------------------------
+        Exception                                 Traceback (most recent call last)
+        Cell In[51], line 3
+            1 x = -1
+            2 if x < 0:
+        ----> 3     raise Exception("number is nagative")
+        Exception: number is nagative
+
+
+* Buil-in exception
+- python provide a set of built-in exception, each design to single a Special type of error and help to debug more effectively.
+
+=> (i) BaseException
+    - This class is the root of python exception hierarchy.
+    - all exception are directly or indirectly inherit for it.
+    - while it is rarely used directly in code, it is important because it from the fundamentalof python error handling system.
+    - ex:   try:
+                raise BaseException("This is base exception")
+            except BaseException as e:
+                print(e)
+
+=> (ii) Exception
+    - Exception class is the base for all non - exit exception.
+    - you will often catch exception in general error handling code when you are not targeting a specific type error.
+    - ex:   try:
+                raise Exception("This is generic exception")
+            except Exception as e:
+                print(e)
+
+=> (iii) ArithmeticError
+    - ArithmeticError class is the base for all error related to mathemetical operation. 
+    - you don't usually raise it directly, but it provide a way to catch all math - related error in one block
+    - ex :  try:
+                raise ArithmeticError("Arithmetic error occurred")
+            except ArithmeticError as e:
+                print(e)
+
+=> (iv) ZeroDivisionError
+    - ZeroDivisionError occur when you attempt to divide by zero.
+    - since division by zero is undefined in mathematics, python raise this exception to single error
+    - ex :  try:
+                res = 24 / 0
+            except ZeroDivisionError as e:
+                print(e)
+
+=> (v) OverflowError
+    - OverflowError occurs when the result of a numberical operation is too large for python to represent.
+    - while it handle large integer well, certain floating point operation can still cause this error
+    - ex:   import math
+            try:
+                result = math.exp(1000)  
+                print(result)
+            except OverflowError as e:
+                print(e)
+
+=> (vi) FloatingPointError
+    - FloatingPointError occur when a floating point calculation fails.
+    - python handle most floating point issues silently.
+    - However, you can explicitly enable floating-point error reporting error reporting with library like numpy
+    - ex :  import numpy as np
+            np.seterr(all="raise")
+
+            try:
+                np.divide(1,0)
+            except FloatingPointError as e:
+                print("floating error:", e)
+
+=> (vii) AssertionError
+    - AssertionError is raise when the assert statement fails.
+    - The assert keyword is often user for debugging and testing assumpion in code.
+    - ex :  try:
+                assert 2!=2, "Assertion fail"
+            except AssertionError as e:
+                print(e)
+
+=> (viii) AttributeError
+    - AttributeError occur when you try to access or assign an attribute that does not exist for an object
+    - ex:   class Myclass:
+                def one():
+                    return "hello"
+                
+            obj = Myclass()
+
+            try:
+                obj.disp()              # obj.one() exception not generated
+            except AttributeError as e:
+                print(e)
+
+=> (ix) IndexError
+    - IndexError happens when you try to access a list element with an index that is out of range
+    - ex:   l1 = [23,435,56,87]
+            try:
+                print(l1[5])
+            except IndexError as e:
+                print(e)
+
+=> (x) KeyError
+    - KeyError occur when you try to access a dictionary key that doesm't exist
+    - ex:   dic = {
+                "name" : "jay",
+                "age" : 21,
+                "city" : "surat"
+            }
+            try:
+                val=dic["marks"]
+            except KeyError as e:
+                print(e)
+
+=> (xi) NameError
+    - NameError occurs when you use a variable or function name that has not been defined
+    - ex:   try:
+                print(variable)
+            except NameError as e:
+                print(e)
+
+=> (xii) OSError
+    - raise system related exception 
+    - IOError is just an alias for OSError
+    - FileNotFoundError is a subclass of OSError, specifically raised when a file or directory does not exists
+    - ex:   try:
+                open("onefile.json")
+            # except FileNotFoundError as e:
+            #     print("file not found error:", e)
+            except OSError as e:
+                print("OSError caught:", e)
+
+
+* User Define exception
+- User define exception are created by defining a ne class that inherit from python built-in function class or one of its subclasses.
+- By doing this, we can create custom error message and handle specific error in a way that make sense for our application.
+- step to create user define function
+=> Define a New class: Create a new class that inherit form exception or any of its subclass
+=> Raise the exception: Use the raise statement to raise the user define exception when a specific condition occur.
+=> Handle the exception: Use try-except block to handle the user-define function
+
+
+
+
+**** Python file handling ****
+
+- file handling refers to the process of performing operations on a file, such as creating, opening, reading, writing and closing it through a programing interface
+- It involve managing the data flow between the program and the program and the file system on the storage device, ensuring that data is handled safely and efficintly
+
+* Need for File Handling
+- store data permanently, even after the program end.
+- access external file like .txt, .csv, .json, etc.
+- process large file efficiently without using much memory.
+- Automate tasks like reading configs or saving outputs.
+
+
+* opening file 
+- To open a file, we can use open() function, which requires file path and mode as arguments
+- default mode r mode provide in python 
+- ex:   f = open("one.txt")
+        print(f)
+
+
+* closing file
+- file.close() method closes the file and releases the system resources. if the file was opened in write or append mode, closing ensures that all change are properly saved.
+- ex:   f = open("one.txt", "r")
+        f.close()
+
+
+* checking file property
+- one file are open and check some property 
+- ex:   f = open("one.txt", "r")
+        print("file name:", f.name)
+        print("file mode:", f.mode)
+        print("Is closed:", f.closed)
+
+        f.close()
+        print("Is closed:", f.closed)
+
+
+* Reading a File
+- Reading a file can be achieved by file.read() which reads the entire content of the file.
+- after reading, it's good practice to close the file to free up system resources.
+- reading a file in read mode(r)
+- ex:   f = open("one.txt", "r")
+        a = f.read()
+        print(a)
+
+
+* writing file 
+- writing to a file is done using the mode "w".
+- this create a new file doesn't exist or overwrites the existing file if it does.
+- the write() method are used to add content after writing, make sure to close file.
+- writing to a file (overerite if file exists)
+- ex:   f = open("one.txt", "w")
+        f.write("hello python")
+        f.write(" file handling")
+        f.close()
+
+
+* with open statement
+- instance of manually opening and closing the file, you can use the with statement, which automatically closing.
+- ex:   with open("one.txt", "r") as f:
+            data = f.read()
+            print(data)

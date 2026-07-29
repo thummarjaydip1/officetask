@@ -1,0 +1,81 @@
+--------------------- Heapq in Python ---------------------
+
+* Heap queue or heapq in Python
+- A heap queue (also called a priority queue) is a data structure that allow quick access to the smallest and largest element.
+- By default, heap are implemented as min heaps.
+- smallest element is always at the root and largest element is located among the leaf nodes of the heap.
+- python provide a built in module called heapq that allow to create and work with heap queue.
+- heapify() method are use to sort the list.
+- ex:   import heapq 
+        a = [25,35,10,30,20,15,40,50,45]
+        heapq.heapify(a)
+        print(a)
+
+
+* Appending element
+- Add new element to the heap.
+- use method heapq.heappush(heap, item)
+- ex:   import heapq
+        a = [25,35,10,30,20,15,40,50,45]
+        heapq.heappush(a, 5)
+        print(a)
+
+
+* poping element
+- remove and return smallest element.
+- use method heapq.heappop(heap)
+- ex:   import heapq
+        a = [25,35,10,30,20,15,40,50,45]
+        heapq.heapify(a)
+        b = heapq.heappop(a)
+        print(b)
+        print(a)
+
+
+* Appending and poping simultaneously
+- heapq.heappushpop() push new element into the heap and remove the smallest element in a single operation.
+- ex :  import heapq
+        a = [25,35,10,30,20,15,40,50,45]
+        heapq.heapify(a)
+        b = heapq.heappushpop(a, 55)
+        print(b)
+        print(a)
+
+
+* Finding largest element
+- heapq.nlargest() method find largest elements from an iterable.
+- ex:   import heapq 
+        a = [25,35,10,30,20,15,40,50,45]
+        b = heapq.nlargest(3, a)
+        print("3 largest element:", b)
+
+
+* Finding smallest element
+- heapq.nsmallest() method find smallest elements from an iterable.
+- ex:   import heapq 
+        a = [25,35,10,30,20,15,40,50,45]
+        b = heapq.nsmallest(4, a)
+        print("4 smallest element:", b)
+
+
+* replace element
+- heapq.heapreplace() remove the smallest element and insert new one in asingle step, returning the removed value.
+- ex:   import heapq
+        a = [25,35,10,30,20,15,40,50,45]
+        heapq.heapify(a)
+        b = heapq.heapreplace(a, 55)
+        print("remove:",b)
+        print(a)
+
+
+* merge element
+- heapq.merge() combine multiple sorted iterable into a single sorted sequence.
+- ex:   import heapq
+        a = [25,35,10,30,20,15,40,50,45]
+        b = [55,60,65,70]
+        c = tuple(heapq.merge(a, b))
+        print(c)
+
+        d = list(heapq.merge(sorted(a), sorted(b)))
+        print(d)
+

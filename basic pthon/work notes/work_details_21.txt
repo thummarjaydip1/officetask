@@ -1,3 +1,10 @@
+--------------------- Array ---------------------
+--------------------- Python Iterator ---------------------
+--------------------- Python Module ---------------------
+--------------------- PIP ---------------------
+--------------------- Math module ---------------------
+--------------------- Date ---------------------
+
 **** Python Array ****
 - python does not have built in support for Arrays, but Python list can be used instead.
 - this page show you how  to use lists as array, however, to work with array in python you will have to import a library, like the numpy library

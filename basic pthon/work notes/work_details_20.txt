@@ -1,3 +1,6 @@
+--------------------- Function ---------------------
+
+
 **** Python Fuction ****
 
 - A function is a block of code which only run when it is called.
@@ -347,7 +350,3 @@
 
 		print(fun1())
 		print(fun2())
-
-- (iii) argument with decorator
-  -  Function that require argument can also be decorated just make sure you pass the argument to the wrapper function
-  

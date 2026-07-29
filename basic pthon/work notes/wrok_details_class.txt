@@ -1,0 +1,668 @@
+--------------------- Python OOP (Class) ---------------------
+
+
+
+**** Python OOP ****
+
+* What is OOP
+- OOP stands for object oriented programing.
+- python is an object oriented programing language, allow you to structure your code using classes and object for better organization ans resuability.
+- class and object are the two core concept in object oriented programing.
+- A class define what an object should be like, and an object is created base on that class.
+- ex: class name => Fruits and  object name => apple, banana, mango.
+- object oriented programing empower developer to build moduler, maintaintable and their behaviour.
+- In object has attribute thing that has specific data and can perform certian action and methods.
+- organizes code into classes and objects.
+- class is collection of object, class are blueprints for creating object.
+- A calss is an user defined prototype for an object that define a set of attribute and characterize an any object of class .
+- The attributes are data member(class variable and instance variable) and methods, accessed via dot(.) notation.
+
+=> Advantage of OOP
+- provide clear structure program
+- make code easire to maintain, reuse, and debugg
+- Help keep your code DRY (Don't repeat yourself)
+- allow you to build reusable application with less code
+
+
+
+* Python class and object
+- python is object oriented programing language.
+- almost everything python is an object, with its properties and method.
+- we can then creat emultiple instance of this object type.
+
+=> create class
+- class are define using class keyword, followed by class name and colon.
+- attribute are variable define inside class and represent property of class. 
+- attribute can access using dot operator
+-ex:    class Myclass:
+            age = 21
+
+=> create object
+- An object is specific instance of class. 
+- It holds its own set of data(instance variable) and can invoke method define by its class.
+- multiple object can be create from same class
+-ex:    class Myclass:
+            age = 21
+            name = "jay"
+            def display(self):
+                print("name is:",self.name, "and age is:", self.age)
+
+        obj = Myclass()
+        obj.display()
+
+=> create multiple object
+- you can create multiple object as same class
+-ex:    class Myclass:
+            age = 21
+            name = "jay"
+
+        obj1 = Myclass()
+        obj2 = Myclass()
+        obj3 = Myclass()
+        obj4 = Myclass()
+
+        print(obj1.name, "and", obj1.age)
+        print(obj2.name, "and", obj2.age)
+        print(obj3.name, "and", obj3.age)
+        print(obj4.name, "and", obj4.age)
+
+=> delete object
+- you can delete class object using del keyword
+-ex:    class Myclass:
+            def display(self):
+                print("this is display method")
+
+        obj = Myclass()
+        obj.display()
+
+        del obj
+        obj.display()
+
+=> pass statement
+- class definition cannot be empty, but if you for some reason for a class definition with no statement, put in the pass statement to avoid getting on error.
+-ex:    class Myclass:
+            pass
+
+        obj = Myclass()
+        print(obj)
+
+
+
+* constuctor in class
+- constuctor are special method used to initialize object when they are created from a class.
+- object creation and initialization are handle through the __new__() and __init__() method.
+- constructor help assign initial value to object attribute and prepare objects for use.
+- The __new__() method creates and returns instance object of the class, it is called before __init__() method.
+- The __init__() method initialize the newly create object
+
+=> __init__() method 
+- this method initialize the newly created instance and is commonly used as a constructor in python.
+- it is called immediately after the objects is created.
+
+    => (i) Default constructor
+        - A Default constructor does not take any parameter often than self.
+        - It initialize the object with default attribute value.
+        - ex:   class Myclass:
+                    def __init__(self):
+                        print("defualt constructor method")
+                        self.name = "jay"
+                        self.age = 21
+                        self.city = "surat"
+                    
+                obj = Myclass()
+                print(obj.name)
+                print(obj.age)
+                print(obj.city)
+
+    => (ii) parameterized constructor
+        - A parameterized constructor accepts arguments to initialize the object attribute with specific value.
+        - ex:   class Myclass:
+                    def __init__(self,name, age, city):
+                        print("parameterized constructor")
+                        self.name = name
+                        self.age = age
+                        self.city = city
+
+                obj = Myclass("jaydip", 21, "surat")
+                print(obj.name)
+                print(obj.age)
+                print(obj.city)
+    
+
+=> __str__() method
+- __str__() method allow as to define a custom string representation of an object.
+- By default, when we print an object or convert to a string using str(), python use a default implementation 
+- Take an example of using __str__() method are provide readable string output for an object.
+- ex:   class Car:
+            def __init__(self, brand, model):
+                self.brand = brand
+                self.model = model
+
+            def __str__(self):
+                return f"Brand is: {self.brand} and model is: {self.model}"
+
+        obj1 = Car("Brezza", 2020)
+        print(obj1)
+
+        obj2 = Car("Creta", 2023)
+        print(obj2)
+
+
+
+* self as defualt arguments
+- In python, when define method inside the class, first parameter is always self.
+- It is not a keyword, but a naming convention that plays a key role in python object oriented programing.
+- self parameter represent instance of the class itself, alllowing to you access and modify its attributes and method.
+
+- self in __init__ assign value (brand and model) to the specific instance (Car).
+- slef in display refer to the same instance (Car) to access attribute.
+- python automatically passes (Car) as first argument to the display()
+
+=> clarity : Following python explicit is better than implicit rule, it make code easire to read.
+=> flexibility : you can use any name(myself, this), but self is standard.
+=> consistency : keeps all method uniform accross in classes.
+
+- ex :  class Myclass:
+            def __init__(this, *, name, age):           # keyword argument
+                this.name = name
+                this.age = age
+
+            def display(this):
+                return f"Name is: {this.name} and Age is: {this.age}"
+
+        obj = Myclass(name="jay", age=21)
+        print(obj.display())
+
+
+
+* polymorphism in class
+- polymorphism means "many forms" and allow the same method, function and operator tobehave differently depending on the object or date it work with.
+- This flexibility help create more reusable, maintaintable and scalable code.
+- Real-Life example: In a backend pyment system, multiple pyment option are availbale such as credit car, UPI, net banking and wallet.
+
+=> (i) Compile-time polymorphism
+    - Compile time polymorphism involve selecting method or operation before program execution, typically through method or operator overloading.
+    - python does not support true compile-time polymorphism bacause method call resolve runtime.
+    - However, similar behaviour can be achieved using default argument, variable length argument (*args), or keyword argument(**kwargs)
+    - ex:   class Myclass:
+                def multiply(self, a=1, b=1, *args):
+                    result = a * b
+                    for i in args:
+                        result = result * i
+                    return result
+
+            obj = Myclass()
+            print(obj.multiply())
+            print(obj.multiply(12))
+            print(obj.multiply(2,5))
+            print(obj.multiply(1,2,3,4,5))
+
+=> (ii) runtime polymorphism
+    - runtime polymorphism means that the behaviour of a method is decided while program is running, base on object calling it.
+    - This heppens through method overriding child class provide it's over version of a method define in the parent class.
+    - ex :  class Cat():
+                def __init__(self, name, age):
+                    self.name = name
+                    self.age = age
+
+                def sound(self):
+                    print("meow...")
+
+            class Dog():
+                def __init__(self, name, age):
+                    self.name = name
+                    self.age = age
+
+                def sound(self):
+                    print("brak...")
+
+            class Horse():
+                def __init__(self, name, age):
+                    self.name = name
+                    self.age = age
+
+                def sound(self):
+                    print("hihihi...")
+
+            a1 = Cat("kitty", 1)
+            a2 = Dog("sheru", 3)
+            a3 = Horse("king", 5)
+
+            for i in (a1, a2, a3):
+                print(i.name)
+                print(i.age)
+                i.sound()
+                print()
+
+    => polymorphism built-in function
+        - python built-in function such as len() and max() are polymorphic because they work with different datatype and return result base on type of object passed.
+        - ex :  print(len("Hello world"))
+                print(len([1,2,3,4,5,6,7,8,9,10]))
+                print(len((1,2,3,4)))
+
+                print(max(34,54,23,65,32))
+                print(min(34,54,23,65,32))
+
+
+    
+* Python Inheritance
+- Inheritance is fundamental topic concept of object oriented programing language that allow a class to inherit attribute and method from the another class.
+- Inheritance allow us to a class that inherits all the methods and properties of another class.
+- parent class is the class being inherited from, also called base class.
+- child class is the class that inherit from another class, also called delivered class.
+- ex :  class Myclass:
+            def __init__(self, name, age):
+                self.name = name
+                self.age = age
+
+            def display(self):
+                return f"name is: {self.name} and age is: {self.age}"
+
+        class Person(Myclass):
+            pass
+
+        p1 = Person("jay", 21)
+        print(p1.display())
+
+=> super() function
+- super() function are used to call all method from a superclass Following python method resolution order.
+- in perticuller it,s commonly used in the child class __init__() method to initialize inherited attribute.
+- this way, the child class can leverage the functionality of the parent class
+- ex:   class Myclass:
+            def __init__(self, name):
+                self.name = name
+
+            def disp(self):
+                print("name is:", self.name)
+
+        class Person(Myclass):
+            def __init__(self, name, age):
+                super().__init__(name)
+                self.age = age
+
+            def display(self):
+                print("name is:", self.name, "age is:", self.age)
+
+        p1 = Person("jay", 21)
+        p1.disp()
+        p1.display()
+
+=> multiple Inheritance
+- multiple Inheritance is a type of Inheritance where are single can inherit attribute and method from more than one parent class.
+- This can be used when you want to get the functionality of multiple classes into a single class.
+- ex:   class Father:
+            def father(self):
+                print("hello father")
+
+        class Mother:
+            def mother(self):
+                print("hello other")
+
+        class Child(Father, Mother):
+            def child(self):
+                print("hello child")
+
+        c1 = Child()
+        c1.child()
+        c1.mother()
+        c1.father()
+
+    => super() method with multiple Inheritance
+        - The super() function is used by child class to call a method from a parent class. if you use super() in a method in the case of multiple inheritance,
+          It will strictly follow the MRO order to determine wich method to call
+        -ex :   class A:
+                    def show(self):
+                        print("class A")
+
+                class B(A):
+                    def show(self):
+                        print("class B")
+                        super().show()
+
+                class C(A):
+                    def show(self):
+                        print("class C")
+                        super().show()
+
+                class D(C, B):
+                    def show(self):
+                        print("class D")
+                        super().show()
+
+                obj = D()
+                obj.show()
+
+=> Multilevel Inheritance
+- multilevel inheritance is type of inheritance that heppen hierarchically such that have derived class inherits from another derived class.
+- meaning, a class is derived from class which is also derived from another class.
+- This forms is chain of inheritance.
+- ex:   class A:
+            def showa(self):
+                print("class A")
+
+        class B(A):
+            def showb(self):
+                print("class B")
+
+        class C(B):
+            def showc(self):
+                print("class C")
+
+        obj = C()
+        obj.showa()
+        obj.showb()
+        obj.showc()
+
+
+
+* Method overridding
+- The python method overriding refer to defining a method in subclass with same name the method in its superclass,
+- You can always override your parent class method. one reason for overridding parent method is that you may want special or different functionality in your subclass.
+- ex:   class Myclass:
+            def display(self):              # this method are override
+                print("hello myclass")   
+
+        class Person(Myclass):
+            def display(self):
+                print("hello person")
+
+        p1 = Person()
+        p1.display()
+
+
+* Method overloading
+- method overloading is feature of object oriented programing where a class can have multiple method with the same name but different parameter.
+- to overload method, we must change the number of parameter or the type of parameters or both
+
+
+
+* Abstraction Python
+- Abstraction is the proccess of hiding implementation detail and exposing only the essential functionality to the user.
+- It is used to hide the implementation detail from the user and expose only neccessary part, making the code simpler and easire to interact with.
+
+=> Abstract base class (ABC) 
+- Abstract base class (ABC) is used achieve data Abstraction by defining a common for its subclasses.
+- It cannot instained directly and serves as blue print of the class.
+- abstract classes create using abc module and @abstractmethod decorator, alllowing developer to in for method implementation in subclass while hiding complex internal logic.
+
+=> (i) Abstract Method
+- Abstract methods are method declarations without a body defined inside an abstract class.
+- ex :  from abc import ABC, abstractmethod
+        class Animal(ABC):
+            @abstractmethod
+            def display(self):
+                pass
+
+        a = Animal()
+        a.display()
+
+
+=> (ii) concrete Method
+- concrete method are fully implemented method within an abstract class.
+- subclass can inherit and use them directly, promoting code use without to redefine functionality.
+- ex:   from abc import ABC, abstractmethod
+        class Animal(ABC):
+            @abstractmethod         
+            def sound(self):
+                pass
+
+            def move(self):
+                print("moving")
+
+        class Myclass(Animal):
+            def sound(self):
+                print("sounding......")
+
+        obj = Myclass()
+        obj.move()
+        obj.sound()
+
+
+=> (iii) Abstract properties
+- abstract properties work like abstract method but are used properties.
+- These properties are declare property decorator and marked as abstract using @abstractmethod .
+- subclass must implement these property.
+- ex :  from abc import ABC, abstractmethod
+        class Animal(ABC):
+            @property
+            @abstractmethod
+            def sound(self):
+                pass
+
+        class Dog(Animal):
+            @property
+            def sound(self):
+                return "sounding...."
+
+        d = Dog()
+        print(d.sound)  
+
+
+=> (iv) Abstract class instantiation
+- abstract classes cannot be instantiated directly.
+- this is because they contain one or more abstract method or property that lack implementations
+- ex:   from abc import ABC, abstractmethod
+        class Animal(ABC):
+            @abstractmethod
+            def sound(self):
+                pass
+
+        a = Animal()
+
+
+
+* Encapsulation in python 
+- Python encapsulation is about protect data inside the class.
+- It means keeping data(properties) and method together ina class, whilr controling how the data can be accessed from outside the class.
+- The idea of encapsulation is to bind the datamember and method into the single unit.
+- Help maintain data integrity by alllowing validation and control over the value assign to variable.
+- protect data from anuthorized access and accidental modification.
+- control data update using getter/setter method with validation.
+- ex:   class Myclass:
+            def __init__(self, name, city):
+                self.name = name        # public attribute
+                self.__city = city      # private attribute
+
+        obj = Myclass("jay", "surat")
+        print(obj.name)
+        print(obj.__city)
+
+=> (i) public member
+    - public member are variable or method that can be accessed from anywhere inside the class, outside the class for other module.
+    - By default all member in python are public .
+    - they are define without any underscoreprefix.
+    - ex :  class Myclass:
+                def __init__(self, name):
+                    self.name = name
+
+                def display(self):
+                    return f"name is: {self.name}"
+
+            obj = Myclass("jay")
+            print(  obj.name)
+            print(obj.display())
+    
+=> (ii) protected member
+    - protected member are variables or methods that are indended to be accessed only within the class and its subclass.
+    - They are not strictly private but should be treated interactnal.
+    - python protected member are define a single underscore.
+    - ex :  class Myclass:
+                def __init__(self, name):
+                    self._name = name       # protected member
+
+                def disp(self):
+                    print("inside within class:", self._name)
+
+            class Person(Myclass):
+                def display(self):
+                    print("inside subclass:", self._name)
+
+            p1 = Person("jay")
+            p1.disp()
+            p1.display()
+
+=> (iii) private member
+    - private member are variable or method that cannot be accessed directly from outside of class.
+    - they are used to restrict access and protect internal data.
+    - In python, private member are define double underscore.
+    - ex :  class Myclass:
+                def __init__(self, name):
+                    self.__name = name              # private member
+
+                def display(self):
+                    print("name is:", self.__name)      # private member call in inside class
+
+            obj = Myclass("jay")
+            obj.display()
+
+=> (iv) Decalre protected and private method
+    - Use a single underscore(_) before a method name to indicate it is protected meant to be used within class or its subclass.
+    - User a double underscore(__) define a private method accesible only within class due to name mangling.
+    - ex :  class Bankaccount:
+                def __init__(self):
+                    self.balance = 2000
+
+                def _show_balance(self):
+                    print("account balance is:", self.balance)
+
+                def __add_balance(self, amount):
+                    self.balance = self.balance + amount
+
+                def __remove_balance(self, amount):
+                    self.balance = self.balance - amount
+
+                def credit_debit(self, arg, amount):
+
+                    if arg == "credit":
+                        if amount > 0:
+                            self.__add_balance(amount)
+                            print("credit amount is:", amount)
+                            self._show_balance()
+                        else:
+                            print("enter amount positive")
+
+                    elif arg == "debit":
+                        if amount > 0:
+                            if self.balance >= amount:
+                                self.__remove_balance(amount)
+                                print("debit amount is:", amount)
+                                self._show_balance()
+                            else:
+                                print("Balance bellow to amount please check balance")
+                        else:
+                            print("enter amount positive")
+
+                    else:
+                        print("please enter ('credit', 'debit')")
+
+            obj = Bankaccount()
+            obj._show_balance()
+            print()
+
+            obj.credit_debit("credit", 500)
+            print()
+
+            obj.credit_debit("debit", 1000)
+            print()
+
+=> (v) getter and setter method
+    - In python, getter and setter method are used to access and modify private attribute safely. 
+    - Instead of accessing private data directly, these method provide control access, allowing you to  
+    - read data using getter method 
+    - update data using setter method with optional validation or restrictions.
+    - ex:   class Myclass:
+                def __init__(self):
+                    self.__age = 20
+
+                def get_age(self):
+                    return self.__age
+
+                def set_age(self, age):
+                    if age > 0:
+                        self.__age = age
+                    else:
+                        print("invalid Age")
+
+            obj = Myclass()
+            print(obj.get_age())
+            obj.set_age(25)
+            print(obj.get_age())
+
+
+ 
+* Inner class in python 
+- A class define in another class is known as an inner class or nested class.
+- If an object is created using child class means inner class than the object can also be used by present class or root class.
+- A parent class can be have one or more inner classes but generally inner class are avoided.
+- we can make our code even more object oriented by using the inner class. 
+- A single object of the class can hold multiple sub-objects.
+- we can multiple sub-objects to give good stucture to our program.
+- The inner class can access property and method of outer class.
+- ex :  class Student:
+            def __init__(self):
+                self.name = "jay"
+
+            def stu_display(self):
+                print("student name is:", self.name)
+
+            class Subject:
+                def __init__(self):
+                    self.sub1 = "gujarati"
+                    self.sub2 = "english"
+
+                def sub_display(self):
+                    print(f"first subject: {self.sub1} and second subject: {self.sub2}")
+
+        obj1 = Student()
+        obj1.stu_display()
+
+        obj2 = obj1.Subject()
+        obj2.sub_display()
+
+
+=> (i) Multiple Inner class
+    - In multiple inner class, a single contain more than one ineer class. 
+    - Each inner class works independently but it can interact with the member of outer class.
+    - ex:   class Outer:
+                def show_outer(self):
+                    print("hello outer")
+
+                class Inner1:
+                    def show_inner1(self):
+                        print("hello inner1")
+
+                class Inner2:
+                    def show_inner2(self):
+                        print('hello inner2')
+
+            outer = Outer()
+            outer.show_outer()
+
+            inner1 = outer.Inner1()
+            inner1.show_inner1()
+
+            inner2 = outer.Inner2()
+            inner2.show_inner2()
+
+=> (ii) Multilevel Inner class
+    - The class contain an inner class and that inner class again contain another inner class, it is called multilevel inner class
+    -   ex :    class Outer:
+                    def show_outer(self):
+                        print("hello outer")
+
+                    class Inner:
+                        def show_inner(self):
+                            print("hello inner")
+
+                        class InsideInner:
+                            def show_insideinner(self):
+                                print('hello inside inner')
+
+                outer = Outer()
+                outer.show_outer()
+
+                inner = outer.Inner()
+                inner.show_inner()
+
+                inside_innner = inner.InsideInner()
+                inside_innner.show_insideinner()

@@ -1,0 +1,101 @@
+--------------------- Deque in Python ---------------------
+
+* Deque in Python
+- A deque stands for double ended queue.
+- It is type of data structure taht aalow to add and remove element from both and efficiently.
+- allow fast insertation and deletion from both front and rear ends.
+- works as both a queue(FIFO) and stack(LIFO).
+- Useful in scheduling, sliding window problems and real time data processing.
+- ex :  from collections import deque
+        d = deque(["jay","dip","man","ram","raj"])
+        print(d)
+
+* Access item in deque
+- A deque also support indexing, which means element can be accessed using their using their possition just like lists.
+- positive indexing starts from the left and nagative indexing starts from the right.
+- ex:   from collections import deque
+        d = deque([10,20,30,40,50,60])
+        print(d[0])
+        print(d[3])
+        print(d[-1])
+
+
+* operation in deque
+=> (i) append() method
+    - add an element to the right end of the deque.
+    - ex:   from collections import deque
+            d = deque([10,20,30,40])
+            d.append(50)
+            print(d)
+
+=> (ii) appendleft() method
+    - adda an element to the left end of the deque.
+    - ex:   from collections import deque
+            d = deque([10,20,30,40])
+            d.appendleft(50)
+            print(d)
+
+=> (iii) extend() method
+    - add multiple element to the right end of the deque.
+    - ex:   from collections import deque
+            d = deque([10,20,30,40])
+            d.extend([50,60,70])
+            print(d)
+
+=> (iv) extendleft() method
+    - add multiple element to the left end of the deque.
+    - ex:   from collections import deque
+            d = deque([10,20,30,40])
+            d.extendleft([50,60,70])
+            print(d)
+
+=> (v) remove() method
+    - remove the first occurrence of a specified value.
+    - ex:   from collections import deque
+            d = deque([10,20,30,40])
+            d.remove(20)
+            print(d)
+
+=> (vi) pop() method
+    - remove and return the element form a right end.
+    - ex:   from collections import deque
+            d = deque([10,20,30,40,50])
+            d.pop()
+            print(d)
+
+=> (vii) popleft() method
+    - remove and return the element from the left end.
+    - ex:   from collections import deque
+            d = deque([10,20,30,40,50])
+            d.popleft()
+            print(d)
+
+=> (viii) clear() method
+    - remove all element from the deque.
+    - ex:   from collections import deque
+            d = deque([11,22,33,44,55])
+            d.clear()
+            print(d)
+
+=> (ix) len() method
+    - return the total number of element in the deque.
+    - ex:   from collections import deque
+            d = deque([10,20,30,40,50,60])
+            print(len(d))
+
+=> (x) count() method
+    - return how many time a specific element appears in the deque.
+    - ex:   from collections import deque
+            d = deque([10,20,30,20,40,50,20,60])
+            print(d.count(20))
+
+=> (xi) rotate() method
+    - rotate the element of deque.
+    - ex:   from collections import deque
+            d = deque([10,20,30,40,50])
+            d.rotate(1)
+            print(d)
+
+=> (xii) reverse() method
+    - reverse the order of element in the deque.
+    - ex:   

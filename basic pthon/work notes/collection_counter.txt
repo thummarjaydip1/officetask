@@ -1,0 +1,81 @@
+--------------------- Python Collection Counter ---------------------
+
+
+* Python Collection Counter
+- Counter is subclass is python dict from the collection module.
+- It is mainly use to count the frequency of element in an iterable(like a list, tuple and string) or from mapping(dictionary).
+- It provide a clean and efficient way to tally items without writing extra loop and comes with helpful built-in methods.
+- ex:   from collections import Counter
+        a = [1,1,1,1,2,2,2,3,3,4]
+        b = Counter(a)
+        print(b)
+
+=> iterable : sequence like list, tuple, string.
+=> mapping : dictionary with elements as key and count as value.
+=> keyword argument : string key mapped to counts.
+
+* Access Counter Element
+- we can access the count each element using the element as the key.
+- If an element is not in the counter, return 0.
+- ex:   from collections import Counter
+        a = Counter([1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3])
+        print(a[1])
+        print(a[2])
+        print(a[3])
+        print(a[4])
+        print(a[5])
+
+* Counter methods
+=> (i) update()
+    - Adds count from another iterable or mapping. 
+    - Exists counts increase and new element are added.
+    - ex:   from collections import Counter
+            a = Counter(["apple", "banana"])
+            a.update(("banana", "kiwi", "kiwi"))    # [] True
+            print(a)
+
+=> (ii) elements()
+    - return an iterator over element repeating each as many time as it count.
+    - element are return in arbitrary order.
+    - ex:   from collections import Counter
+            a = Counter([1,2,3,3,5,4,4,4,5])
+            b = list(a.elements())
+            print(b)
+
+=> (iii) most_common()
+    - return list of the n most common element and thier counts from the most common to the least.
+    - if n is not specified, it return all element or counter.
+    - ex:   from collections import Counter
+            a = Counter([1,2,2,2,3,3,3,3,4,4,4,5,6,])
+            b = a.most_common(2)        # first 2 element batave je vadare joy te pela aave mate je element vadhare count thay teva 2 batave
+            print(b)
+
+=> (iv) Increase count manually
+    - increase count single element by 1.
+    - ex:   from collections import Counter
+            a = Counter([1,2,2,3,4])
+
+            a[2] += 2
+            a[1] += 4
+            a[5] += 1
+            print(a)
+
+=> (v) substract()
+    - substract element count from another iterable or mapping.
+    - count can go nagative.
+    - ex:   from collections import Counter
+            a = Counter([1,2,2,2,3,4])
+            a.subtract([2,2,3])
+            print(a)
+
+=> (vi) Arithmetic operator and counter
+    - counter support addition, substraction, intersection, union operations, allowing for various Arithmetic operations
+    - ex:   from collections import Counter
+            a = Counter([1, 2, 2, 3]) 
+            b = Counter([2, 3, 3, 4])
+
+            print(a + b)
+            print(a - b)
+            print(a & b)
+            print(a | b)
+

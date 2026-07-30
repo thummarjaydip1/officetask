@@ -1,0 +1,124 @@
+------------------ DSA in Python ------------------
+
+* DSA in Python
+- DSA stands for Data Structure and Algorithms
+- This tutorial is a beginner-friendly guide for learning data structure and algorihtms using a python.
+- In this article, we will discuss the in-built data structure such as list, tuple, set, dictionary, etc.
+- And some user define data structure such as linked list, tree, graph, etc.
+- DSA are easy access, store and manage data.
+
+=> (i) List 
+    - List is a built in dynamic array which can store element of different datatype. 
+    - It is an ordered collection of item, that is element are stored in the same order as they are inserted into the list.
+    - List store references to the object raher than storing the actual data itself.
+    - List is ordered, Changeable and index base work.
+    - ex:   x = [10, 3.14, "hello", None, True]
+            print(x)
+
+    
+=> (ii) searching element
+    - searching algorithm are used to locate a specific element within a data structure, such as array, list or tree.
+    - They are used for efficiently retrieving in large datasets.
+    - ex:   a = [2,4,6,8,10]
+            print(6 in a)
+            print(a.count(9) > 0)
+
+
+=> (iii) Sorting Algorithms
+    - Sorting algorihtms are used to arrange the element of a data structure, such as an array, list, or tuple, in a perticular order,
+      typically in ascending order or descending order.
+    - ex: a = [2,6,4,10,8]
+        a.sort()
+        print(a)
+        print(sorted(a, reverse=True))
+
+
+=> (iv) String
+    - String is sequesnce of character enclosed within single quotes and double quotes.
+    - they are immutable, so once a string is created, cannot be altered.
+    - String can contain letters, number and special character, they support wide range of operations such as slicing, concatenation, etc.
+    - ex:   a = "hello world"
+            print(a)
+            print(a[3])
+            print(a[2:])
+            print(a[::-1])
+            b = a.replace("h","H")
+            print(b)
+
+
+=> (v) Set 
+    - Set is built-in collection in python that can store unique element of different datatype.
+    - It is an unorder collection, meaning the element do not maintain any specific order as they are added.
+    - Set do not allow duplicate element and automatically remove duplicate value.
+    - ex:   a = {11, 34.43, "hello", True, None, True, "hello"}
+            print(a)
+
+
+=> (vi) dictionary
+    - dictionary is mutable, ordered collection of data that store data in the from of key value pair.
+    - It is like a hash tables any other langauge.
+    - Each key in dictionary in unique and immutable and the value associated with the key can be of any data type, such as number, string, list or even othe dictionary.
+    - we can create a dictionary by using curly braces.
+    - ex :  a = {
+                10 : "hello",
+                "hello" : 11,
+                2.0 : 55
+            }
+            print(a)
+
+
+=> (vii) Recursion
+    - Recursion is a programming technique, where a function call itself in order to solve similar instance of the same problem.
+    - It is used to solve problem that can be broken down into smaller instance of the same problem.
+    - ex:   def myfun(n):
+                if n < 1:
+                    return n
+                else:
+                    myfun(n-1)
+                    print(n)
+            myfun(10)
+    
+=> (viii) Stack
+    - stack is linear data structure that store items in a last-in/ first-out manner. 
+    - In stack a new element add at one end an element is remove from the end only.
+    - The insert and delete operations are often called push and pop.
+    - In python, we can implement Stack using list data structure.
+    - ex:   stack = []
+            stack.append('a')
+            stack.append('b')
+            stack.append('c')
+
+            print(stack)
+
+            print(stack.pop())
+            print(stack.pop())
+            print(stack.pop())
+            print(stack)
+
+=> (ix) Queue
+    - Queue is data structure that follow the first in first out (FIFO) principle, meaning the first element added is the first one to be removed.
+    - The insert and delete operation are often called enqueue and deque.
+    - ex:   queue = []
+            queue.append("a")
+            queue.append("b")
+            queue.append("a")
+            print(queue)
+
+            print(queue.pop(0))
+            print(queue.pop(0))
+            print(queue.pop(0))
+            print(queue)
+
+=> (x) Linked List
+    - Linked list is linear data structure where element, call node, are stored in a sequence.
+    - Each node contain two parts: the data can be reference to the next node in the sequence.
+    - the last node point to None, indicating the end of the list.
+    - Linked list allow for efficient insertation and deletation, especially when element need to be added or removed from the
+      beginning or middle of the list, as no shifting of element is required.
+
+
+=> (xi) Tree
+    - Tree data structure is a non linear data structure in which a collection of element known as node are connected to each other via edge such 
+      that tree exists exactly one path between any two nodes.
+    - Tree are you used in many areas of computer science, including file system, database and artificial intelligence.
+    

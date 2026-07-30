@@ -1,0 +1,130 @@
+-------------------- OrderedDict ------------------------
+
+* OrderedDict in Python
+- OrderedDict is sub class of python buit-in dictionary that remember the order in which key are inserted.
+- Before python 3.7 did not preserve insertation order, so OrderedDict was used.
+- order-sensitive quality check.(two OrderedDict with same item but different order are not equal).
+- Easy implementation of data structure like a queue, stake or LRU cache.
+- ex:   from collections import OrderedDict
+        od = OrderedDict()
+        od["apple"] = 1
+        od["banana"] = 2
+        od["mango"] = 3
+
+        print(od)
+        print(od.items())
+        print(list(od.items()))
+
+
+* OrderedDict vs dict
+- Before diving into example, let's understand how OrderedDict different form normal dict.
+- Both preserve insertation order.
+- But only OrderedDict gives advanced control over order.
+- ex:   from collections import OrderedDict
+        print("dict")
+        d = {}
+        d["a"] = 1
+        d["b"] = 2
+        d["c"] = 3
+        d["d"] = 4
+        for i, j in d.items():
+            print(i, ":", j)
+
+        print("Ordered Dict")
+        od = OrderedDict()
+        od["d"] = 4
+        od["b"] = 2
+        od["a"] = 1
+        od["c"] = 3
+        for k, l in od.items():
+            print(k, ":", l)
+
+
+* Key Feature of OrderedDict
+
+=> (i) Insertation order preservation.
+- OrderedDict maintain the sequence exactly as element were added.
+- This is a perticularly useful in application such as JSON serializer, from field processing or displaying logs, where the order of items carries semantic meaning.
+- ex:   from collections import OrderedDict
+        print("dict")
+        d = {"apple":1, "banana":2, "mango":3, "kiwi":4}
+        for i,j in d.items():
+            print(i, ":", j)
+
+        print("OrderedDict")
+        od = OrderedDict([("kiwi",4),("banana",2),("apple",1),("mango",3)])
+        for i,j in od.items():
+            print(i, ":", j)
+
+
+=> (ii) Changing value does not affect order
+- In an OrderedDict, modifying the value of an existing key does not change its position in the order.
+- This mean you can update the values without affecting the original key order.
+- ex:   from collections import OrderedDict
+        od = OrderedDict([("apple",1),("banana",2),("mango",3),("kiwi",4)])
+        od["mango"] = 5
+        for i,j in od.items():
+            print(i, ":", j)
+
+
+=> (iii) Equaly chech consider order
+- unlike regular dict, OrderedDict check both content and order for equality, for different order make them unequal.
+- This is useful in order matters.
+- ex:   from collections import OrderedDict
+        od1 = OrderedDict([("apple",1),("banana",2),("mango",3)])
+        od2 = OrderedDict([("mango",3),("banana",2),("apple",1)])
+        if od1 == od2:
+            print("both are equal")
+        else:
+            print("both are not equal")
+
+
+=> (iv) Reversing an OrderedDict
+- OrderedDict doesn't have built ib .reverse() method, but you can reverse its order by using Python reversed() function on list(od.item()).
+- creating a new OrderedDict from this reversed list preserve the reversed order.
+- ex:   from collections import OrderedDict
+        od1 = OrderedDict([("apple",1), ("banana",2),("mango",3)])
+        od2 = OrderedDict(reversed(list(od1.items())))
+        print(od2)
+
+
+=> (v) Pop last or first item
+- In OrderedDict, popitem() can remove either the last item (last=True, default) or the first item (last = False).
+- In constrast, a normal dict's popitem() always remove the last item only.
+- ex:   from collections import OrderedDict
+        od = OrderedDict([("apple",1),("banana",2),("mango",3),("kiwi",4)])
+        print(od)
+
+        a = od.popitem(last=True)
+        print(a)
+        print(od)
+
+        b = od.popitem(last=False)
+        print(b)
+        print(od)
+
+
+=> (vi) Move key on front or end
+- with the move_to_end() method. OrderedDict provide the flexibility to reposition key.
+- you can push a specific key to the beginnning or end of the dictionary without deleting and reinserting it.
+- ex:   from collections import OrderedDict
+        od = OrderedDict([("a",1),("b",2),("c",3),("d",4)])
+        print(od)
+
+        od.move_to_end("a")                 # Move to the last(last=True)
+        od.move_to_end("c", last=False)     # Move to the front
+        print(od)
+
+=> (vii) Deleting and re-inserting key
+- Deleting and re-inserting a key in an OrderedDict moves it to the end, preserving insertation order.
+- This is useful for tracking recent action or updating Feature item.
+- ex:   from collections import OrderedDict
+        od = OrderedDict([("apple",1),("banana",2),("mango",3),("kiwi",4)])
+        od.pop("banana")
+        for k,v in od.items():
+            print(k, v)
+
+        print("re-inserting ordereddict")
+        od["banana"] = 2
+        for k,v in od.items():
+            print(k, v)

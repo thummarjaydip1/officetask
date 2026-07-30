@@ -1,0 +1,69 @@
+--------------- Package in python ---------------
+
+* package in python
+- python Package are a way to organize and structure code by grouping related module into directories.
+- A package is essentially a folder that contain as __init__.py file and one or more python file(module).
+- Allow module to be easily shared and distributed across different application.
+
+* key component in python module
+=> module : A single python file containing reusable code.(eg. math.py).
+=> package : A directory contcaing module and special __init__.py file.
+=> sub-package : package nested within other package for deeper organization.
+
+* Create and Access package
+=> (i) Create a Directory
+    - Create a folder that will act as the package root.
+
+=> (ii) Add modules
+    - inside the directory, add python file(module). 
+    - module can contain related function or class.
+
+=> (iii) Add __init__.py
+    - add __init__.py file to the directory.
+    - This file tells python that the directory should be treated as a package.
+
+=> (iv) Create Sub Package(optional): 
+    - one can organize code further by creating sub directories with thier own __init__.py file.
+
+=> (v) import module
+    - module or function inside the package can be operated using dot notation.
+    - example: from package.math_operation import add
+
+=> Example:
+    (i) basic python/package/math_operation.py
+        def add(*args):
+            if len(args) <=1:
+                return "plase enter minimum 2 argument"
+
+            total = 0
+            for i in args:
+                total += i
+
+            return total
+
+        def mul(*args):
+            if len(args) <=1:
+                return "plase enter minimum 2 argument"
+
+            total = 1
+            for i in args:
+                total *= i
+
+            return total
+
+
+    (ii) basic python/package/string_operation.py
+        def upper_case(string):
+            return string.upper()
+
+    
+    (iii) basic python/package_python.ipynb
+        
+        (1) from package import math_operation as mo
+            print(mo.add(11,22))
+
+        (2) from package import math_operation as mo
+            print(mo.mul(11,2,2,2))
+
+        (3) from package.string_operation import upper_case
+            print(upper_case("hello, Jaydip"))

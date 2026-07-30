@@ -1,0 +1,67 @@
+------------------ Defaultdict -------------------
+
+* Defaultdict in Python
+- Defaultdict dict is subclass of the built in dict class from the collection of module.
+- It automatically assign  defaule value key that do not a exist which mean no need to manually check for missing key and avoid keyerror.
+- Automatically creating missing keys with a default value.
+- Reducing repetitive if key not dict checks.
+- Making task like counting, grouping, or collecting item easire.
+- Being especially useful for histrogram, graph building, text grouping and caching.
+
+
+* How to work Defaultdict
+- If the key exists: it value is return.
+- If the key does not exists: default_factory is called to generate a default value.
+    -> For Example:
+        - int: returns ()
+        - list: returns []
+        - str: return ""
+
+
+* Using Cases of Defaultdict
+
+=> (i) Using List as Default Factory
+- when the list class is passed as the default_factory argument, a defaultdict is created in which the value are lists.
+- ex :  from collections import defaultdict
+        d = defaultdict(list)
+
+        for i in range(5):
+            d[i].append(i)
+
+        print("dictionary with value as list:")
+        print(d)
+
+
+=> (ii) Using Int as Default Factory
+- when the int class is passed as the default_factory argument, then a defaultdict is created with default value as zero.
+- ex:   from collections import defaultdict
+        d = defaultdict(int)
+        nums = [1,2,3,4,2,3,4,1,2]
+
+        for i in nums:
+            d[i] += 1
+
+        print(d)
+        print(d[5])
+
+
+=> (iii) Using str Default Factory
+- With defaultdict(str), any new key automatically maps to", so you can concatenate text without key check.
+- ex:   from collections import defaultdict
+        d = defaultdict(str)
+
+        d["fruits"] = "apple"
+        print(d)
+        print(d["vahical"])
+
+
+=> (iv) Grouping word by first letter
+- defaultdict is very handy in text processing, for Example grouping word by their first letter, very useful in text processing.
+- ex:   from collections import defaultdict
+
+        d = defaultdict(list)
+        word = ["apple","ant","banana","bat","carrot","cat"]
+        for i in word:
+            d[i[0]].append(i)   
+            
+        print(d)

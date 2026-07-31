@@ -1,0 +1,224 @@
+----------------- Numpy Library ---------------------
+
+* numpy introduction 
+- numpy is library for python numerical computing. 
+- it provide efficient multi dimentional array object and various varous mathematical function for handling large dataset 
+  making it a critical tool for professional in fields that reqiure havy computation.
+
+* Numpy varoius feature
+=> N - Dimensional arrays : Numpy core featureis ndarray. a N - Dimensional array object that support homogeneous datatype.
+=> Array with high performance : Array are store in contiguous memory locations, enabling faster computation than python list.
+=> Broadcasting : Allow element - wise operation between array of different shapes with automatically aligning their dimensions.
+=> Vactorization :  Improves performance by applying operation directly to entire array instead of using expliicit python loop.
+=> linear algebra : numpy contains routines for linear algebra operation, such as matrix multiplication, decompositions and determinants.
+
+* Creating numpy array
+=> (i) Using numpy array
+    - Use np.array() when you want to convert Python list into numpy array.
+    - ex:   import numpy as np
+
+            a1 = np.array([1,2,3,4,5,6])
+            a2 = np.array([
+                    [1,2,3],[4,5,6]
+                ])
+            a3 = np.array([
+                    [[1,2,3],[4,5,6]],
+                    [[7,8,9],[10,11,12]]
+                ])
+
+            print("1D array")
+            print(a1)
+            print("\n2D array")
+            print(a2)
+            print("\n3D array")
+            print(a3)
+
+=> (ii) Using Numpy function
+    - Numpy provide quick utility functions for creating array fields with zero, one or range.
+    - ex:   import numpy as np
+            a0 = np.zeros((3))
+            a1 = np.ones((3))
+            ar = np.arange(0,7)
+            print(a0)
+            print(a1)
+            print(ar)
+
+
+* Numpy Attributes
+    - Numpy arrays provide a several buit-in Attributes that help as understand that structure and datatype.
+    - These attribute are commonly used while analizing array dimension size and element.
+    - ex:   import numpy as np
+            a = np.array([[1,2,3],[4,5,6]])
+            print("shape: ", a.shape)   # (row, column)
+            print("datatype: ", a.dtype)   # datatype
+            print("dimension: ", a.ndim)    # dimension
+
+
+* Numpy array indexing
+    - numpy array supporting to access individual element using their position.
+    - Multi Dimensional array can be index using row and column indices.
+    - ex:   import numpy as np
+            a1 = np.array([11,22,33,44,55,66])
+            a2 = np.array([[11,22,33],
+                        [44,55,66]])
+
+            print(a1[2])
+            print(a1[-1])
+            print(a2[1])
+            print(a2[1][1])
+
+
+* Numpy array slicing
+    - slicing follow the same indexing rule as list, but extend them multiple dimensions, allowing to select row, column or sub array efficiently.
+    - ex:   import numpy as np
+            a1 = np.array([[1,2,3],
+                        [4,5,6]])
+            print(a1[0:1])  # row slicing
+            print(a1[1:2])  # row slicing
+            print(a1[:])    # all row slicing
+            print(a1[:, 1])  # all row, 1 column element slicing
+            print(a1[:, 0:2])  # all row, 0 and 1 column element slicing
+
+
+* Advance indexing
+    - Advance indexing in numpy provide more flexible ways to access and manipulate array element.
+    - ex:   import numpy
+            a = np.array([10,20,30,40,50,60])
+            b = np.array([1,3,5])
+            print(a[b])
+
+            c = a > 30
+            print(a[c])
+
+
+* Basic Arithmetic operation 
+    - element wise operation in numpy allow to perform mathematical operation on each element of an array individually, without need for explicit loops. 
+    - we can perform arithmetic operation like addition, substraction, multiplication, division directly on numpy array.
+    - ex:   import numpy as np
+            a = np.array([1,2,3])
+            b = np.array([4,5,6])
+
+            print(a + b)
+            print(a - b)
+            print(a * b)
+            print(a ** b)
+            print(a / b)
+            print(a // b)
+
+    
+* Unary Operation
+    - Unary operation as numpy apply for a single operand transformation, such as negation, absolute value or trigonometric evalution, across an entire array.
+    - ex:   import numpy as np
+            a = np.array([-5, -2, 0, 3, 7])
+            print(a)
+            b = np.absolute(a)
+            print(b)
+
+
+* Binary operator 
+    - Binary operator apply element wise to array and return a new array containing the result.
+    - we can use all basic arithmetic like +, -, /, etc.
+    - operator like +=, -=, *=, modify the existing array inplace and = operator simply assign a new reference to a variable, it does not modify the organize array.
+    - ex:   import numpy as np
+            a = np.array([1,2,3])
+            b = np.array([4,5,6])
+
+            add = np.add(a, b)
+            sub = np.subtract(a, b)
+            mul = np.multiply(a, b)
+            div = np.divide(a, b)
+            print(add)
+            print(sub)
+            print(mul)
+            print(div)
+
+* Methematical function
+    - numpy provide familiar mathematical function such as sin, cos, exp, sqrt, etc.
+    - These function operate element wise on array an and return a new array containing the compute value.
+    - ex :  import numpy as np
+
+            a = np.array([0, np.pi/2, np.pi])
+            print(a)
+            print(np.sin(a))
+
+            b = np.array([0,1,2,3])
+            print(np.exp(b))
+            print(np.sqrt(b))
+
+            print(np.sqrt(a))
+
+
+* Sorting Array
+    - The np.sort() function sort numpy array in acending order an can also sort structured array base on specific fields.
+    - ex :   import numpy as np
+            dtype = [('name', 'S20'), ('year', int), ('cgpa', float)]
+
+            vals = [("dip", 2008, 8.8),
+                    ("man", 2005, 7.4),
+                    ("jay", 2005, 7.9),
+                    ("ram", 2006, 6.8)]
+
+            print("without sorting")
+            a = np.array(vals, dtype=dtype)
+            print(a)
+
+            print("name sorting")
+            print(np.sort(a, order='name'))
+            print("year and name sorting")
+            print(np.sort(a, order=['year','name']))
+
+
+* Reshaping Array
+    - Reshaping means changing the shape of array.
+    - the shape of an array is the number of en each dimension.
+    - By Reshaping we can add an remove dimension or change number of element in each dimension.
+    - ex:   import numpy as np 
+            arr = np.array([1,2,3,4,5,6,7,8,9,10,11,12])
+            a1 = arr.reshape(4,3)
+            print(a1)
+            a2 = arr.reshape(3,2,2)
+            print(a2)
+
+
+* spliting array
+    - spliting is a reverse operation of joining.
+    - ining merges multiple arrays into one and Splitting breaks one array into multiple.
+    - wo use array_split() for  spliting array, we pass it the array we want to split and the number of split.
+    - ex:   import numpy as np
+            arr = np.array([1, 2, 3, 4, 5, 6])
+            new = np.array_split(arr, 3)
+            print(new)
+
+
+* Searching Array
+    - you can search an array for the certain value and return the index that get match.
+    - to search an array, use the where() method
+    - ex:   import numpy as np
+            a = np.array([1,2,3,4,5,3,6,3])
+            x = np.where(a == 3)
+            print(x)
+
+    
+* search sorted 
+    - there is a method called searchsorted() with perform is binary, and return the index where the specific value would be inserted to maintain the search order.
+    - ex:   import numpy as np
+            a = np.array([43,42,21,56,23,65,22,91,98,54])
+            x = np.searchsorted(a, 91)
+            print(x)
+
+* filter array
+    - ex:   import numpy as np
+            a = np.array([43,42,21,56,23,65,22,91,98,54])
+            even = []
+            odd = []
+
+            for i in a:
+                if i%2 == 0:
+                    even.append(i)
+                else:
+                    odd.append(i)
+
+            x = np.array(even)
+            y = np.array(odd)
+            print(x)
+            print(y)

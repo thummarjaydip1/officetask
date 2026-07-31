@@ -1,0 +1,6 @@
+rno,name,age,city,salary,bonus,total
+1,jay,21,surat,10000,1000
+2,man,23,amreli,11000,1000
+3,dip,22,rajkot,10000,1000
+4,raj,,junagadh,13000,1000
+5,ram,26,,10000,1000

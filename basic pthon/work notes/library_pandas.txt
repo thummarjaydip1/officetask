@@ -1,0 +1,107 @@
+-------------- Pandas Library --------------
+
+* Pandas Introduction
+- pandas work on open source library used for data manipulation, analysis and cleaning.
+- It provide a fast and flexible tool to work with toolbar data, similar to spreadsheet or SQL table.
+- pandas installation => pip install pandas
+
+* Data structure in pandas
+
+=> (i) pandas series
+- A pandas Series is a one-dimensional labeled array capable of any type.
+- It can be created from python list, numpy array, dictionaries, scalar value or data loaded from external source such as CSV file, Excel file and databases.
+- The lable associated with a series are called its index.
+- ex:   import numpy as np
+        import pandas as pd
+
+        dt = np.array(['a','e','e','f','s','l'])
+        ser = pd.Series(dt)
+        print("series is:")
+        print(ser)
+
+
+=> (ii) Pandas DataFrame
+- pandas is two dimensional data structure with labeled axes(row and column).
+- it is created by loading the datasets from existing string which can be SQL database, a CSV file or an excel file.
+- It can be created from list, dictionaries, alist of dictionaries etc.
+- ex:   import pandas as pd
+        df = pd.DataFrame()
+        print(df)
+
+        li = ["apple","banana","mango","kiwi","orange"]
+        df = pd.DataFrame(li)
+        print(df)
+
+
+* operation in pandas
+- pandas provide essential operation for working with structured data efficiently.
+- The section below introduce the most commonly used functionalities with sort explanation and simple example.
+
+    => (i) Loading Data
+        - This operation read data from file such as csv, excel or json into a DataFrame.
+        - ex:   import pandas as pd
+                df = pd.read_csv("one.csv")
+                print(df)
+
+    => (ii) viewing and exploring data
+        - After loading data, it is important to undersatand its structure and content.
+        - This method allow you to inspect rows, summery statistics and metadata.
+        - ex:   import pandas as pd
+                df = pd.read_csv("one.csv")
+                df.info()
+
+    => (iii) Handling missing data
+        - datasets often contain empty or missing value. 
+        - pandas provides function to delete, remove or replace value.
+        - ex:   import pandas as pd
+                df = pd.read_csv("one.csv")
+                print(df.fillna(0))
+
+        -ex:    import pandas as pd
+                df = pd.read_csv("one.csv") 
+                print(df.isnull())          # null value return True otherwise false
+
+        -ex:    import pandas as pd
+                df = pd.read_csv("one.csv")
+                df.dropna()         # remove blank value row
+
+    => (iv) Selecting and Filterind Data
+        - This operation retrieve specific column, row or records that match a condition.
+        - It allows precies extraction of required information.
+        - ex:   import pandas as pd
+                df = pd.read_csv("one.csv")
+                age = df[df["age"] <= 22]
+                print(age)
+
+    => (v) Adding or removing data
+        - you can create new column based on existing ones or delete unwanted column from the DataFrame.
+        - ex:   import pandas as pd
+                df = pd.read_csv("one.csv")
+                df["total"] = df["salary"] + df["bonus"]
+                print(df)
+
+    => (vi) Grouping Data
+        - Grouping allow you to organize data into categories and compute value for each group for example, sum, count or average.
+        - ex:   import pandas as pd
+                df = pd.read_csv('one.csv')
+                result = df.groupby("salary").groups
+                print(result)
+
+        - ex:   import pandas as pd
+                df = pd.read_csv('one.csv')       # sorting()
+                df.groupby("name").sum()
+
+        - get_group() method are find record.
+        - ex:   import pandas as pd
+                df = pd.read_csv('one.csv')
+                grp = df.groupby("name")
+                grp.get_group("jay")
+
+        
+* Pandas Read Json 
+- Big data sets are often stored or extracted as Json.
+- JSON is plain text, but has the format of an object, and is well known in the world of programing include pandas.
+- ex:   import pandas as pd 
+        df = pd.read_json("one.json")
+        print(df)
+

@@ -1,0 +1,97 @@
+--------------- Matplotlib in Python -----------------
+
+
+* Introduction to Matplotlib
+- Matplotlib is a Python library for creating static, interactive and animated visulations from data.
+- It provide flexible and custumize ploting function that help in understanding data pattern, trend and relationship effectively.
+
+=> Figure : The overarching container that holds all plot element, acting as the canva for visulations.
+=> Axes : The areas within the figure where data is plotted. each figure can contain multiple axes.
+=> Axis :  Represent the x-axis and y-axis define limited tick location and lable for data interpretation.
+=> Lines and Markers : Line connect data pointto show trend, while markers donete individual data point in plot like a scatter plot.
+=> Title and lable : The title provide context for the plot, while exists label describe what data is being data Represented on each axis.
+
+
+* Different type of plot in matplotlib 
+- Matplotlib offers a wide range of plot type to suit various data visulation needs.
+- Here are some of the most commonly used type of plot in Matplotlib.
+
+=> (i) Line Chart 
+    - Line chart is one of the basic plot and can be created using a plot function needs.
+    - It is used to represent a relationship between two data x and y or Different axis.
+    - ex:   import matplotlib.pyplot as plt
+            x = [10,20,30,40,50]
+            y = [15,25,35,45,55]
+            plt.plot(x,y)
+            plt.title("Line chart")
+            plt.xlabel("X - Axis")
+            plt.ylabel("Y - Axis")
+            plt.show()
+
+=> (ii) Bar Chart
+    - Bar chart display categorical data using rectangular bar whose length are proportional to the value they represent.
+    - It can be plotted vertically or horizontally to compare different categories.
+    - ex:   import matplotlib.pyplot as plt
+            subjects = ["math", "english", "gujarati", "hindi", "science"]
+            marks = [71,65,83,67,92]
+
+            plt.bar(subjects, marks)
+            plt.title("Result")
+            plt.xlabel("Subjects")
+            plt.ylabel("Marks")
+            plt.show()
+
+=> (iii) Histogram
+    - Histogram show distribute of data by group value into bins. 
+    - The hist() function is used to create it, with X-axis showing bins and Y-axis showing frequencies.
+    - ex:   import matplotlib.pyplot as plt
+            x = [5,5,5,9,9,9,9,9,11,11,11,14,14,14,14,22,17,17,17,17,17,17,19,19,19,23,23,23,23,23,26,26,26,30,30,30,30]
+            plt.hist(x, bins=10, color='green')
+            plt.title("Histrogram")
+            plt.xlabel("total bill")
+            plt.ylabel("frequency")
+            plt.show()
+
+=> (iv) Scatter plot 
+    - scatter plot are used to observe relation ship between variable. 
+    - The scatter method() in the matplotlib library is used to draw scatter plot.
+    - ex:   import matplotlib.pyplot as plt
+            hour = [1,3,5,7,9]
+            topic = [2,4,6,8,10]
+
+            plt.scatter(hour, topic)
+            plt.title("Scatter Plot")
+            plt.xlabel("Study Hour")
+            plt.ylabel("Study Tpic")
+            plt.show()
+
+=> (v) Pie chart
+    - Pie chart is a circular chart used to show dataas a proportions or percentage.    
+    - it is create using pie() 
+    - where each slice(wedge) represent a part of the whole.
+    - ex:   import matplotlib.pyplot as plt
+            car = ["BMW", "Audi", "Fortuner", "Creta", "Ford"]
+            data = [35,25,23,17,10]
+            plt.pie(data, labels=car, autopct='%1.2f%%')
+            plt.title("Pie Chart")
+            plt.show()
+
+=> (vi) Box chart
+    - Box plot are simple graphs that shows how data is speard out.
+    - It display maximum, minimum, median and quartiles and also help to spot outliers easily.
+    - ex:   import matplotlib.pyplot as plt
+            data = [[11,13,15,17,19,21],
+                    [15,17,19,21,23,25],
+                    [5,7,9,11,13,15]]
+
+            plt.boxplot(data)
+            plt.title("Box plot")
+            plt.xlabel("group")
+            plt.ylabel("Box")
+            plt.show()
+
+
+=> Heatmap chart
+    - Heatmap is a graphical represent of values are shown color.
+    - It help visulize pattern, correlation or intensity in matrix-like format.
+    - It is created using imshow() mathod is Matplotlib.

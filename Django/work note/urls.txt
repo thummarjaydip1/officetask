@@ -1,0 +1,177 @@
+===> Topic : Django Urls, Dispatcher & Advanced Techniques, Validator, Urls shortener, Urls Resolver
+
+**** Django Urls ****
+- view are python function or classes that handle HTTP requests and return HTTP responses.
+- To make views accessible through specifi urls, Django uses a Url configuration system known as Urlconf.
+- This system maps URL pattern to corresponding views, enabling precies request routing.
+
+* Understanding Urlconf
+- ROOTURL_CONF in settings.py specific the root Url Configuration module(usually project_name.urls)
+- Each Urlconf module defin ea variable pattern, which is a list of url pattern.
+- URL pattern are evoluted in order, the first match invoke its corresponding view.
+- If no pattern matches, Django triggers the default error handler(e.g., 404 error).
+
+* structure of Urlconf
+- Urlconf module organize Url pattern for a both project-level and app-level.
+- Use path() to map a Url pattern to a view.
+- Use include() allow inclusion of app-specific URL configuration keeping the project modular.
+- ex:   from django.contrib import admin
+        from django.urls import path, include
+
+        urlpatterns = [
+            path('admin/', admin.site.urls),
+            path('',include('urls_app.urls'))
+        ]
+
+* Url pattern
+- URL pattern define the routes Django uses to match incoming HTTP request to views.
+- Url pattern are stored in the Urlpattern list in Urlconf module.
+- Each entry in urlpatterns typically uses the path() function to associate a URL pattern with a views.
+- Dynamic parts of URL can be captured using path converter and passed as argument to view.
+- Using the name argument in a path allow reverse URL Resolution, useful in template and view.
+- ex:   urlpatterns = [
+            path('books/', views.book_index, name='book_index'),
+            path('books/<int:pk>/', views.book_detail, name='book_detail'),
+            path('books/genre/<str:genre>/', views.books_by_genre, name='books_by_genre'),
+        ]
+- using name="..." allow references in templates using {% url 'name %} and in python code using reverse().
+
+* Path Converters
+- Path Converter capture Dynamic value from urls and pass them as argument to view.
+- They are specified inside a angle brackets <> in urls pattern.
+=> int : matches positive integer and convert the capture value to a python int.
+=> str : matches any non - empty string excluding the path separator /.
+=> slug : matches letter, number, hyphens, and underscore, suitable for readable URLs.
+=> path : matches any non - empty string include the path separator /.
+=> uuid : matches a vallid UUID string and converts it to Python UUID objects.
+
+
+
+**** Django Dispatcher and Advanced URL Techniques
+- Django Url Dispatcher map incoming HTTP requests to view, enabling precise request routing.
+- It support dynamic Urls, name pattern, namespaces and classbase view for scalable, maintable web application.
+
+* creating Urls Pattern 
+- Url pattern to define how urls are routed to view.
+- They are stored in the urlpattern list in django app urls.py
+=> step to create Url pattern.
+(i) Open urls.py in the app or project.
+(ii) import path() from django.urls 
+(iii) Define Url Pattern and map them to view.
+- ex:   from django.urls import path
+        from urls_app import views
+        urlpatterns = [
+            path("about/", views.about, name="about"),
+            path("contact/", views.contact, name="contact"),
+        ]
+
+
+* Using Regular Expression
+- For most Urls pattern, Django path() with converters, is preferred.
+- For more complex requirement, django provide re_path() wit regular expression to capture dynamic value from urls.
+- ex:   from django.urls import re_path
+        urlpatterns = [
+            re_path(r'^blog/(?P<blog_id>\d+)/$', views.blog_detail, name='blog_detail'),
+        ]
+
+
+* Naming Urls pattern
+- Named Url pattern allow referencing URLs without hard coding path in templates or python code.
+=> step name url pattern.
+(i) Add the name argument to the path() function
+(ii) Use {% url 'name' %} in template
+(iii) Use revese ('name') in python code.
+- ex:   from django.urls import path
+        from . import views
+        urlpatterns = [
+            path('', views.home, name='home'),
+            path('about/', views.about, name='about'),
+        ]
+
+
+* Inverting URL pattern 
+- Inverting Urls generates Urls from their name instance of hard coding path.
+=> step to Invert URL Pattern
+(i) Use {% url 'urls_name' %} in template
+(ii) Use reverse ('urls_name') in python code.
+- ex :  template
+        <a href="{% url 'home' %}">home</a>
+
+- ex:   python code
+        from django.urls import reverse
+        home_url = reverse('home')
+
+
+* Using namespaces 
+- namespaces organizes URL pattern, avoiding naming conflicits when multiple apps exits.
+=> step to use namespaces
+(i) include app in the project.urls with namespace parameter.
+(ii) Reference URLs using 'namespace:url_name'in tempates and python code.
+
+- ex:   urls.py
+        from django.urls import path, include
+        urlpatterns = [
+            path('books/', include(('books.urls', 'books'), namespace='books')),
+        ]
+
+- ex:   template reference
+        <a href="{% url 'books:book_detail' book_id=1 %}">Book detail</a>
+
+* Using Class Base Views
+- class based views provide reusable and organized view logic
+=> step to use Class Base Views(CBV)
+(i) create a python class Inherit from view or generic CBV.
+(ii) Define method like a get() or post().
+(iii) Map the class to a URL using .as_view()
+
+- ex:   views.py
+        from django.views import View
+        from django.http import HttpResponse
+        class ProductListView(View):
+            def get(self, request):
+                return HttpResponse('all product display...')
+
+- ex:   urls.py
+        from .views import ProductListView
+        urlpatterns = [
+            path("product/", ProductListView.as_view(), name="product"),
+        ]
+
+
+
+
+**** Url Validator ****
+
+- Validating Urls is an important part of web development to ensure data integrity and prevent errors.
+- Django provide built in tool that make URL validation simple and reliable.
+- Using a Django URLvalidator, Url can be checked for correctness before storing them in the database or using them in view and forms.
+
+* Django URL Validator
+- URLvalidator is a built in Django tool that check weather a string follow valid URLs syntax.
+- It validate formate but does not verify weather the Url actually exists or is reachable.
+- support validating URL syntax for schema such as http and https.
+- help detect malformat URL in form, model and custom validation logic.
+- can be used both through Django field validation and independently in python code.
+- ex : Goto Queryset => url_validation
+
+
+
+**** URL Shortener with Django ****
+- Django Url Shortener refers to a web application or reusable component built using Django that shortens long urls into concise,
+  shareable aliases making link easire to distribute on social media, email, or documents while often tracking click for analysis.
+- Long urls convert to short urls
+
+
+
+**** Django Url Resolver Error ****
+- Django may raise URL Resolver errors(such as NoReverseMatch) where there are issues in URL routing configuration, view mapping, namespace or import.
+- This is manually occurs due to misconfigured URL pattern, view mismatches, namespace conflicits or import issues.
+- NoReverseMatch : Reverse for 'home' not found.
+
+* Common Causes:
+=> Typo in URL or view name : Spelling mistake in url or view function.
+=> Incorrect Url path in templates : Using a path that is not define urls.py
+=> App Specific routing issues : request may not reach the correct app if url pattern are misconfigured.
+=> Import Error : View or url modules not import currently
+=> Name conflicits : Multiple Url pattern using the same can cause ambiguity when resolving URLs.
+=> Namespace conflicts : occurs when the namespace or instance namespace are not properly defined or clash while using  include() with namespace.

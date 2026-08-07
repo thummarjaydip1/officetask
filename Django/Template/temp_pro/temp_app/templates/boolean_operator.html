@@ -1,0 +1,38 @@
+Equal to and Not Equal to:
+{% if x == y %}
+    x is equal to y
+{% elif x != y %}
+    x is not equal to y
+{% endif %}
+
+<br><br>
+
+Less than and Greater than: 
+{% if x > y %}
+    x Greater than y
+{% elif x < y %}
+    x Less than y
+{% endif %}
+
+<br><br>
+
+Less than or equal to and Greater than or Equal to: 
+{% if x >= y %}
+    x Greater than or Equal to y
+{% elif x <= y %}
+    x Less than or Equal to y
+{% endif %}
+
+<br><br>
+
+In Operator:
+{% if "apple" in l1 %}
+    True
+{% endif %}
+
+<br><br>
+
+Not In Operator:
+{% if "watermalon" not in l1 %}
+    True
+{% endif %}

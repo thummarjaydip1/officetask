@@ -1,0 +1,174 @@
+====> Topic : Queryset, Filtering, order_by(), Aggregation and Annotation.
+
+
+**** Queryset ****
+
+- A Queryset is django is a collection of database record that work like a Python list but offers more feature for handling data eficiently.
+- Allow filtering, sorting, and organizing record before they are fetched from the database.
+- Uses lazy loading, so data is retrieve only when the Queryset is used.
+- support chaining multiple filter to get precise results.
+- Fetches only the required data, which improve performance.
+
+* get() method
+- The get() method return extractly one object that matches the conditiona provided.
+- raise a DoesNotExists exception if no object is found.
+- raise a MultipleObjectsReturned exception if more than one objects matches.
+- ideal when there is only one record for the given lookup.
+- Unlike filter(), get() return a single model instance, not a Queryset.
+- ex:   from django.http import HttpResponse
+        from .models import Student
+
+        def home(request):
+            try:
+                a = Student.objects.get(city="surat")
+            except Student.DoesNotExist:
+                print("student not found")
+            except Student.MultipleObjectsReturned:
+                print("multiple object returned")
+            return HttpResponse("hello")
+
+* multiple condition(And)
+- To use multiple condition
+- ex:   def home(request):
+        try: 
+            a = Student.objects.get(id = 3, city="surat")
+        except Student.DoesNotExist:
+            print("student record not found")
+        return HttpResponse("hello")
+
+
+- Syntax : Model.objects.get(**kwargs)
+- Model : Model is a django model
+- **kwargs : **kwargs are the conditional used to find the object
+
+
+
+**** Queryset filtering ****
+- Queryset filtering help retrieve only the required record from database, making data handling fast and efficient.
+- filter() and exclude() select or remove record based on given condition.
+- lookup expressions like exact, icontains, ite, and gte refine query accuracy.
+- Queryset are lazy and support chaining multiple condition for precise results.
+- Q objects enable advanced filtering using AND, OR and NOT operations.
+
+* Queryset Filtering Implementation 
+- consider a Project name 'query_pro' with a model 'Student'.
+- Filtering database using a django filter(), exclude(), and advanced Q objects with model name Student.
+
+=> (i) Step 1: Define the User Model
+    - ex:   from django.db import models
+
+            class Student(models.Model):
+                name = models.CharField(max_length=100)
+                age = models.IntegerField()
+                city = models.CharField()
+
+=> (ii) Step 2: Register model in Django Admin
+    - ex:   from django.contrib import admin
+            from .models import Student
+
+            admin.site.register(Student)
+
+* Queryset Filtering Example 
+=> (i)  To retrieve all users
+    -ex:    def home(request):
+            try:
+                stu = Student.objects.filter(city='surat')
+                print(stu)
+            except Student.DoesNotExist:
+                print("student not found")
+            return HttpResponse("hello")
+
+=> (ii) Excluding specific record
+    - To exclude records that match a condition, use exclude()
+    - ex:   def home(request):
+            try:
+                stu = Student.objects.filter(city="surat").exclude(age=23)
+                print(stu)
+            except Student.DoesNotExist:
+                print('not found')
+            return HttpResponse("hello")
+
+=> (iii) using Q object for Advance Filtering
+    - Q object allow for more complex query, like a QR condition.
+    - ex:   def home(request):
+            try:
+                stu = Student.objects.filter(Q(city="surat")|(Q(city="junagadh")))
+                print(stu)
+            except Student.DoesNotExist:
+                print("student not found")
+            return HttpResponse("hello")
+
+
+
+**** Queryset order by ****
+- order_by() method in Django Queryset is used to sort result based on one or more field.
+- support sorting in both ascending and descending order.
+- can sort by field like name, age, city, salary and model any field.
+- sorting happen at the database level for better performance.
+
+=> (i) Sort Student in Ascending Order by Age 
+    - ex:   def home(request):
+                stu = Student.objects.all().order_by("age")
+                for i in stu:
+                    print(i.name, i.age, i.city)
+                    
+                return HttpResponse("hello")
+
+=> (ii) Sort Student in Descending Order by Age 
+    - ex:   def home(request):
+                stu = Student.objects.all().order_by("-age")
+                for i in stu:
+                    print(i.name, i.age, i.city)
+                return HttpResponse("Descending")
+
+=> (iii) Alternative Descending order
+    - ex:   def home(request):
+                stu = Student.objects.all().order_by("age").reverse()
+                for i in stu:
+                    print(i.name, i.age, i.city)
+                return HttpResponse("Alternative Descending")
+
+=> (iv) Sort by Multiple fields
+    - ex:   def home(request):
+                stu = Student.objects.all().order_by("name", "age")
+                for i in stu:
+                    print(i.name, i.age, i.city)
+                return HttpResponse("multiple sort")
+
+
+
+**** Aggregation and Annotation in Django ****
+- Django ORM offers tool for querying and performing calculations on database data.
+- Two commonly used method are aggregate() and annotate()
+
+* aggregate() 
+- perform calculate over the entire queryset.
+- Returns a dictionary with computed value.
+- Example: Book.objects.aggregate(total_price=Sum('price'))
+            return {'total_price' : 5000}
+- use for summary statistics like total, average, max, min.
+- scope and global for the queryset.
+- ex:   def home(request):
+            summary = Book.objects.aggregate(
+                total_books = Count('id'),
+                average_price = Avg('price'),
+                total_price = Sum('price')
+            )
+            print(summary)
+            return HttpResponse('aggregate() method')
+
+* annotate()
+- perform calculate for each object in the queryset.
+- Returns a queryset with extra computed field added to each object.
+- Example: Author.objects.annotate(num_book=(Count('book')))
+            add a num_book field to each author.
+- Use for per-object analytics like count, sums, or averages for each object.
+- scope is individual per object.
+- ex:   def home(request):
+            auther_summery = Author.objects.annotate(
+                total_books = Count('books'),
+                total_price = Sum('books__price')
+            )
+            for i in auther_summery:
+                print(f"Auther name: {i.name}, total books: {i.total_books}, total price: {i.total_price:.2f}")
+            return HttpResponse("annotate() method")

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{{data}}
+
+<br><br><br>
+{{firstname}}
+
+<br><br><br>
+{{lastname}}
+
+<br><br><br>
+{{age}}
+
+<br><br><br>
+{{list}}
+
+<br><br><br>
+<button type="submit" class="one" onclick="return one()">
+    This is Normal Button
+</button>
+
+{% comment %} CSS {% endcomment %}
+<style>
+    .one{
+        background-color : blue;
+        color : white;
+        padding : 10px
+    }
+</style>
+
+{% comment %} JS {% endcomment %}
+<script>
+    function one()
+    {
+        return confirm("clickable button")
+    }
+</script>
+
+
+{% comment %}
+    This is comment part
+{% endcomment %}
+
+<br>
+{% for i in list %}
+    <p>{{i}}</p>
+{% empty %}
+    no items found
+{% endfor %}
+
+<br>
+
+{% if age %}
+    value in data is {{age}}
+{% else %}
+    Data empty
+{% endif %}
+
+<br>
+{% if age >= 18 %}
+    you are aligable are for a vote
+{% endif %}
+
+<br>
+{% firstof gender lastname firstname age city %}
+
+<br><br>
+
+{% lorem %}
+<br><br>
+{% lorem 3 %}
+<br><br>
+{% lorem 2 w random %}
+<br><br>
+
+{% now "DATE_FORMAT" %}
+<br>
+{% now "D M Y  " %}
+<br><br>
+
+<a href="{% url 'filter' %}">Filter Templates Examples</a><br><br>
+<a href="{% url 'boolean_operator' %}">Boolean operator Templates Examples</a><br><br>
+<a href="{% url 'for_loop' %}">For loop Templates Examples</a><br><br>
+<a href="{% url 'if_else' %}">If else Templates Examples</a><br><br>
+
+{% endblock  %}

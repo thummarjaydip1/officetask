@@ -1,0 +1,327 @@
+===> Topic : Views, Function Base Views, Class Base View, Class Base VS Function Base View.
+
+
+**** View in Django ****
+- In Django MVT Architecture, View Handle User request and return responses.
+- They act as a bridge between modela(data), templates(UI), deciding what the usre see in browser.
+- A view is python function or class that receive an HTTP request, process data and return response. This response can be:
+- An HTML page(render for templates).
+- A redirect(to another URLs).
+- An error(like 404 not found).
+- Json, XML, Images, or any browser compatible content.
+=>  USER -> URL -> PROCESS DATA -> TEMPLATES -> USER
+
+- ex:   views.py
+        from django.http import HttpResponse
+        import datetime
+
+        def home(request):
+            today = datetime.datetime.now()
+            res = f"<h2> Today Date: {today.date()} and Time: {today.time()} </h2>"
+            return HttpResponse(res)
+
+- ex:   urls.py
+        from django.urls import path
+        from function_app import views
+
+        urlpatterns = [
+            path('', views.home, name="home")
+        ]
+
+* Django View Type
+
+=> (i) Function Base View (FBV)
+    - written a python functions.
+    - They are simple ideal for small features or straightforward logic, such as displaying a list of item, handling for a submission, or show a single details page.
+    => Function View Base Application and Feature.
+        - Display a list of item.
+        - Showing details of a single object.
+        - Handling basic form submission.
+
+=> (ii) Class Base View (CBV)
+    - written a python class.
+    - They offer better organization, reusability, and support for object oriented feature. 
+    - They are suited for a complex application, reusable comments, or features, that require handling multiple HTTP method cleanly.
+    => Class View Base Application and Feature.
+        - Generic CRUD operations.
+        - multiple step forms.
+        - Feature requiring multiple HTTP method in clean, organize structure.
+
+
+
+**** Django Function Base Views ****
+- Function Base View in Django are python function used to handle web request and send back web response.
+- Each FBV is linked to specific Url control what happen when that Urls is visited.
+- Every View function received an HttpRequest object from the browser.
+- The View return an HttpResponse, which can be HTML, or an error page.
+- FBV provide a clear and straightforward way to define an application logic.
+
+* Django Function Base View - CRUD operations
+- Function Base View in Django also support CRUD operations(), allowing you to interact with database model to perform common web application task.
+=> Create : Create or add new entires in a table in the database.
+=> Retrieve : read, retrieve, search or view existing entires as a list(ListView) or retrieve a particular entry in detail.
+=> Update : Update or edit existing entire in a table in the database.
+=> Delete : delete, deactivate, or remove existing entire in a table in the database.
+
+=> full example:
+    - (i) models.py
+        from django.db import models
+        class Student(models.Model):
+            name = models.CharField(max_length=30)
+            age = models.IntegerField()
+            city = models.CharField(max_length=100)
+            
+    - (ii) views.py 
+        from django.shortcuts import render, redirect
+        from django.http import HttpResponse
+        from .models import *
+
+        def home(request):
+            today = datetime.datetime.now()
+            res = f"Today Date: {today.date()} and Time: {today.time()}"
+            return render(request, "index.html", {"res":res})
+
+        def add_student(request):
+            if request.method == "POST":
+                name = request.POST.get("name")
+                age = request.POST.get("age")
+                city = request.POST.get("city")
+                Student.objects.create(name = name, age = age, city = city)
+                return redirect('display')
+            return render(request, "add.html")
+
+        def display_student(request):
+            students = Student.objects.all()
+            return render(request, "display.html", {"students":students})
+
+        def update_student(request,id):
+            student = Student.objects.get(id=id)
+            if request.method == "POST":
+                student.name = request.POST.get("name")
+                student.age = request.POST.get("age")
+                student.city = request.POST.get("city")
+                student.save()
+                return redirect("display")
+            return render(request, "update.html", {"student":student})
+
+        def delete_student(request,id):
+            student = Student.objects.get(id = id)
+            student.delete()
+            return redirect("display")
+
+    - (iii) urls.py
+        from django.urls import path
+        from function_app import views
+
+        urlpatterns = [
+            path('', views.home, name="home"),
+            path('add/', views.add_student, name="add"),
+            path('display/', views.display_student, name="display"),
+            path('update/<int:id>', views.update_student, name="update"),
+            path('delete/<int:id>', views.delete_student, name="delete"),
+        ]
+
+    - (iv) index.html
+        <h1>{{res}}</h1>
+        <b><a href="{% url 'add' %}">Add Student</a><br><br></b>
+        <b><a href="{% url 'display' %}">Display Student</a></b>
+
+    - (v) add.html
+        <h1>Student Add</h1> <br><br>
+        <form method="POST">
+            {% csrf_token %}
+            <p>Enter Name</p><br>
+            <input type="text" placeholder="Enter name" name="name"/> <br><br>
+            <p>Enter Age</p><br>
+            <input type="number" placeholder="Enter Age" name="age"/> <br><br>
+            <p>Enter City</p><br>
+            <input type="text" placeholder="Enter city" name="city"/> <br><br>
+            <button type="submit">Add Data</button>
+        <form>
+
+    - (vi) display.html
+        <h1>Display Student</h1><br><br>
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>City</th>
+                <th>Action</th>
+            </tr>
+            
+            {% for i in students %}
+                <tr>
+                    <td>{{i.id}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.age}}</td>
+                    <td>{{i.city}}</td>
+                    <td>
+                        <a href="{% url 'update' i.id %}">Update</a>
+                        <a href="{% url 'delete' i.id %}" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <b><a href="{% url 'home' %}">Home</a><br><br></b>
+
+    - (vii) update.html
+        <h1>Student Update</h1> <br><br>
+        <form method="POST">
+            {% csrf_token %}
+            <p>Enter Name</p><br>
+            <input type="text" value="{{student.name}}" placeholder="Enter name" name="name"/> <br><br>
+            <p>Enter Age</p><br>
+            <input type="number" value="{{student.age}}" placeholder="Enter Age" name="age"/> <br><br>
+            <p>Enter City</p><br>
+            <input type="text" value="{{student.city}}" placeholder="Enter city" name="city"/> <br><br>
+            <button type="submit">Update Data</button>
+        <form>
+
+
+
+**** Django Class Base View ****
+- Class Base View in Django are python classes that handle web requests and send response in structure in a structured and reusable way.
+- Each HTTP method, such as GET or POST, is handle in its own method for better organization.
+- share feature can be placed in base classes or mixin and reused through inheritance.
+- Django offer built-in CBVs like a CreateView, ListView and DetailView for common task.
+- CBVs help reduce repeated code make a view logic cleaner.
+
+* Django class Base View - CRUD operations
+- Django Base View make easire to implement CRUD operation (Create, Read, Update, Delete) by providing buit-in generic view.
+
+=> CreateView : Create or add new entire in a table in the database.
+=> RetrieveView : read, retrieve, search, or existing entire is a list(ListView) or retrieve a perticular entry in detail.
+=> UpdateView : Update or edit existing entire in a table in a database.
+=> DeleteView : Delete, deactivate or remove existing entire in a table in the database.
+=> FormView : render a form to templates and handle data entered by user.
+
+=> full example:
+    - (i) models.py
+        from django.db import models
+        class Student(models.Model):
+            name = models.CharField()
+            age = models.IntegerField()
+            city = models.CharField()
+
+    - (ii) forms.py
+        from django import forms
+        from .models import Student
+        class StudentForm(forms.ModelForm):
+            class Meta:
+                model = Student
+                field = "__all__"
+        
+    - (iii) view.py
+        from django.urls import reverse_lazy
+        from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+        from .models import Student
+
+        class StudentCreate(CreateView):
+            model = Student
+            fields = ["name", "age", "city"]
+            template_name = "student_form.html"
+            success_url = reverse_lazy('display')
+
+        class StudentList(ListView):
+            model = Student
+            template_name = "index.html"
+            context_object_name = "data"
+
+        class StudentUpdate(UpdateView):
+            model = Student
+            fields = ["name","age","city"]
+            template_name = "student_form.html"
+            success_url = reverse_lazy("display")
+
+        class StudentDelete(DeleteView):
+            model = Student
+            template_name = "delete_student.html"
+            success_url = reverse_lazy("display")
+
+    - (iv) urls.py
+        from django.urls import path
+        from .views import StudentCreate, StudentList, StudentUpdate, StudentDelete
+
+        urlpatterns = [
+            path("", StudentList.as_view(), name="display"),
+            path("add/", StudentCreate.as_view(), name="add"),
+            path("update/<int:pk>", StudentUpdate.as_view(), name="update"),
+            path("delete/<int:pk>", StudentDelete.as_view(), name="delete"),
+        ]
+
+    - (v) student_form.html
+        <h2>Student Form</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit">Submit</button>
+        </form>
+
+    - (vi) index.html
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>City</th>
+                <th>Action</th>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{i.id}}</td>
+                <td>{{i.name}}</td>
+                <td>{{i.age}}</td>
+                <td>{{i.city}}</td>
+                <td>
+                    <a href="{% url 'update' i.id %}">Update</a>
+                    <a href="{% url "delete" i.id %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table><br>
+        <b><a href="{% url 'add' %}">Add</a></b>
+
+    - (vii) delete_student.html
+        <h3>Are you sure delete Student record</h3>
+        <h3>Deleted recoed name: {{object.name}}</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+        </form>
+
+
+
+**** Class Base and Function Base View ****
+- A core concept is view, which define how data is present to user.
+- view can be implement in two main ways: Function Base View(FBV) and Class Base View(CBV).
+
+* Function Base View(FBV)
+- FBV are simple python function that receive a request, process it can return response.
+- They provide a straightforward way to handle HTTP request.
+- Easy to understand, especially for begginer.
+- Explicit code flow for each HTTP method.
+- Flexible and quick implement.
+- simple decorator in usage(ex, @login_required)
+
+- ex:   from django.http import HttpResponse
+        def home(requets):
+            return HttpResponse("Hello world")
+
+
+* Class Base View(CBV)
+- CBV are python classes that handle request using object oriented priciple such as inheritance and mixin.
+- They promot reusable and organize view logic, making easire to mange complex view and avoid code duplication.
+- promot DRY(Don't Repeat Yourself) principle.
+- Better code organizer and mixin or modularity.
+- built-in Generic View(CreateView, ListView, UpdateView, DeleteView)
+- ex:   from django.views import View
+        from django.http import HttpResponse
+
+        class ClassWithFun(View):
+            def get(self, request):
+                return HttpResponse("GET method")
+            def post(self, request):
+                return HttpResponse("POST method")
+

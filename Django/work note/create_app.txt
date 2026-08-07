@@ -1,0 +1,70 @@
+**** Create an app in Django ****
+
+- Django app are seperate module that handle specific feature in a web project, helping keep code clean and organized.
+- Each application is responsible for a perticular function, such as a handling data, managing page or facilitating routing.
+- A django project work as the main setup that brings multiple app together.
+- Every app contains the its own model, view, template and urls.
+- Example app include: a post app for creating and showing blog articles, a comments app for adding 
+  and moderating user comments and a User app for login, signup and profile setup
+
+* Pre Installed app
+- Django included several pre-installed app for conveninence.
+- To view them, Check the INSTALLED_APP section in setting.py file.
+- The app listed there are provide by django to simplify development.
+- before creating app in a django project, ensure the project folder exists, if it does't create it using the following command.
+- ex: django-admin startproject ProjectName
+
+* Step to create apps
+
+=> (i) step 1: Navigate to project directory
+    - open the terminal and navigate to the root directory of the django project, where the manage.py file is located:
+    - cd ProjectName
+
+=> (ii) step 2: create a new app
+    - create a django app with the following command:
+    - python manage.py startapp ProjectApp
+
+=> (iii) step 3: Register the app in project setting.py 
+    - open a ProjectName/setting.py and app to the INSTALLED_APP list
+    - ex:   INSTALLED_APP = [
+        "ProjectApp"
+    ]
+
+=> (iv) step 4: include app urls in project Urls
+    - After creating the app, connect its urls to the main project so django can route request to the app's views. 
+    - In the main project urls.py file located ProjectName/ProjectName/urls.py
+    - ex:   from django.contrib import admin
+            from django.urls import path,include
+
+            urlpatterns = [
+                path('admin/', admin.site.urls),
+                path('',include('firstapp.urls')),
+            ]
+
+=> (v) create urls.py in app
+    - The app requires its own urls.py to define view routes.
+    - If it doesn't exists, create it inside the ProjectApp inside directory.
+    - ex:   from django.urls import path
+            from firstapp import views
+
+            urlpatterns = [
+                path("",views.index, name="index")
+            ]
+
+=> (vi) create view
+    - In ProjectApp view.py, define a view that will return a simple response.
+    - ex:   from django.http import HttpResponse
+
+            def index(request):
+                return HttpResponse("Hello world")
+
+=> (vii) Run the developer server
+    - python manage.py runserver
+
+
+* django app provide feature
+=> Modularity : App are loosely coupled and can be developed independently.
+=> Reuseability : App can be reuseability across multiple django project.
+=> Collaboration : Different term can work on seperate app simultaneously.
+=> Organization : Help maintain clean, structured and manageable code.
+=> Built-in feature : provide tool like admin panel, authentication and middleware to speed up development.

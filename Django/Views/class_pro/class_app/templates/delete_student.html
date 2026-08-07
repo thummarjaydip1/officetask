@@ -1,0 +1,6 @@
+<h3>Are you sure delete Student record</h3>
+<h3>Deleted recoed name: {{object.name}}</h3>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+</form>

@@ -1,0 +1,432 @@
+====> topic : django models, makemigrations and migrate, Model datatype and fields, Render Model in admin, Django ORM, Field validation and built in fields.
+
+
+**** Django Model ****
+
+* Django Model
+- A django model is a python class that represent a database table.
+- It help manage data easily using python instead of writing SQL.
+- Django ORM provide an easy way to connect python code with the database.
+- Model help create, update and delete data simple manner.
+- It work smoothly with the django admin panel for managing information.
+- It support data check and table relationship using fields like foreignkey amd ManyToManyField.
+
+
+* Creating django model
+- A django project and app are needed before defining any models.
+- After staring an app, mmodel can be created in the file app_name/model.py
+- ex:   from django.db import models
+
+        class Book(models.Model):
+            title = models.CharField(max_length=200)
+            description = models.TextField()
+            image = models.ImageField(upload_to="images")
+
+            def __str__(self):
+                return self.name
+
+- title : A character fields with a 200 character limit.
+- description : A text field for longer input.
+- image : An image field used to store the pass or reference to an upload image.
+- __str__ method : is also define to return the title of the instance of the is printed.
+
+
+
+**** makemigrations and migrate ****
+
+- Django object relational mapping(ORM) simplifies database interactions by mapping python object to database table.
+- A key feature of the ORM is migrations, which enable seamless management of change to the database schema over time.
+
+* migrations
+- migration are files that store instruction about how to modify the database schemas.
+- these file help ensure that the database is in aync with the model define in the Django project.
+- whenever change are made to model to models, such as adding, modifying and deleting fields, Django uses migration to apply these change to the database.
+
+* Command
+=> makemigrations : create migrations file base on change made to your models.
+=> migrate : applies the generated migration file to the database.
+
+* Step-By-Step Guide to makemigrations
+
+=> Step 1: migrations command
+    - The maigration command generate to migration file that descibe change to the database schema, in python code.
+    - create a new table when new model are added.
+    - Added new model in existing models.
+    - alters existing fields or modifies table structure.
+
+    => How it Works:
+        - when python manage.py makemigrations is run, Django detect change in the model and generate migration file.
+        - migration file are created inside the migrations/ directory of the app.
+        - Each file is automatically numbered (e.g., 0001_initial.py, 0002_auto_...) to represent increamental cahnge.
+        - These fields describe change to the database schema in python code, ready to applied with migration.
+
+=> Step 2:
+    - After creating migrations file using makemigrations, the command applies these change to the database.
+    - Read all migration file in the project.
+    - Perform necessary update to the database schema.
+    - create or modify tableand fields as define a migration file.
+
+    => How to work it:
+        - The python manage.py migrate command appies change in the correct order by reading the migration file generate by make migrations. It handles:
+        - Create table
+        - modify column
+        - Adding indexing
+        - Perform other database related operation
+
+    
+* consider an app with migrations
+
+- consider a project name "model_pro" having app name "Book".
+- After setting up the project and app, let's define a model the use migration to update the database accordingly.
+
+=> (i) In model_pro/modes.py 
+    - ex:   from django.db import models
+
+            class Book(models.Model):
+                title = models.CharField(max_length=200)
+                description = models.TextField()
+                image = models.ImageField(upload_to="images")
+
+                def __str__(self):
+                    return self.name
+
+=> (ii) create migration file
+    - generate migration file, run the following command:
+    - python manage.py makemigrations
+
+=> (iii) Apply for migrations
+    - To apply the migration and create the table in the database, run this following command.
+    - python manage.py migrate
+
+
+
+**** Django model database and field list ****
+
+- model fields define what kind of data a database column will store and how that should be handle.
+- every field represent a specific data type and control how data is stored and validated.
+- field also decide the default from widget used for user input.
+- Django uses field classes to determine the database column type, form widget, and validationrules.
+- reserved name like save delete, and clean should not be used as field name to avoid conflicts with django model system.
+
+* Common field in database
+=> (1) AutoField
+    - AutoField as Integer Field is an IntegerField that automatically increaments according to available IDs.
+    - One useally wont need to use this directly beacause a primary key field will automatically be added to your model if you don't specify otherwise.
+    - ex:   id = models.AutoField(primary_key=True)
+    
+=> (2) BigAutoField
+    - BigAutoField is a 64-bit Integer, much like an AutoField except that is guaranteed to fit number from 1 to 9223372036854775807.
+    - ex:   id = models.BigAutoField(primary_key=True)
+
+=> (3) BigIntegerField 
+    - BigIntegerField is a 64 bit integer, much like an IntegerField except that it is guaranteed to fit numbers from -9223372036854775808 to 9223372036854775807
+    - ex:   salary = models.BigIntegerField()
+
+=> (4) BinaryField
+    - BinaryField is a special field to store raw binary data. 
+    - It can be assign bytes, bytesarray or memoryview.
+    - By default BinaryField sets editable to false, that it can't be ModelForm.
+    - ex:   field = models.BinaryField()
+
+=> (5) BooleanField
+    - BooleanField is a true/false fields.
+    - BooleanField are store True or False value.
+    - ex :  active = models.BooleanField(default=True)
+
+=> (6) CharField 
+    - CharField is a string field, for small to large size string.
+    - ex:   name = models.CharField()
+
+=> (7) DateField
+    - DateField is a Django model field used to store value only.
+    - store only the date (year, month, day) in database.
+
+    => (i) auto_now=True
+        - Automatically set the field to the current date every time the model instace saved. 
+        - Commonly used for last modified date.
+        - ex:   update_at = models.DateField(auto_now=True)
+    
+    => (ii) auto_now_add = True
+        - Automatically set the fields to the current date only when the model innstance first created. Commonly used for creation date.
+        - ex:   create_at = models.DateField(auto_now_add=True)
+
+=> (8) DateTimeField 
+    - DateTimeField is a Django model field used to store both date and time value.
+    - represented in python as a datetime.datetime object.
+    - store combine date and time value in the database.
+
+    => (i) auto_now=True
+        - Automatically set the field to the current date and time every time objectis saved.
+        - ex:   update_at = models.DateTimeField(auto_now=True)
+    
+    => (ii) auto_now_add = True
+        - Automatically set the fields to the current date and time when the object first is created.
+        - ex:   create_at = models.DateTimeField(auto_now_add=True)
+
+=> (9) DecimalField 
+    - DecimalField is a field which store a fixed precision decimal number, represented in Python by a decimal instance.
+    - It validates the input using DecimalValidator
+    - ex:   max_degit = models.DecimalField()
+
+=> (10) DurationField 
+    - DurationField is a fields storing periods time - modeled in python by timedelta.
+    - ex:   field_name = models.DurationField()
+
+=> (11) EmailField
+    - EmailField is a CharField that check the value for a valid email address using EmailValidator.
+    - EmailValidator validates a email through predefined regex which check '@' and a '.' define after it.
+    - ex:   email = models.EmailField()
+
+=> (12) FileField 
+    - FileField is a file upload field.
+    - ex:   cv = models.FileField(upload_to='upload/')
+
+=> (13) FloatField 
+    - FloatField is a floating point number represent in python by a float instance.
+    - This field is generally used to store huge floting point number in the database.
+    - ex:    float_num = models.FloatField()
+
+=> (14) ImageField 
+    - ImageField is a specialized version of django FileField design to handle a image upoload.
+    - Install pillow library (pip install pillow).      
+    - ex:   image = models.ImageField(upload_to="images")
+
+=> (15) IntegerField
+    - IntegerField is a integer number represent in python a instace.
+    - This field is genrally used to store integer number in the database.
+    - ex:   age = models.IntegerField()
+
+=> (16) GenericIPAddressField 
+    - GenericIPAddressField is a field which store an IPv4 or IPv6 address, in string format (e.g, 192.0.2.30 or 2a20:42fe::4).
+    - ex :  generic_IP = models.GenericIPAddressField()
+
+=> (17) PositiveIntegerField 
+    - PositiveIntegerField is an integer number represent in python by a int instance.
+    - This field is like a IntegerField must be either positive or zero(0).
+    - It support value from 0 to 2147483647 are safe in database support by django 
+    - ex:   positive_num = models.PositiveIntegerField()
+
+=> (18) PositiveSmallIntegerField
+    - PositiveSmallIntegerField is an integer number represent in python by a int instace.
+    - It support value from 0 to 32767 in all adtabase supported by django.
+    - ex:   small_positive_num = models.PositiveSmallIntegerField()
+
+=> (19) SlugField
+    - SlugField is a basically a sort lable for somthing, containing only letter, numbers, underscore and hyphen.
+    - They are generally used for URLs.
+    - ex:   slug_field = models.SlugField(max_length=200)
+
+=> (20) SmallIntegerField
+    - SmallIntegerField is a integer number represent in python by a int instance.
+    - This Field like IntegerField and support value from -32768 to 32767.
+    - ex:   small_num = models.SmallIntegerField()
+
+=> (21) TextField 
+    - TextField is a large text field to large size text.
+    - TextField is generally used for storing paragraph and all other text data.
+    - ex:   message = models.TextField()
+
+=> (22) TimeField
+    - TimeField is a Time field which store time, represent in a python by a datetime.time instace.
+    - ex:   time = models.TimeField()
+
+=> (23) URLField
+    - URLField is a CharField, for a URL. It is generally used for storing webpage link or perticularly called as Urls.
+    - It is validated by URLValidator.
+    - ex:   url = models.URLField()
+
+
+
+**** Render Model in Django Admin Interface ****
+- Rendering a model in django admin interface provides a built-in UI to perform CRUD operation (Create, Read, Update, Delete) on model, wiile the django ORM
+  handle the database interactions behind the scenes.
+- To use the admin interface for a model, it must be registered in admin.py 
+- Once registered, data for the model can be added, viewed, updated and deleted through the admin panel.
+
+=> (i) Defining your model in models.py
+    - ex:   from django.db import models
+
+            class Book(models.Model):
+                title = models.CharField(max_length=200)
+                description = models.TextField()
+                image = models.ImageField(upload_to="images")
+                auther = models.CharField(null=True, blank=True)
+
+                def __str__(self):
+                    return self.name
+=> (ii) Make Migrations and Migrate
+    - After creating this model, we needed run two command in order to create database for the same.
+    -   python manage.py makemigrations
+        python manage.py migrate
+
+=> (iii) Create a Superuser
+    - while model instace can be created using django shell, the admin panel provide an easy interface for Inserting, deleting or modifying data.
+    - Before using the admin interface, a superuser must be created.
+    - A superuser is an admin account that can access and modify all aspects of a Django project.
+    - To create a superuser, run the following command in the terminal.
+    - ex:   python manage.py createsuperuser
+
+=> (iv) Login to Admin Panel
+    - visit http://localhost:8000/admin/ in your browser.
+    - Log in using the superuser credential created earlier.
+
+=> (v) Register Your Model in admin.py
+    - ex:   from django.contrib import admin
+            from .models import *
+
+            admin.site.register(Book)
+            admin.site.register(EmployeeRegister)
+
+=> (vi) Check admin interface
+    - visit http://localhost:8000/admin/
+
+=> (vii) Add Data via Admin Panel
+    - click on your model name (eg. Book model) in the admin panel.
+    - click add to create a new entry.
+    - Fill the required field your data.
+    - click save.
+
+
+
+**** Django ORM ****
+- Django ORM(object relational mapper) makes database work easire by letting developer use python class instead of writing SQL.
+- Define the database structure using python models.
+- connect python object with database table.
+- allow easy creation. reading, Updating, and deletion of data.
+- Removes the need to write raw SQL for most operation.
+
+* Step to Use Django ORM
+- The following step demonstrate how to define models, interact with the database, and perform Common operation using django ORM.
+
+=> Step 1: Defining the model
+    - let create music application with albums and songs.
+    - ex:   class Album(models.Model):
+            title = models.CharField(max_length=30)
+            artist = models.CharField(max_length=30)
+            genre = models.CharField(max_length=30)
+
+            def __str__(self):
+                return self.title
+
+        class Song(models.Model):
+            name = models.CharField(max_length=100)
+            album = models.ForeignKey(Album, on_delete=models.CASCADE)
+
+            def __str__(self):
+                return self.name
+
+
+=> Step 2: Accessing the Django ORM via Django shell
+    - To interact with Django ORM, we use the django shell.
+    - run the following command to open an iteractive Python shell in the context of your django project:
+    - command : python manage.py shell
+    - we can import our models using the following command.
+    - command : from model_app.models import Song, Album
+
+
+=> Step 3: Django ORM Queries
+    (i) Inserting
+        * creating and saving a single object: To create and save Album object to the database, the following command.
+        - command : a = Album(title="Divide", artist="Ed Shreeran", genre="Pop")
+        - command : a.save()
+
+        - similarly to create and save a song object associanted with the previous create the album:
+        - command : s = Song(name="Castle on the Hill", album=a)
+        - command : s.save()
+
+        * Inserting Multiple record: Let's add few more albums to the database.
+        - command : a1 = Album(title="Abbey Road", artist="The Beatles", genre="Rock")
+        - command : a1.save()
+        - command : a2 = Album(title="Revolver", artist="The Beatles", genre="Rock")
+        - command : a2.save()
+
+    (ii) Retrieving
+        * Retrieving all records: To retrieve all record from the album model, we use the all method
+        - command : Album.objects.all()
+
+        * Filtering Records : You acn filter record base on specific condition using the filter() method. 
+        - Command : Album.objects.filter(artist="The Beatles")
+
+        * Excluding Records: The exclude() method allows you to retrieve all records except those that match a condition.
+        - command : Album.objects.exclude(genre="Rock")
+
+        * Retrieving a single record: To retrieve a single objects based on a unique fields, use get().
+        - Note that this will raise DoesNotExists if no objects is found, or multiple objects returned if more than one objects match the criteria.
+        - command : Album.objects.get(pk=3)
+
+    (iii) Updating
+        * Modifyinf and Existing object: To update an existing record, first retrieve the object, modify is an attributes, and then save it.
+        - command : a = Album.objects.get(pk=3)
+        - command : a.genre = "Pop"
+        - command : a.save()
+
+        * Bulk Update : You can also update multiple object at once using update().
+        - command : Album.objects.filter(artist="The Beatles").update(genre="Classic Rock")
+
+    (iv) Deleting 
+        * Deleting a single record: To delete a special record, first retrieve the object and then call the delete() method.
+        - command : a = Album.objects.get(pk = 2)
+        - command : a.delete()
+
+        * Deleting Multiple Records: To delete multiple record at once , use filter() or exclude() combined with the delete() method.
+        - command : Album.objects.filter(genre = "Pop").delete()
+
+
+
+**** Field Validation ****
+- Field validations in Django make sure that only correct and properly formatted data is saved in the database.
+- Django automatically enforce type level validation  based on field type.
+- while this handle basic integrity, developer can add custom validator.
+- Each field has its own rules, such as IntegerField allowing only whole number, CharField limit text length and DateField require a valid date.
+- If data does not match required format the require format, Django raise validation errors when validation is triggered through forms,
+  admin interface or by calling full_clean() explicity.
+
+
+* Extra Built-in Validation
+- Django provide fields for almost every type of data, such as IntegerField for a number and CharField for Text.
+- In addition there are built in validation that can be apply to these field to enforce extra rule.
+- some of the most used validation are listed below.
+
+=> (i) Null
+    - null = True, will make the field accept Null value.
+    - Blank value for django field type such as DateTimeField and ForeignKey will be stored as null in the database.
+    - ex:   auther = models.CharField(null=True)
+
+=> (ii) Blank
+    - blank = True, will make the field accept blank value.
+    - It simply means that field can be empty.
+    - ex:   auther = models.CharField(blank=True)
+
+=> (iii) Default 
+    - default = value, willl make the field default to value. 
+    - There will be no need to expicitly define any value, even if fields is not entered it will default to value.
+    - ex:   product_status = models.CharField(default="pending")
+
+=> (iv) primary key
+    - primary_key = True, will make the field primary key for that table(model).
+    - If you dont specify primary_key=Ture for any field in your model, Django will automatically add an AutoField to hold the primary key,
+      so you don't need to set primary_key=True on any of your field unless you want to override default primary key behaviour.
+    - ex:   id = models.AutoField(primary_key=True)
+
+=> (v) Editable 
+    - editable = False, will make the field disappers from all forms including admin and ModelForm i.e., it can not be edited using any form.
+    - The field wil not be displayed in the admin or any other ModelForm.
+    - ex:   editable = models.CharField(editable=False)
+
+=> (vi) error_message
+    - error_message attribute is used to midify error message that are displayedin the admin interface during failular of some constraint.
+    - ex:   username = models.CharField(error_messages={"unique":"please enter unique name"})
+
+=> (vii) help_text
+    - help_text attribute is used to display the "help" along with the field in form in admin interface and ModelForm.
+    - ex:   password = models.CharField(help_text="please enter string password")
+
+=> (viii) verbose_name
+    - verbose_name is a human attribute name, for the field.
+    - If the verbose name isn't given, Django will automatically create it using the field's attribute name, converting underscore to space.
+    - ex:   address = models.CharField(verbose_name="city")
+
+=> (ix) Unique
+    - unique = True, sets the field to be unique i.e. once enter value in a field, the same name value can not be entered any other instance of that model in any manner.
+    - ex:   name = models.CharField(unique=True)
+

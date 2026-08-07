@@ -1,0 +1,80 @@
+**** Django Project MVT structure ****
+
+- Django Organize web application using MVT(Model View Template) Architecture pattern.
+- This structure seperate data management, request handling and presentation logic into distinct component, making application easire to develop, maintain, and scale.
+
+* MVC(Model View Controller) vs MVT(Model View Template) Mapping.
+- Django View Handle request processing and bussiness logic.
+- Template are responsible for presentation.
+- Django itself acts as the controller by managing url routing and request-response flow.
+
+
+=> (i) Model
+    - Model as the data layer application.
+    - It define structure of database and handle a structure related logic.
+    - define database table using python class in model.py 
+    - responsible for defining the database schema and interacting with database using Django ORM for operation like querying. Inserting, Updating, deleting data.
+    - support creating retrieving, Updating and deleting data.
+    - generate database schema change through migration.
+
+=> (ii) View 
+    - view handle request processing and control the flow of data between models and templates.
+    - It may contain business logic, but logic can also reside in model or seperate service layer.
+    - interact with model to retrieve or update data.
+    - contain application logic and request processing code.
+    - passes the prepared data to template and rendering.
+    - passes the prepared data to template for rendering.
+    - implamented as python function or class based view that return HTTP responses.
+
+=> (iii) Template
+    - Template for responsible for presenting data to the user.
+    - It combine static content with dynamic data using template syntax.
+    - Define the structure and layout of webpage using Html.
+    - Use Django Template Language(DTL) to insert dynamic data.
+    - support Template tags, filter, loop and conditional statement.
+    - display data passed from views in structured format.
+
+
+* MVT Workflow
+- A user send a request through the browser.
+- Django matches the request Urls using urls.py
+- A view process the request.
+- The view interact with models to retrieve or update data.
+- The view pass data into template.
+- The template generate to html.
+- Django return the rendered response to the browser.
+
+
+* Project structure
+- A newly create django project contain several file and directory that work together to implamented the MVT architecture.
+- Inside the project folder, the following major file are included.
+
+=> Key File and Folder 
+
+=> (i) manage.py 
+    - command line tool to interact with the project.
+    - Used for a starting a server, running migrations, creating app and other project management task.
+    - To view all available commands: python manage.py help
+
+=> (ii) Project Folder:
+    - This folder contain all project package and main configuration file. 
+    - Initially, in contain five file.
+
+    => __init__.py
+        - Marks directory as a python package and can be execute package-level initialization code.
+    
+    => asgi.py 
+        - Entry point for ASGI - compatible servers.
+        - support asynchronous request handling and mordern feature like realtime communication.
+
+    => setting.py 
+        - contain all configuration setting for the project, including Installed apps, middleware, database, templates, static file
+          and security option that define project behaviour and enviroment
+
+    => urls.py 
+        - Define the URL routing configuration for the project, Mapping url pattern to corresponding view or other URL file direct
+          incoming request to the appropriate part of the application.
+
+    => wsgi.py 
+        - Entry point for WSGI - compatible servers. Used for serving Django application in traditional synchrouns enviroment.
+        

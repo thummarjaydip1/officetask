@@ -1,0 +1,84 @@
+{% comment %} add {% endcomment %}
+add : {{a | add:"5"}}
+<br><br>
+
+{% comment %} capfirst {% endcomment %}
+capfirst : {{fname | capfirst}}
+<br><br>
+
+{% comment %} date {% endcomment %}
+date : {{ dt | date:"D d M Y" }}
+<br><br>
+
+{% comment %} default {% endcomment %}
+default : {{ city | default:"nothing"}}
+<br><br>
+
+{% comment %} escape {% endcomment %}
+escape : {{ description | escape }}
+<br><br>
+
+{% comment %} length {% endcomment %}
+length : {{ fname | length }}
+<br><br>
+
+{% comment %} lower {% endcomment %}
+lower : {{ lname | lower }}
+<br><br>
+
+{% comment %} upper {% endcomment %}
+upper : {{ lname | upper }}
+<br><br>
+
+
+{% comment %} title {% endcomment %}
+title : {{ description | title }}
+<br><br>
+
+{% comment %} join {% endcomment %}
+join : {{ l1 | join:" // " }}
+<br><br>
+
+{% comment %} addslashes {% endcomment %}
+addslashes : {{ a1 | addslashes }}
+<br><br>
+
+{% comment %} center {% endcomment %}
+center: "{{description | center:"50"}}"
+<br><br>
+
+{% comment %} cut {% endcomment %}
+cut : {{ string | cut:" "}}   ,  cut : {{ string | cut:"o"}}
+<br><br>
+
+{% comment %} dictsort {% endcomment %}
+name dictsort : {{ dictionary | dictsort:"name"}}
+<br><br>
+
+{% comment %} dictsort {% endcomment %}
+age dictsort : {{ dictionary | dictsort:"age"}}
+<br><br>
+
+{% comment %} divisibleby {% endcomment %}
+divisibleby : {{ a | divisibleby:"3"}}
+<br><br>
+
+{% comment %} filesizeformat {% endcomment %}
+filesizeformat : {{ a | filesizeformat }}
+<br><br>
+
+{% comment %} first {% endcomment %}
+first : {{ l1 | first}}
+<br><br>
+
+{% comment %} last {% endcomment %}
+last : {{ l1 | last}}
+<br><br>
+
+{% comment %} linenumbers {% endcomment %}
+linenumbers : {{ linenum | linenumbers }}
+<br><br>
+
+{% comment %} make_list {% endcomment %}
+make_list : {{ fname | make_list }}
+<br><br>

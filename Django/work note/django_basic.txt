@@ -1,0 +1,45 @@
+**** Django Basic ****
+
+- Django is a python base web framework that make is easire to build secure, scalable and maintainable web application.
+- It take care of task like databse hanling, user authentication, and routing so developers can focus on feature instead of boilerplate code.
+- It come with many built-in feature like user authentication, an admin panel and form handling.
+- it is follow the principle of DRY(Don't Reapeat Yourself).
+- Manage both backend logic and frontend rendering.
+- Enable quick creation of complate web application 
+- Auto generate an admin panel for easy data management.
+- works seamlessly with sqllite, Mysql and ProgeSQL.
+- Efficiently Handle growing traffic and appication size.
+
+* Django Architecture and working.
+- Django base on MVT Architecture.
+- MVT is a software design pattern for developing web application.
+- Model : Acts as data interface. It define the structure of your data and is usually backend by database.
+- View : A Python function or class that handle web request. It interacts. with model and render a response typically by passing data to a Template.
+- Template : Contain static Html mixed with Django templating syntax. Template are using display dynamic data on the web page.
+- Browser Send Request : The browser send an HTTP request to the web server (e.g., http://127.0.0.1:8000).
+- Web server receives it : The server (like a Nginx or Apache) servers static file directly or forward other request to a WSGI/ASGI server such as Gunicorn or Daphne.
+- Request Reaches Django : The web server Getway interface(WSGI)/Asychronous server getway interface(ASGI) server convert the request request into python - friendly 
+                           formate and passed it through Django middleware before it reaches your app.
+- URL Routing : Django Check urls.py find the correct view function for the request, turning it into an HTTPRequest object.
+- View Handle Logic : The View process the request - querying the database, rendering templates, or returing data (like Json).
+- Response created : The view return an HTTPResponse object, which Django convert into Httpresponse.
+- Response sent to browser : The response passes back through the webserver and is displayed by the web browser as a webpage.
+
+* Installing Django
+=> (i) Install Python 3
+    - Download and install letest python 3 version from the official website.
+
+=> (ii) Install pip:
+    - pip comes with recent version of python. open the command propmt and run
+    - pip --version(windows)    pip3 --versoin(Macos/Linux)
+
+=> (iii) Set Up a Virtual Enviroment
+    - This isolated your project dependencies.
+    - python -m venv venv(windows) and python3 -m venv venv(Macos/Linux)
+
+=> (iv) Activate the enviroment
+    - .\venv\Scripts\activate(windows) and source venv\bin\activate
+
+=> (v) Install Django
+    - with a virtual enviroment active run.
+    - pip install django

@@ -1,0 +1,16 @@
+<h2>Add Book Detail</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <p>Enter Book Title</p><br>
+    <input type="text" name="title" placeholder="Enter Book Name"/><br><br>
+
+    <p>Enter Book Auhor Name</p><br>
+    <input type="text" name="author" placeholder="Enter Book Author Name"/><br><br>
+    
+    <p>Enter Book Public Date</p><br>
+    <input type="date" name="public_date" placeholder="Enter Book Public Date"/><br><br>
+
+    <button type="submit">Add Record</button>
+</form>

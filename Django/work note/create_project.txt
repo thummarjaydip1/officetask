@@ -1,0 +1,38 @@
+**** Create a Project in Django ****
+
+* How to Create a Project in Django
+- Django project is a main folder structure for a web application, containing a setting, urls, and apps.
+- It set up the enviroment for the development.
+
+* step to create in Django
+- before creating a django project, ensure that a virtual enviroment is set up and django is installed within it.
+
+Step 1 : Create the Project
+- Once the enviroment is activated and django is available, a new project can be created using:
+- ex:   django-admin startproject ProjectName
+- This will create a new folder name ProjectName.
+- change into your project directory.
+- ex:   cd ProjectName
+
+Step 2 : Create View
+- Inside your project folder (setting.py and urls.py are located), create a new file name views.py and add the following code to views.py
+- ex:   from django.http import HttpResponse
+        def hello(request):
+            return HttpResponse("Hello world")
+
+Step 3 : Configure Urls
+    - in the urls.py file Inside the project folder (ProjectName.urls.py) add modify it as follow:
+    => (i) import view at the top:
+    - ex:   from ProjectName.views import hello
+
+    => (ii) Add Urls pattern inside the urlpattern list to link view
+    - ex:   from django.urls import path
+            from ProjectName.views import hello
+            urlpattern =[
+                path("hello/",views.hello),
+            ]
+
+Step 4 : Run the Development server
+- ensure the virtual enviroment is activated, then start the Django develpment server.
+- ex: python manage.py runserver
+- and open server link

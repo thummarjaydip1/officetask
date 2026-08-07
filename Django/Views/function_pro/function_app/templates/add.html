@@ -1,0 +1,11 @@
+<h1>Student Add</h1> <br><br>
+<form method="POST">
+    {% csrf_token %}
+    <p>Enter Name</p><br>
+    <input type="text" placeholder="Enter name" name="name"/> <br><br>
+    <p>Enter Age</p><br>
+    <input type="number" placeholder="Enter Age" name="age"/> <br><br>
+    <p>Enter City</p><br>
+    <input type="text" placeholder="Enter city" name="city"/> <br><br>
+    <button type="submit">Add Data</button>
+<form>

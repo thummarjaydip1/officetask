@@ -1,0 +1,16 @@
+<h2>Update Book Detail</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <p>Enter Book Title</p><br>
+    <input type="text" value="{{book.title}}" name="title" placeholder="Enter Book Name"/><br><br>
+
+    <p>Enter Book Auhor Name</p><br>
+    <input type="text" value="{{book.author}}" name="author" placeholder="Enter Book Author Name"/><br><br>
+    
+    <p>Enter Book Public Date</p><br>
+    <input type="date" value="{{book.public_date | date:'Y-m-d'}}" name="public_date" placeholder="Enter Public Date"/><br><br>
+
+    <button type="submit">Add Record</button>
+</form>

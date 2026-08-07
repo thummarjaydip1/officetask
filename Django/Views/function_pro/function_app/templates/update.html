@@ -1,0 +1,11 @@
+<h1>Student Update</h1> <br><br>
+<form method="POST">
+    {% csrf_token %}
+    <p>Enter Name</p><br>
+    <input type="text" value="{{student.name}}" placeholder="Enter name" name="name"/> <br><br>
+    <p>Enter Age</p><br>
+    <input type="number" value="{{student.age}}" placeholder="Enter Age" name="age"/> <br><br>
+    <p>Enter City</p><br>
+    <input type="text" value="{{student.city}}" placeholder="Enter city" name="city"/> <br><br>
+    <button type="submit">Update Data</button>
+<form>

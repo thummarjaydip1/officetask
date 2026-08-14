@@ -1,0 +1,40 @@
+{{form.as_p}}
+
+<br><br>
+
+<html>
+    <head>
+        <style>
+            div {
+                padding: 10px;
+                margin: 10px;
+            }
+
+            button {
+                background-color: blue;
+                color: white;
+                padding: 10px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div>
+                {{form.name.label}}  {{ form.name }}
+            </div>
+
+            <div>
+                {{form.age.label}}  {{ form.age }}
+            </div>
+
+            <div>
+                {{form.email.label}} {{ form.email }}
+            </div>
+
+            <button type="submit">Save</button>
+        </form>
+    </body>
+</html>

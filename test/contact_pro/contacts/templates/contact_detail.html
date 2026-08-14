@@ -1,0 +1,32 @@
+<h2>Contact List</h2><br>
+
+<h3>Contact Id: {{contact.id}}</h3>
+<h3>First Name: {{contact.first_name}}</h3>
+<h3>LastName : {{contact.last_name}}</h3>
+<h3>Update Contact : <a href="{% url 'update_contact' contact.id %}"> <button>Update Contact</button> </a></h3>
+<h3>Delete Contact : <a href="{% url 'delete_contact' contact.id %}" onclick="return confirm('Are you sure')"> <button>Delete Contact</button> </a></h3>
+<h3>Delete Contact : <a href="{% url 'add_phonenum' %}"> <button>Add Phone Number</button> </a></h3>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Id</th>
+        <th>Phone Number Type</th>
+        <th>Phone Number</th>
+        <th>Action</th>
+    <tr>
+    {% for i in phone %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.type_phone}}</td>
+            <td>{{i.phone_number}}</td>
+
+            <td>
+                <a href="{% url 'update_phonenum' i.id %}"> <button>Update Phone Number</button> </a>
+                <a href="{% url 'delete_phonenum' i.id %}" onclick="return confirm('Are you sure')"> <button>Delete Phone Number</button> </a>
+            </td>
+        <tr>
+    {% endfor %}
+</table>
+
+<br><br>
+<a href="{% url 'list_contact' %}">Back</a><br><br>

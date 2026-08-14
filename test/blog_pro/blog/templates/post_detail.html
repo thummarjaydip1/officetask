@@ -1,0 +1,32 @@
+<h2>Post Detailt</h2><br>
+
+<h3>Title : {{post.title}}</h3>
+<h3>Content : {{post.content}}</h3>
+<h3>Publication Date : {{post.publication_date}}</h3>
+<h3>Tags : {{post.tags}}</h3>
+<h3>Update Post : <a href="{% url 'update_post' post.id %}"><button> Update Post </button></a></h3>
+<h3>Delete Post : <a href="{% url 'delete_post' post.id %}" onclick="return confirm('Are you sure?')"><button> Delete Post </button></a></h3>
+
+<h3>Comment List in Post</h3>
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Content</th>
+        <th>Posts</th>
+        <th>Action</th>
+    </tr>
+    {% for k in comment %}
+        <tr>
+            <td>{{k.id}}</td>
+            <td>{{k.name}}</td>
+            <td>{{k.content}}</td>
+            <td>{{k.posts}}</td>
+            <td>
+                <a href="{% url 'update_comment' k.id %}"><button> Update Comment </button></a>
+                <a href="{% url 'delete_comment' k.id %}" onclick="return confirm('Are you sure?')"><button> Delete Comment </button></a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+

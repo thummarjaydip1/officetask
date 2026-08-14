@@ -1,0 +1,30 @@
+<center>
+<h2>Updare Order Form</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {% for i in order.products.all %}
+        <img src="{{i.image.url}}" width="150" />
+    {% endfor %}
+
+    {% for i in order.products.all %}
+    <p>Product Name : {{i.name}}</p>
+    {% endfor %}
+
+    {% for i in order.products.all %}
+        <p>Product Price : {{i.price}}</p>
+    {% endfor %}
+    
+    <p>Enter Product Quantity</p>
+    <input type="number" value="{{order.quantity}}" name="quantity" placeholder="Enter product Quantity"/>
+    
+    <p>Enter Phone Number</p>
+    <input type="number" value="{{order.phone}}" name="phone" placeholder="Enter product Phone"/>
+    
+    <p>Enter Product Address</p>
+    <input type="text" value="{{order.address}}" name="address" placeholder="Enter product Address"/><br><br>
+
+    <button type="submit">Order Now</button>
+</form>
+</center>

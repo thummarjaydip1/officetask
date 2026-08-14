@@ -1,0 +1,42 @@
+<h2>Fruit Seling</h2>
+<div style="display:flex"> 
+
+{% if request.user.is_authenticated %}
+<h2>Welcome, {{request.user}}</h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{% endif %}
+<h4><a href="{% url 'add_product' %}"><button>Add Product</button></a></h4>&nbsp;&nbsp;&nbsp;
+<h4><a href="{% url 'list_product' %}"><button>List Product</button></a></h4>&nbsp;&nbsp;&nbsp;
+<h4><a href="{% url 'user_order' %}"><button>User Order</button></a></h4>&nbsp;&nbsp;&nbsp;
+<h4><a href="{% url 'user_cart' %}"><button>Your Cart Item</button></a></h4>&nbsp;&nbsp;&nbsp;
+<h4><a href="{% url 'auth_register' %}"><button>Register</button></a></h4>&nbsp;&nbsp;&nbsp;
+
+{% if not request.user.is_authenticated %}
+<h4><a href="{% url 'auth_login' %}"><button>Login</button></a></h4>&nbsp;&nbsp;&nbsp;
+{% endif %}
+
+<h4><a href="{% url 'user_profile' %}"><button>Profile</button></a></h4>&nbsp;&nbsp;&nbsp;
+</div>
+<hr>
+
+<div style="display:grid;grid-template-columns:repeat(3,1fr); gap:10px">
+
+{% for i in data %}
+    <div style="border:1px solid black; padding:10px">
+        {% if i.image %}
+            <img src="{{i.image.url}}" width="150">
+        {% else %}    
+            no image
+        {% endif %}
+        
+        <h3>Product Name: {{i.name}}</h3>
+        <p>Product Description : {{i.description}}</p>
+        <h4>Product Price : {{i.price}}</h4>
+        
+        <br>
+        <a href="{% url 'product_detail' i.id %}"><button>Product Detail</button></a>
+        <a href="{% url 'order_now' i.id %}"><button>Order Now</button></a>
+        <a href="{% url 'add_to_cart' i.id %}"><button>Add To Cart</button></a>
+    </div>  
+    <br>
+{% endfor %}
+</div>

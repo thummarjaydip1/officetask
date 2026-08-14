@@ -1,0 +1,86 @@
+<h2>Tag List</h2><br>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Action</th>
+    </tr>
+    {% for i in tag %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.name}}</td>
+            <td>
+                <a href="{% url 'update_tag' i.id %}"><button> Update Tag </button></a>
+                <a href="{% url 'delete_tag' i.id %}" onclick="return confirm('Are you sure?')"><button> Delete Tag </button></a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<br><br>
+
+<h2>Post List</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Content</th>
+        <th>Publication Date</th>
+        <th>Tags</th>
+        <th>Action</th>
+    </tr>
+    {% for j in post %}
+        <tr>
+            <td>{{j.id}}</td>
+            <td>{{j.title}}</td>
+            <td>{{j.content}}</td>
+            <td>{{j.publication_date}}</td>
+            <td>{{j.tags}}</td>
+            <td>
+                <a href="{% url 'post_detail' j.id %}"><button> View Post </button></a>
+                <a href="{% url 'update_post' j.id %}"><button> Update Post </button></a>
+                <a href="{% url 'delete_post' j.id %}" onclick="return confirm('Are you sure?')"><button> Delete Post </button></a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<br><br>
+
+<h2>Comment List</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Content</th>
+        <th>Posts</th>
+        <th>Action</th>
+    </tr>
+    {% for k in comment %}
+        <tr>
+            <td>{{k.id}}</td>
+            <td>{{k.name}}</td>
+            <td>{{k.content}}</td>
+            <td>{{k.posts}}</td>
+            <td>
+                <a href="{% url 'update_comment' k.id %}"><button> Update Comment </button></a>
+                <a href="{% url 'delete_comment' k.id %}" onclick="return confirm('Are you sure?')"><button> Delete Comment </button></a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<br><br>
+
+<a href="{% url 'add_tag' %}"> Add Tag </a>
+
+<br><br>
+
+<a href="{% url 'add_post' %}"> Add Post </a>
+
+<br><br>
+
+<a href="{% url 'add_comment' %}"> Add Comment </a>

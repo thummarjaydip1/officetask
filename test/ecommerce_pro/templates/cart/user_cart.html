@@ -1,0 +1,35 @@
+<h2>Your Cart Item</h2>
+
+<table border="1" cellpadding="10">
+
+    <tr>
+        <th>Id</th>
+        <th>Product Image</th>
+        <th>Product Name</th>
+        <th>Product Price</th>
+        <th>Product Quantity</th>
+        <th>Total Price</th>
+        <th>Action</th>
+    </tr>
+
+    {% for i in cart %}
+    
+        <tr>
+            <td>{{i.id}}</td>
+            <td>
+                <img src="{{i.product.image.url}}" width="120" />
+            </td>
+            <td>{{i.product.name}}</td>
+            <td>{{i.product.price}}</td>
+            <td>{{i.quantity}}</td>
+            <td>{{i.total_price}}</td>
+            <td>
+                <a href="{% url 'order_now' i.product.id %}"><button>Check Out</button></a>
+                <a href="{% url 'update_cart' i.id %}"><button>Update Cart</button></a>
+                <a href="{% url 'delete_cart' i.id %}" onclick="return confirm('Are You sure?')"><button>Delete Cart</button></a>
+            </td>
+        </tr>
+    
+    {% endfor %}
+
+</table>

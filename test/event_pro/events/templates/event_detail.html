@@ -1,0 +1,65 @@
+<h2>Event Detail</h2><br>
+
+<h4>Event Title : {{event.title}}</h4>
+<h4>Event Description : {{event.description}}</h4>
+<h4>Event Start Time : {{event.start_time}}</h4>
+<h4>Event End Time : {{event.end_time}}</h4>
+<h4>Event Location : {{event.location}}</h4>
+<h4>Event Update : <a href="{% url 'update_event' event.id %}"><button>Update Event</button></a></h4>
+<h4>Event Delete : <a href="{% url 'delete_event' event.id %}" onclick="return confirm('Are you sure?')"><button>Delete Delete</button></a></h4><br>
+
+
+<h2>Created By:</h2>
+<h4>User Email : {{event.user.email}}</h4>
+<h4>User First Name : {{user.first_name}}</h4>
+<h4>User Last Name : {{user.last_name}}</h4>
+<h4>User Update : <a href="{% url 'update_user' user.id %}"><button>Update User</button></a></h4>
+<h4>User Delete : <a href="{% url 'delete_user' user.id %}" onclick="return confirm('Are you sure?')"><button>Delete User</button></a></h4>
+
+<br>
+<h2>Attendee List</h2>
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Id</th>
+        <th>User</th>
+        <th>Event</th>
+        <th>Action</th>
+    </tr>
+    {% for i in attendee %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.user}}</td>
+            <td>{{i.event}}</td>
+            <td>
+                <a href="{% url 'update_attendee' i.id %}"><button>Update Attendee</button></a>
+                <a href="{% url 'delete_attendee' i.id %}" onclick="return confirm('Are you sure?')"><button>Delete Attendee</button></a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<br>
+<h2>Session List</h2>
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Event</th>
+        <th>Action</th>
+    </tr>
+    {% for i in session %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.title}}</td>
+            <td>{{i.start_time}}</td>
+            <td>{{i.end_time}}</td>
+            <td>{{i.event}}</td>
+            <td>
+                <a href="{% url 'update_session' i.id %}"><button>Update Session</button></a>
+                <a href="{% url 'delete_session' i.id %}" onclick="return confirm('Are you sure?')"><button>Delete Session</button></a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>

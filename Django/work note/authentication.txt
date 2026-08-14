@@ -1,0 +1,59 @@
+* User Authentication System Django
+
+- Authentication is a key of security any web application.
+- In Django rest framework, Basic authentication provides a simple way to verify user using their username and password.
+- This method build upon django built-in authentication system, allow api restrict access and ensure only authorized user can interact with protected end point.
+
+
+* custom user model in django : AbstractUser and AbstractBaseUser
+- Every django project should implement a custom user model from the start.
+- This spproch avoid future issues and allows flexibility and authentication, user fields, and bussiness logic.
+- Two common way to create custom user model: extending AbstractUser and using AbstractBaseUser.
+
+
+* Using AbstractBaseUser model
+- AbstractBaseUser user full control over the user model but requires implementing authentication logic, manager class, and additional fields.
+-   from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+    from django.db import models
+
+    class UserManager(BaseUserManager):
+        def create_user(self, email, password=None, **extra_fields):
+            if not email:
+                raise ValueError("Email is required")
+            email = self.normalize_email(email)
+            user = self.model(email=email, **extra_fields)
+            user.set_password(password)
+            user.save(using=self._db)
+            return user
+
+        def create_superuser(self, email, password=None, **extra_fields):
+            extra_fields.setdefault('is_staff', True)
+            extra_fields.setdefault('is_superuser', True)
+            return self.create_user(email, password, **extra_fields)
+
+    class User(AbstractBaseUser, PermissionsMixin):
+        email = models.EmailField(unique=True, null=False, blank=False)
+        first_name = models.CharField(max_length=50)
+        last_name = models.CharField(max_length=50)
+        is_active = models.BooleanField(default=True)
+        is_staff = models.BooleanField(default=False)
+
+        objects = UserManager()
+
+        USERNAME_FIELD = 'email'
+        REQUIRED_FIELDS = ['first_name', 'last_name']
+
+        def __str__(self):
+            return self.email
+
+
+* User Group with Custom permission Django
+- Managing user access and permission is crucial to ensure users can only perform authorization action.
+- Django provide a flexible system for managing user permission and group enabling role based access control efficiently.
+
+* Under standing prmission in django 
+- Django built in permisssion system work at the model level. By default each model in django has three permission.
+- add : permission to add new record.
+- change : permission to change existing record.
+- delete : permission to delete record.
+

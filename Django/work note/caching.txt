@@ -1,0 +1,7 @@
+===> Topic : Caching in Django
+
+- Django caching improve performanceby stroing frequency used data and reducing repeated database queries.
+- Store commonly access data for faster retrieval.
+- Reduce database load and unneccessary queries.
+- improves response time for a user.
+- help build faster and reliable Django Application.

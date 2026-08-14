@@ -1,0 +1,23 @@
+<h2>Register User</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+    <p>Enter Username</p><br>
+    <input type="text" name="username" placeholder="Enter Username"><br><br>
+
+    <p>Enter Password</p><br>
+    <input type="password" name="password" placeholder="Enter Password"><br><br>
+    
+    <p>Enter Email</p><br>
+    <input type="email" name="email" placeholder="Enter Email"><br><br>
+    
+    <p>Enter Phone Number</p><br>
+    <input type="number" name="phone" placeholder="Enter Phone Number"><br><br>
+    
+    <p>Enter Address</p><br>
+    <textarea name="address" placeholder="Enter Address"></textarea><br><br>
+
+    <button type="submit">Register</button>
+
+</form>

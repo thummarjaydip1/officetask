@@ -1,0 +1,7 @@
+<h2>User Profile</h2>
+
+<h4>Username : {{user.username}}</h4>
+<h4>Email : {{user.email}}</h4>
+<h4>Logout : <a href="{% url 'update_profile' %}"><button>Update Profile</button></a></h4>
+<h4>Logout : <a href="{% url 'auth_logout' %}"><button>Logout</button></a></h4>
+<h4>Delete Account : <a href="{% url 'delete_user' %}" onclick="return confirm('Are you sure?')"><button>Delete Account</button></a></h4>

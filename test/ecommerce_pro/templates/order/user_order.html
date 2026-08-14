@@ -1,0 +1,53 @@
+<h2>Order List</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Id</th>
+        <th>Product Image</th>
+        <th>Product Name</th>
+        <th>Product Price</th>
+        <th>Product Quantity</th>
+        <th>Total Price</th>
+        <th>Phone Number</th>
+        <th>Address</th>
+        <th>Action</th>
+    </tr>
+
+    {% for i in order %}
+        <tr>
+            <td>{{ i.id }}</td>
+
+            <td>
+                {% for product in i.products.all %}
+                    <img src="{{ product.image.url }}" width="120">
+                {% endfor %}
+            </td>
+
+            <td>
+                {% for product in i.products.all %}
+                    {{ product.name }}<br>
+                {% endfor %}
+            </td>
+
+            <td>
+                {% for product in i.products.all %}
+                    {{ product.price }}<br>
+                {% endfor %}
+            </td>
+
+            <td>{{ i.quantity }}</td>
+
+            <td>{{ i.total_price }}</td>
+
+            <td>{{ i.phone }}</td>
+
+            <td>{{ i.address }}</td>
+
+            <td>
+                <a href="{% url 'order_detail' i.id %}"><button>Order Detail</button></a>
+                <a href="{% url 'update_order' i.id %}"><button>Update Order</button></a>
+                <a href="{% url 'delete_order' i.id %}" onclick="return confirm('Are you sure?')"><button>Delete Order</button></a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>

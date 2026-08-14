@@ -1,0 +1,27 @@
+<h2>Product List</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Id</th>
+        <th>Product Image</th>
+        <th>Product Name</th>
+        <th>Product Description</th>
+        <th>Product Price</th>
+        <th>Action</th>
+    </tr>
+    {% for i in product %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>
+                <img src="{{i.image.url}}" width="150">
+            </td>
+            <td>{{i.name}}</td>
+            <td>{{i.description}}</td>
+            <td>{{i.price}}</td>
+            <td>
+                <a href="{% url 'update_product' i.id %}"><button>Update Product</button></a>
+                <a href="{% url 'delete_product' i.id %}" onclick="return confirm('Are you sure?')"><button>Delete Product</button></a>
+            </td>
+        </tr>
+    {% endfor %}
+</teble>

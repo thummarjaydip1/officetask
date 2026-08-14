@@ -1,0 +1,79 @@
+===> Middleware
+
+- Middleware in django acts as lightwidth components placed between the webserver and the views.
+- They process request and response globally, helping manage a common task without complicating view code.
+- wrap reusable fucntionality, such as CSRF protection, into seperate component.
+- Apply automatically to all incoming request and outgoing response.
+- Support the class base and function base Middleware style.
+- Handle cross cuting task like authentication, security Header, and session management.
+- Useful for a global operation such as enforce HTTP compressing response, or login performance.
+
+
+* Working of Middleware 
+- django itegrate Middleware at multiple stage of request and response cycle.
+- CommonMiddleware, SessionMiddleware, CsrfViewMiddleware, AuthenticationMiddleware, MessageMiddleware.
+
+=> (i) Request Phase
+    - The request passes through each Middleware in the order define in the order defined in the Middleware setting(top t bottom).
+    - inspact or modify the request.
+    - short circuit processing by returning an HttpResponse early.
+    - return none to returning processing.
+
+=> (ii) URL Rsolver and View processing 
+    - After passing the Middleware stack, the request reaches the django URL resolver, which execute the matched view function or class base view generate a response.
+
+=> (iii) Response Phase 
+    - The response pass back through the Middleware stack in reserve order(top to bottom).
+    - Modify a response.
+    - return modify response upstream.
+
+=> (iv) Exception Handling (Optional) 
+    - If the exception ocuurs during view processing, a process_exception hook in middleware can interene before the response phase.
+    - This structure ensure that middleware can inject functionality at multiple points in the request-response lifecycle while remaining modular,
+      reusable, and decoupled from individaul view.
+    
+
+* Middleware Hook in Django
+- Hook are special method in django middleware that are called at specific point during that request - response cycle.
+- They allow inspaction, modification, or short cutting of request and response in a modular and reusable view.
+
+=> (i) process_request(request)
+    - Runs before the view execute. 
+    - Can inspact or modify the request.
+    - returning an HttpResponse here stop further processing.
+
+=> (ii) process_view(request, view_func, view_args, view_kwargs)
+    - Runs after URL resolution but before the view execute.
+    - Useful for a performing view specific check or modification.
+
+=> (iii) proces_template_response(request, response)
+    - Run after the view return a Template Response.
+    - Allow adjustments to the Template to the Template or context before rendering 
+
+=> (iv) process_exception(request, exception)
+    - Invoke if a view raise an Exception.
+    - Can Handle the return a custom response.
+
+=> (vi) process_response(request, response) 
+    - Run after the view has return as response.
+    - Allow a final modification before sending the response back to the client.
+
+
+* Custom middleware
+- custom middleware allow the implementation of application specific logic that isn't covered by django buit-in middleware.
+- Django Support two approach for creating custom middleware:
+ 
+=> (i) Class Base Middleware 
+    - Typically inherit from MiddlewareMixin or implements the require hooks directly.
+    - Provide clear structure with multiple hooks for a process_request, process_view, process_exception, and process_response.
+    - ideal for more complex or reusable middleware components.
+
+=> (ii) Function Base Middleware
+    - A simple callable that except a get_response argument and return a response.
+    - Suitable lightweight or one off the proccessing task.
+
+=> Implementation Step:
+    - (i) create middlewares.py file inside your Django app.
+    - (ii) Define middleware class or function with the desired logic.
+    - (iii) Add the middleware to the MIDDLEWARE list in the settings.py at the approprite position in the stack.
+    

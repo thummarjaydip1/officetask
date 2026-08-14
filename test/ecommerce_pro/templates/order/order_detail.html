@@ -1,0 +1,15 @@
+<h2>Order Detail</h2><br>
+<h4>
+    {% for i in order.products.all %}
+
+        <p>Product Image :</p> <image src="{{i.image.url}}" width="120" />
+        <p>Product Name : {{i.name}}</p>
+        <p>Product Price : {{i.price}}</p>
+        <p>Product Description : {{i.description}}</p>
+    {% endfor %}
+    <p>product Quantity : {{order.quantity}}</p>
+    <p>product Total Price  : {{order.total_price}}</p>
+    <p>product Total Price  : {{order.status}}</p>
+    <p>product Total Price  : {{order.phone}}</p>
+    <p>product Total Price  : {{order.address}}</p>
+</h4>

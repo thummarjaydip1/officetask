@@ -1,0 +1,9 @@
+<h2>Product Detail</h2>
+
+<h4>Product Image</h4>
+<img src="{{product.image.url}}" width="120" />
+<h4>Product Name: {{product.name}}</h4>
+<h4>Product Price: {{product.price}}</h4>
+<h4>Product Description: {{product.description}}</h4>
+<a href="{% url 'order_now' product.id %}"><button>Order Now</button></a>
+<a href="{% url 'add_to_cart' product.id %}"><button>Add to Cart</button></a>

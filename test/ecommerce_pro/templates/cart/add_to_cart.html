@@ -1,0 +1,17 @@
+<center>
+<h2> Add To Cart</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <h4>Product Image</h4>
+    <img src="{{product.image.url}}" width="150" />
+    <h4>Product Name: {{product.name}}</h4>
+    <h4>Product Price: {{product.price}}</h4>
+    
+    <input type="number" name="quantity" placeholder="Enter Product Quantity" /><br><br>
+
+    <button type="submit">Add To Cart</button>
+
+</form>
+</center>

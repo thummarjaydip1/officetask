@@ -1,0 +1,167 @@
+===> Signals
+
+- signal provide a way to respond to action occurring within an application.
+- They allow task like a login, cache invalidation, or automatic data update and executewithout tightly coupling the code.
+- signals follow a publish subscribe pattern, where a sender broadcast an event and receiver handle it.
+
+* Built-in Signals
+- Django provide around 20 Built-in signal, organize by category.
+- They trigger at specific point in the framework lifecycle, allowing application to respond to event such as model save, deleteion or request/response processing.
+
+* Model signals
+=> pre_save : Befor saved instance is saved   -> key argumnent : sender, instance, raw, using, update_fields
+=> post_save : After saved instance is saved   -> key argumnent : sender, instance, created, raw, using, update_fields
+=> pre_delete : Before a model instance is deleted   -> key argumnent : sender, instance, using
+=> post_delete : After a model instance is deleted   -> key argumnent : sender, instance, using 
+=> m2m_changed : when many to many field is modeify   -> key argument : sender, instance, action, pk_set, using
+
+* Request/Response signals
+=> request_started : when django starts processing a request   -> key argument : sender
+=> request_finished : when django finish proccessing a request   -> key argument : sender
+=> got_request_exception : when an exception occurs in a view   -> key argument : request
+
+* Database Signals
+=> connection_created : when a new database connection is opened   -> key argument : connection
+=> post_migrate : After migration run for an app   -> key argument : sender, app_config, verbosity, interactive, using, apps
+
+
+* Full Example
+    => (i) mdoels.py
+        from django.db import models
+        from django.contrib.auth.models import User
+
+        class Profile(models.Model):
+            user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+            def __str__(self):
+                return self.user.usernamefrom django.db import models
+        from django.contrib.auth.models import User
+
+        class Profile(models.Model):
+            user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+            def __str__(self):
+                return self.user.username
+
+
+    => (ii) admin.py
+        from django.contrib import admin
+        from .models import Profile
+        admin.site.register(Profile)
+
+
+    => (iii) apps.py
+        from django.apps import AppConfig
+        class SignalsAppConfig(AppConfig):
+            default_auto_field = 'django.db.models.BigAutoField'
+            name = 'signals_app'
+
+            def ready(self):
+                import signals_app.signals
+
+    
+    => (iv) signals.py
+        from django.db.models.signals import post_save
+        from django.contrib.auth.models import User
+        from django.dispatch import receiver
+        from .models import Profile
+
+        @receiver(post_save, sender=User)
+        def create_profile(sender, instance, created, **kwargs):
+            if created:
+                Profile.objects.create(user=instance)
+                instance.profile.save()
+
+        # @receiver(post_save, sender=User)
+        # def save_profile(sender, instance, **kwargs):
+        #     instance.profile.save()
+
+
+    => (v) views.py
+        from django.shortcuts import render, redirect
+        from django.contrib.auth.models import User
+        from django.contrib.auth import authenticate, login, logout
+        from django.contrib.auth.decorators import login_required
+        from .models import Profile
+
+        def register_user(request):
+            if request.method == "POST":
+                username = request.POST.get("username")
+                password = request.POST.get("password")
+                email = request.POST.get("email")
+                User.objects.create_user(
+                    username=username,
+                    password=password,
+                    email=email
+                )
+                return redirect("login")
+            return render(request, "register.html")
+
+        def login_user(request):
+            if request.method == "POST":
+                username = request.POST.get("username")
+                password = request.POST.get("password")
+
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect("profile")
+                else:
+                    return redirect("login")
+            return render(request, "login.html")
+
+        def logout_user(request):
+            logout(request)
+            return redirect("login")
+
+        @login_required(login_url="login")
+        def profile(request):
+            data = Profile.objects.get(user=request.user)
+            return render(request,"profile.html", {"data" : data})
+
+
+    => (vi) app/urls.py
+        from django.urls import path
+        from signals_app import views
+
+        urlpatterns = [
+            path('', views.register_user, name="register"),
+            path('login/', views.login_user, name="login"),
+            path('logout/', views.logout_user, name="logout"),
+            path('profile/', views.profile, name="profile"),
+        ]
+
+
+    => (vii) template/register.html
+        <h2> Register User </h2><br>
+        <form method="POST">
+            {% csrf_token %}
+            <p>Enter Username</p><br>
+            <input type="text" name="username" placeholder="Enter Username"><br><br>
+            <p>Enter Password</p><br>
+            <input type="password" name="password" placeholder="Enter Password"><br><br>
+            <p>Enter Email</p><br>
+            <input type="email" name="email" placeholder="Enter Email"><br><br>
+            <button type="submit">Register</button>
+        </form>
+
+
+    => (viii) templates/login.html
+        <h2> Login User </h2><br>
+        <form method="POST">
+            {% csrf_token %}
+            <p>Enter Username</p><br>
+            <input type="text" name="username" placeholder="Enter Username"><br><br>
+            <p>Enter Password</p><br>
+            <input type="password" name="password" placeholder="Enter Password"><br><br>
+            <button type="submit">Login</button>
+        </form>
+        <a href="{% url 'register' %}">Register</a>
+
+
+    => (ix) profile.html
+        <h2>Welcome User</h2>
+        <h2>Username: {{data.user.username}}</h2>
+        <h2>Email: {{data.user.email}}</h2>
+        <a href="{% url 'logout' %}">Logout</a>
+        

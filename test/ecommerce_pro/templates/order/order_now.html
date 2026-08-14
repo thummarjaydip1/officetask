@@ -1,0 +1,22 @@
+<center>
+<h2> Order Form</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <img src="{{product.image.url}}" width="150" />
+    <p>Product Name : {{product.name}}</p>
+    <p>Product Price : {{product.price}}</p>
+    
+    <p>Enter Product Quantity</p>
+    <input type="number" name="quantity" placeholder="Enter product Quantity"/>
+    
+    <p>Enter Phone Number</p>
+    <input type="number" name="phone" placeholder="Enter product Phone"/>
+    
+    <p>Enter Product Address</p>
+    <input type="text" name="address" placeholder="Enter product Address"/><br><br>
+
+    <button type="submit">Order Now</button>
+</form>
+</center>
